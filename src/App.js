@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import routes from './routes'
+import {
+  Switch,
+  Route,
+} from 'react-router-dom'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { withRouter } from 'react-router'
+import { Init } from 'components'
 
-function App() {
+const RouteWithSubRoutes = (route) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Route 
+      path={route.path}
+      render={props => (
+        <route.component { ...props} routes={route.routes} />
+      )}
+    />
+  )
 }
 
-export default App;
+const App = (props) => {
+  const { location } = props
+  const { pathname } = location
+
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <Init>
+        <Switch>
+          {routes.map((route, i) => (
+            <RouteWithSubRoutes key={i} {...route} />
+          ))}
+        </Switch>
+      </Init>
+    </React.Fragment>
+  )
+}
+
+export default App
