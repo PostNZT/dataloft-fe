@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import App from 'App'
 import { ThemeProvider } from '@material-ui/core/styles'
 import * as serviceWorker from './serviceWorker'
 import { Provider } from 'react-redux'
-import store from './store/store'
+import store from 'store/store'
 import { theme } from 'services/theme'
 import {
   BrowserRouter as Router,
