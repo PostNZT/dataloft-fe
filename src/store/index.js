@@ -1,28 +1,28 @@
-import { combineReducers } from 'redux'
-import { fork, all } from 'redux-saga/effects'
+// import { combineReducers } from 'redux'
+// import { fork, all } from 'redux-saga/effects'
 
-/** 
- *  ADD HERE THE ACTIONS/ REDUCERS 
- * 
- * */
+// /** 
+//  *  ADD HERE THE ACTIONS/ REDUCERS 
+//  * 
+//  * */
 
-import { reducer as thunkReducer } from 'redux-saga-thunk'
+// import { reducer as thunkReducer } from 'redux-saga-thunk'
 
-/** 
- *  ADD HERE THE SAGAS 
- * 
- * */
+// /** 
+//  *  ADD HERE THE SAGAS 
+//  * 
+//  * */
 
-export const rootReducer = combineReducers({
-    thunk: thunkReducer,
-    /**
-     * ADD THE REDUCER COMPONENT 
-     */
-})
+// export const rootReducer = combineReducers({
+//     thunk: thunkReducer,
+//     /**
+//      * ADD THE REDUCER COMPONENT 
+//      */
+// })
 
-export function* rootSaga() {
-    yield all([
+// export function* rootSaga() {
+//     yield all([
         
-    ].map(fork))
-}
+//     ].map(fork))
+// }
 

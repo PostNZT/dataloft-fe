@@ -5,7 +5,7 @@ const Init = (props) => {
 
     return (
         <React.Fragment>
-            { init && (children) }
+            { (children) }
         </React.Fragment>
     )
 }
