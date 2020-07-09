@@ -4,7 +4,7 @@ import {
 
 const routes = [
     {
-        path: "/",
+        path: '/',
         exact: true,
         component: Home,
     }

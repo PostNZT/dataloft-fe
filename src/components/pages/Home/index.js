@@ -7,7 +7,7 @@ const Home = (props) => {
   return (
     <React.Fragment>
       <Container maxWidth="lg" >
-        TESTUBG
+        testub
       </Container>
     </React.Fragment>
   )

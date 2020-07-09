@@ -12,11 +12,11 @@ import {
 
 ReactDOM.render(
   <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <App />
-        </Router>
-      </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <App />
+      </Router>
+    </ThemeProvider>
 
   </React.StrictMode>,
   document.getElementById('root')
