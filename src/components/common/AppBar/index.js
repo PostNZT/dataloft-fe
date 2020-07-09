@@ -1,23 +1,24 @@
-import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import React from 'react'
+import { fade, makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import InputBase from '@material-ui/core/InputBase'
+import Badge from '@material-ui/core/Badge'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
+import SearchIcon from '@material-ui/icons/Search'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import MoreIcon from '@material-ui/icons/MoreVert'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1,
+    flexGrow: 10,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '65ch',
     },
   },
   sectionDesktop: {
@@ -77,34 +78,37 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-}));
+  leftAdjust: {
+    marginLeft: 10,
+  },
+}))
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isMenuOpen = Boolean(anchorEl)
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+    setMobileMoreAnchorEl(null)
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
+  }
 
   const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+    setMobileMoreAnchorEl(event.currentTarget)
+  }
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -118,7 +122,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
-  );
+  )
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -133,19 +137,17 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
+          <AddIcon />
         </IconButton>
-        <p>Messages</p>
+        <p>Create</p>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
+            <NotificationsNoneIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Notifications</p>  
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -165,14 +167,6 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             DATALOFT
           </Typography>
@@ -181,7 +175,7 @@ export default function PrimarySearchAppBar() {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search on Dataloft…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -191,16 +185,17 @@ export default function PrimarySearchAppBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
+              <AddIcon />
+            </Fab>
+            <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
               <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
+                <NotificationsNoneIcon />
               </Badge>
-            </IconButton>
+            </Fab>
+            <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
+              <KeyboardArrowDownIcon />
+            </Fab>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -228,5 +223,5 @@ export default function PrimarySearchAppBar() {
       {renderMobileMenu}
       {renderMenu}
     </div>
-  );
+  )
 }
