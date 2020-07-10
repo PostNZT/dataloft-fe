@@ -1,6 +1,6 @@
-import React from 'react'
-import { fade, makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
+import React, { useState } from 'react'
+import { fade, withStyles } from '@material-ui/core/styles'
+import MuiAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
@@ -15,8 +15,10 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import SearchIcon from '@material-ui/icons/Search'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import MoreIcon from '@material-ui/icons/MoreVert'
+import { compose } from 'recompose'
 
-const useStyles = makeStyles((theme) => ({
+
+const styles = (theme) => ({
   grow: {
     flexGrow: 10,
   },
@@ -81,57 +83,58 @@ const useStyles = makeStyles((theme) => ({
   leftAdjust: {
     marginLeft: 10,
   },
-}))
+})
 
-export default function PrimarySearchAppBar() {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl)
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+const AppBar = (props) => {
+  const { classes } = props
+  const [anchorElement, setAnchorElement] = useState(null)
+  const [mobileAnchorElement, setMobileAnchorElement] = useState(null)
+
+  const isMenuOpen = Boolean(anchorElement)
+  const isMobileMenuOpen = Boolean(mobileAnchorElement)
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget)
+    setAnchorElement(event.currentTarget)
   }
 
   const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null)
+    setMobileAnchorElement(null)
   }
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
+    setAnchorElement(null)
+    handleMobileMenuClose()
   }
 
   const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget)
+    setMobileAnchorElement(event.currentTarget);
   }
 
-  const menuId = 'primary-search-account-menu'
+  const menuId = 'account-menu'
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
+    <Menu 
+      anchorElement = {anchorElement}
+      anchorOrigin = {{ vertical: 'top', horizontal: 'right' }}
+      id = {menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin = {{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
     </Menu>
   )
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = 'account-menu-mobile'
   const renderMobileMenu = (
     <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
+      anchorElement = {mobileAnchorElement}
+      anchorOrigin= {{ vertical: 'top', horizontal: 'right' }}
+      id = {mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin = {{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -161,11 +164,13 @@ export default function PrimarySearchAppBar() {
         <p>Profile</p>
       </MenuItem>
     </Menu>
-  );
+
+  )
 
   return (
-    <div className={classes.grow}>
-      <AppBar position="static">
+    <React.Fragment>
+      <div className={classes.grow}>
+      <MuiAppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             DATALOFT
@@ -219,9 +224,14 @@ export default function PrimarySearchAppBar() {
             </IconButton>
           </div>
         </Toolbar>
-      </AppBar>
+      </MuiAppBar>
       {renderMobileMenu}
       {renderMenu}
     </div>
+    </React.Fragment>
   )
 }
+
+export default compose(
+  withStyles(styles),
+)(AppBar)
