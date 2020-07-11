@@ -16,6 +16,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import { compose } from 'recompose'
+import Avatar from '@material-ui/core/Avatar'
 
 
 const styles = (theme) => ({
@@ -190,6 +191,8 @@ const AppBar = (props) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Avatar className={classes.leftAdjust} src={`https://images.hive.blog/u/postnzt/avatar/small`} />
+            <Typography variant="subtitle1" className={classes.leftAdjust}>postnzt</Typography>
             <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
               <AddIcon />
             </Fab>
