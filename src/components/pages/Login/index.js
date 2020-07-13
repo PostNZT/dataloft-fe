@@ -1,12 +1,10 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
+import detectEthereumProvider from '@metamask/detect-provider'
 
 
 const Login = (props) => {
 
-   // Web3 Browser Detection
-  // To verify if the browser is running MetaMask, copy and paste the code snippet
-  // below in the developer console of your web browser:
   if (typeof window.ethereum !== "undefined") {
     console.log("MetaMask is installed!");
   } else {
@@ -17,9 +15,12 @@ const Login = (props) => {
 
 
   const handleClickLogin = async () => {
-    const accounts = await window.ethereum.enable();
-    const address = accounts[0];
-    console.log(address)
+    const provider = await detectEthereumProvider()
+    
+    console.log(provider)
+    // const accounts = await window.ethereum.enable();
+    // const address = accounts[0];
+    // console.log(address)
   }
 
   return (
