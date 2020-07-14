@@ -60,7 +60,7 @@ const Login = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  // user: state.create.get('user')
+  user: state.create.get('user')
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -8,6 +8,3 @@ export const verb = {
   DELETE: 'DELETE'
 }
 
-export const metamaskSignIn = (address) => {
-  //CODE WILL BE FOR THE WINDOW.ETHEREUM
-}

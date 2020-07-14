@@ -10,6 +10,7 @@ import * as createSagas from './create/sagas'
 export const rootReducer = combineReducers({
   thunk: thunkReducer,
   tests,
+  create,
 })
 
 export function* rootSaga() {
