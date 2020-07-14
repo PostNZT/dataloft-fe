@@ -6,7 +6,8 @@ import {
 
 function* createFFSRequest(payload, meta) {
   const { address } = payload
-
+  console.log('you are here')
+  console.log(address)
   
 
 }
