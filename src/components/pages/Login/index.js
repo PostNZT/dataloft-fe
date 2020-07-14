@@ -45,7 +45,7 @@ const Login = (props) => {
     <React.Fragment>
       <Container component="main" maxWidth="xs" className={classes.paper}>
         <CssBaseline />
-        <h1> LOGIN </h1>
+        <h1> DATALOFT </h1>
         <Button 
           variant="contained" 
           color="primary"
@@ -60,7 +60,7 @@ const Login = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  // user: state.app.user
+  // user: state.create.get('user')
 })
 
 const mapDispatchToProps = (dispatch) => ({
