@@ -1,6 +1,5 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import detectEthereumProvider from '@metamask/detect-provider'
 
 
 const Login = (props) => {
@@ -13,14 +12,10 @@ const Login = (props) => {
     );
   }
 
-
   const handleClickLogin = async () => {
-    const provider = await detectEthereumProvider()
-    
-    console.log(provider)
-    // const accounts = await window.ethereum.enable();
-    // const address = accounts[0];
-    // console.log(address)
+    const account = await window.ethereum.enable()
+    const address = account[0]
+    console.log(address)
   }
 
   return (
