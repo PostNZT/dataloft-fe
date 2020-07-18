@@ -1,46 +1,21 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import { createPow } from '@textile/powergate-client'
-import { ffs } from '@textile/powergate-client'
-import config from 'config'
 
 import {
   CREATE_FFS_REQUEST
 } from './actions'
 
 import {
-  getWalletAccount,
-  createWalletAccount,
-} from 'services/helpers'
+  createFFS,
+} from 'services/api'
 
 function* createFFSRequest(payload, meta) {
-  const POW_HOST = config.POW_HOST
-  const powergate = createPow( { POW_HOST })
-  // console.log(POW_HOST)
-  // console.log(powergate)
   const { address } = payload
-  const user = yield call(getWalletAccount, address)
-  // console.log(user)
-  if(user.status === 404) {
-    console.log('test')
-    try{
-      const { token } = yield call(powergate.ffs.create)
-      console.log(token)
-    } catch(e) {
-      console.log(e)
-    }
-    // const user = {
-    //   _id: address,
-    //   address,
-    //   token: token,
-    // }
+  const data = yield call(createFFS, address)
+  console.log(data)
 
-    // const data = yield call(createWalletAccount, user)
-    
-  } 
-  
+  // if (data.response) {
 
-  // TOKEN = token
-
+  // }
 }
 
 function* watchCreateFFSRequest({ payload, meta}) {
