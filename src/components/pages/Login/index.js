@@ -21,12 +21,10 @@ const styles = (theme) => ({
 
 const Login = (props) => {
   const {
-    user,
     classes,
     createFFSRequest,
   } = props
 
-  console.log(user)
   if (typeof window.ethereum !== "undefined") {
     console.log("MetaMask is installed!");
   } else {
