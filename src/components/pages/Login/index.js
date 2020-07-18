@@ -1,8 +1,9 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles, fade } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import classNames from 'classnames'
 
 import { createFFSRequest } from 'store/create/actions'
 import { bindActionCreators } from 'redux'
@@ -17,6 +18,20 @@ const styles = (theme) => ({
     alignItems: 'center',
     paddingTop: 100,
   },
+  page: {
+    height: '100vh',
+    width: '100%',
+  },
+  loginPage: {
+    position: 'relative',
+    borderRadius: 5,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+  }
 })
 
 const Login = (props) => {
@@ -40,7 +55,7 @@ const Login = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <div className={classNames(classes.page, classes.loginPage)}>
       <Container component="main" maxWidth="xs" className={classes.paper}>
         <CssBaseline />
         <h1> DATALOFT </h1>
@@ -53,7 +68,7 @@ const Login = (props) => {
           Login with Metamask
         </Button>
       </Container>
-    </React.Fragment>
+    </div>
   )
 }
 
