@@ -1,7 +1,10 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import {
-  CREATE_FFS_REQUEST
+  CREATE_FFS_REQUEST,
+  createFFSSuccess,
+  createFFSFailure,
+
 } from './actions'
 
 import {
@@ -9,13 +12,18 @@ import {
 } from 'services/api'
 
 function* createFFSRequest(payload, meta) {
-  const { address } = payload
-  const data = yield call(createFFS, address)
-  console.log(data)
+  try {
+    const { address } = payload
+    const data = yield call(createFFS, address)
 
-  // if (data.response) {
-
-  // }
+    if (data.response) {
+      yield put(createFFSSuccess(data.response, meta))
+    } else {
+      yield put(createFFSFailure(data.error))
+    }
+  } catch(error) {
+    yield put(createFFSFailure(error))
+  }
 }
 
 function* watchCreateFFSRequest({ payload, meta}) {
