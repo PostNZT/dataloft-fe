@@ -7,6 +7,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { hasCompatibleMetamask } from 'services/helpers'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
 
 import { createFFSRequest } from 'store/create/actions'
 import { bindActionCreators } from 'redux'
@@ -66,13 +68,6 @@ const Login = (props) => {
       <Container component="main" maxWidth="xs" className={classes.paper}>
         <CssBaseline />
          <BrandIcon />
-         <Checkbox
-          name="metamask" 
-          checked={useMetamask}
-          value="remember"
-          // className={classes.white} 
-          onClick={handleClickCheckbox}
-        />
           <Button 
             variant="contained" 
             color="primary"
@@ -101,6 +96,53 @@ const Login = (props) => {
                 }
               />
             )
+          }
+          {
+            !hasInstalledMetamask && (
+              <React.Fragment>
+                <FormControlLabel
+                className={classes.formLabel}
+                control={
+                  <Checkbox
+                    name="metamask" 
+                    checked={useMetamask}
+                    value="remember"
+                    className={classes.white} 
+                    onClick={handleClickCheckbox}
+                  />
+                }
+                label={
+                  <Typography variant="subtitle2" className={classes.white}>
+                    Login with Hive Metamask
+                  </Typography>
+                }
+              />
+                {
+                  useMetamask && (
+                    <React.Fragment>
+                      <Typography variant="subtitle1" className={classes.white}>Install Metamask</Typography><br />
+                      <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                        <Button 
+                          startIcon={<FaChrome />}  
+                          href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
+                          rel="noopener noreferrer"
+                          target="_blank">
+                            Chrome
+                          </Button>
+                        <Button 
+                          startIcon={<FaFirefoxBrowser />} 
+                          href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
+                          rel="noopener noreferrer"
+                          target="_blank">
+                          Firefox
+                        </Button>
+                      </ButtonGroup>
+                    </React.Fragment>
+                  )
+                }
+              </React.Fragment>
+            )
+            
           }
       </Container>
     </div>
