@@ -12,6 +12,27 @@ export const createFFS = (address) => {
     axios({
       method: 'POST',
       url: `${targetAPI}/create/`,
+      data: body
+    }).then(({data}) => {
+      resolve({ response: data })
+    }).catch((error) => {
+      reject({ error })
+    })
+  })
+}
+
+export const createWalletJWTToken = (username, password, address, token) => {
+  const body = {
+    username,
+    password,
+    address,
+    token
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `${targetAPI}/auth/generate`,
       data: body,
     }).then(({data}) => {
       resolve({ response: data })
