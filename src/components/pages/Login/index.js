@@ -61,9 +61,13 @@ const styles = (theme) => ({
     height: 50,
   },
   inputInput: {
-    border: '2px solid #232529',
+    border: '1px solid #232529',
     paddingLeft: 10,
     width: '100%',
+  },
+  buttonWrapper: {
+    paddingLeft: 90,
+    paddingBottom: 15
   },
 })
 
@@ -116,14 +120,13 @@ const Login = (props) => {
               <Typography
                 align='center'
                 variant='h6'
-                component="h2"
                 className={classes.white}
               >
                 Welcome back!
               </Typography>
               <Typography
                 align='justify'
-                variant='subtitle'
+                variant='subtitle2'
                 className={classNames(classes.gray, classes.graySubtitleWrapper)}
               >
                 We're so excited to see on the loft again!
@@ -161,42 +164,43 @@ const Login = (props) => {
                 onChange={onChange}
               />
             </div>
-
-              {
-                hasInstalledMetamask && (
+            {
+              hasInstalledMetamask && (
+                <div className={classes.buttonWrapper}>
                   <Button 
-                    variant="contained" 
-                    color="primary"
-                    type="submit"
-                    onClick={handleClickLogin}
+                  variant="contained" 
+                  color="primary"
+                  type="submit"
+                  onClick={handleClickLogin}
                   >
                     Login with Metamask
                   </Button>
-                )
-              }
-              {
-                !hasInstalledMetamask && (
-                  <React.Fragment>
-                    <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
-                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
-                      <Button 
-                        startIcon={<FaChrome />}  
-                        href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
-                        rel="noopener noreferrer"
-                        target="_blank">
-                          Chrome
-                        </Button>
-                      <Button 
-                        startIcon={<FaFirefoxBrowser />} 
-                        href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
-                        rel="noopener noreferrer"
-                        target="_blank">
-                        Firefox
+                </div>  
+              )
+            }
+            {
+              !hasInstalledMetamask && (
+                <React.Fragment>
+                  <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
+                  <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                    <Button 
+                      startIcon={<FaChrome />}  
+                      href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
+                      rel="noopener noreferrer"
+                      target="_blank">
+                        Chrome
                       </Button>
-                    </ButtonGroup>
-                  </React.Fragment>
-                ) 
-              }
+                    <Button 
+                      startIcon={<FaFirefoxBrowser />} 
+                      href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
+                      Firefox
+                    </Button>
+                  </ButtonGroup>
+                </React.Fragment>
+              ) 
+            }
             </div>
          </div>
       </Container>
