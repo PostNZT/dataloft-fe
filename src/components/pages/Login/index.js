@@ -7,6 +7,8 @@ import { hasCompatibleMetamask } from 'services/helpers'
 import Typography from '@material-ui/core/Typography'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
+import InputBase from '@material-ui/core/InputBase'
+import classNames from 'classnames'
 
 import { createFFSRequest } from 'store/create/actions'
 import { bindActionCreators } from 'redux'
@@ -23,14 +25,45 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 100,
+    paddingTop: 150,
   },
   page: {
     height: '100vh',
     width: '100%',
+    backgroundImage: `url("./img/background/login-bg.jpg")`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat'
   },
   white: {
     color: 'white',
+  },
+  gray: {
+    color: '#898c90',
+  },
+  graySubtitleWrapper: {
+    paddingLeft: 70,
+  },
+  brandWrapper: {
+    paddingLeft: 90,
+  },
+  login: {
+    position: 'relative',
+    borderRadius: 5,
+    backgroundColor: '#36393f',
+    marginLeft: 0,
+    paddingLeft: 10,
+    width: '100%',
+  },
+  inputRoot: {
+    color: '#303339',
+    width: '100%',
+    paddingRight: 10,
+    height: 50,
+  },
+  inputInput: {
+    border: '2px solid #232529',
+    paddingLeft: 10,
+    width: '100%',
   },
 })
 
@@ -40,14 +73,27 @@ const Login = (props) => {
     createFFSRequest,
   } = props
 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
-  
 
   const handleClickLogin = async () => {
     const account = await window.ethereum.enable()
     const address = account[0]
 
     createFFSRequest(address)
+  }
+
+  const onChange = (e) => {
+    const { target } = e
+    const { value, name } = target
+
+    if (name === 'username') {
+      setUsername(value)
+    } else {
+      setPassword(value)
+    }
+
   }
 
   const isCompatible = hasCompatibleMetamask() ? true: false
@@ -59,44 +105,100 @@ const Login = (props) => {
 
   return (
     <div className={classes.page}>
-      <Container component="main" maxWidth="xs" className={classes.paper}>
+      <Container component="main" maxWidth="xs">
         <CssBaseline />
-         <BrandIcon />
-          {
-            hasInstalledMetamask && (
-                <Button 
-                variant="contained" 
-                color="primary"
-                type="submit"
-                onClick={handleClickLogin}
-                >
-                Login with Metamask
-                </Button>
-            )
-          }
-          {
-            !hasInstalledMetamask && (
-              <React.Fragment>
-                <Typography variant="subtitle1" className={classes.white}>Install Metamask</Typography><br />
-                <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+         <div className={classes.paper}>
+           <div className={classes.brandWrapper}>
+              <BrandIcon />
+            </div>   
+          <div className={classes.login}> 
+            <div style={{ paddingTop: 15, paddingBottom: 15 }} >
+              <Typography
+                align='center'
+                variant='h6'
+                component="h2"
+                className={classes.white}
+              >
+                Welcome back!
+              </Typography>
+              <Typography
+                align='justify'
+                variant='subtitle'
+                className={classNames(classes.gray, classes.graySubtitleWrapper)}
+              >
+                We're so excited to see on the loft again!
+              </Typography>
+            </div>
+            <div style={{ paddingBottom: 15 }}>
+              <InputBase
+                placeholder="Username"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 
+                  'aria-label': 'login', 
+                  className: classes.white 
+                }}
+                name="username"
+                value={username}
+                onChange={onChange}
+              />
+              <InputBase
+                placeholder="Password"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 
+                  'aria-label': 'login', 
+                  className: classes.white,
+                  type: 'password',
+                  autoComplete: 'new-password', 
+                }}
+                name="password"
+                value={password}
+                onChange={onChange}
+              />
+            </div>
+
+              {
+                hasInstalledMetamask && (
                   <Button 
-                    startIcon={<FaChrome />}  
-                    href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
-                    rel="noopener noreferrer"
-                    target="_blank">
-                      Chrome
-                    </Button>
-                  <Button 
-                    startIcon={<FaFirefoxBrowser />} 
-                    href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
-                    rel="noopener noreferrer"
-                    target="_blank">
-                    Firefox
+                    variant="contained" 
+                    color="primary"
+                    type="submit"
+                    onClick={handleClickLogin}
+                  >
+                    Login with Metamask
                   </Button>
-                </ButtonGroup>
-              </React.Fragment>
-            ) 
-          }
+                )
+              }
+              {
+                !hasInstalledMetamask && (
+                  <React.Fragment>
+                    <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
+                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                      <Button 
+                        startIcon={<FaChrome />}  
+                        href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
+                        rel="noopener noreferrer"
+                        target="_blank">
+                          Chrome
+                        </Button>
+                      <Button 
+                        startIcon={<FaFirefoxBrowser />} 
+                        href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
+                        rel="noopener noreferrer"
+                        target="_blank">
+                        Firefox
+                      </Button>
+                    </ButtonGroup>
+                  </React.Fragment>
+                ) 
+              }
+            </div>
+         </div>
       </Container>
     </div>
   )
