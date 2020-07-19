@@ -91,9 +91,9 @@ const Login = (props) => {
   const handleClickLogin = async () => {
     const account = await window.ethereum.enable()
     const address = account[0]
-    createFFSRequest(address)
-    const tokeno = createWalletJWTTokenRequest(username, password, address, token)
-    console.log(tokeno)
+    createFFSRequest(address).then((test) => {
+      createWalletJWTTokenRequest(username, password, test.address, test.token)
+    })
   }
 
   const onChange = (e) => {
