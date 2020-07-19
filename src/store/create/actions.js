@@ -23,3 +23,32 @@ export const createFFSFailure = (error, meta) => ({
   payload: error,
   meta
 })
+
+export const CREATE_WALLET_JWT_TOKEN_REQUEST = 'CREATE_WALLET_JWT_TOKEN_REQUEST'
+export const CREATE_WALLET_JWT_TOKEN_SUCCESS = 'CREATE_WALLET_JWT_TOKEN_SUCCESS'
+export const CREATE_WALLET_JWT_TOKEN_FAILURE = 'CREATE_WALLET_JWT_TOKEN_FAILURE'
+
+export const createWalletJWTTokenRequest = ( username, password, address, token) => ({
+  type: CREATE_WALLET_JWT_TOKEN_REQUEST,
+  payload: {
+    username,
+    password,
+    address,
+    token,
+  },
+  meta: {
+    thunk: true,
+  }
+})
+
+export const createWalletJWTTokenSuccess = (response, meta) => ({
+  type: CREATE_WALLET_JWT_TOKEN_SUCCESS,
+  payload: response,
+  meta,
+})
+
+export const createWalletJWTTokenFailure = (error, meta) => ({
+  type: CREATE_WALLET_JWT_TOKEN_FAILURE,
+  payload: error,
+  meta,
+})

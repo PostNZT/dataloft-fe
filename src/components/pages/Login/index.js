@@ -84,8 +84,8 @@ const Login = (props) => {
   const handleClickLogin = async () => {
     const account = await window.ethereum.enable()
     const address = account[0]
-
     createFFSRequest(address)
+    
   }
 
   const onChange = (e) => {
