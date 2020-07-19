@@ -4,8 +4,9 @@ import {
   CREATE_FFS_REQUEST,
   createFFSSuccess,
   createFFSFailure,
-  CREATE_WALLET_JWT_TOKEN_REQUEST
-
+  CREATE_WALLET_JWT_TOKEN_REQUEST,
+  createWalletJWTTokenSuccess,
+  createWalletJWTTokenFailure
 } from './actions'
 
 import {
@@ -29,9 +30,18 @@ function* createFFSRequest(payload, meta) {
 }
 
 function* createWalletJWTTokenRequest(payload, meta) {
-  const { username, password, address, token } = payload
-  const data = yield call(createWalletJWTToken, username, password, address, token)
-  console.log(data)
+  try {
+    const { username, password, address, token } = payload
+    const data = yield call(createWalletJWTToken, username, password, address, token)
+    
+    if (data.response) {
+      yield put(createWalletJWTTokenSuccess(data.response, meta))
+    } else {
+      yield put(createWalletJWTTokenFailure(data.error))
+    }
+  } catch (error) {
+    yield put(createWalletJWTTokenFailure(error))
+  }
 }
 
 function* watchCreateFFSRequest({ payload, meta }) {
@@ -43,6 +53,6 @@ function* watchCreateWalletJWTTokenRequest({ payload, meta }) {
 }
 
 export default function* sagas() {
-  yield takeEvery(CREATE_FFS_REQUEST, watchCreateFFSRequest),
+  yield takeEvery(CREATE_FFS_REQUEST, watchCreateFFSRequest)
   yield takeEvery(CREATE_WALLET_JWT_TOKEN_REQUEST, watchCreateWalletJWTTokenRequest)
 }

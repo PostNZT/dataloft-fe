@@ -10,7 +10,11 @@ import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
 import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
 
-import { createFFSRequest } from 'store/create/actions'
+import { 
+  createFFSRequest, 
+  createWalletJWTTokenRequest 
+} from 'store/create/actions'
+
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -75,7 +79,10 @@ const Login = (props) => {
   const {
     classes,
     createFFSRequest,
+    createWalletJWTTokenRequest,
+    user
   } = props
+  const { token } = user 
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -85,7 +92,8 @@ const Login = (props) => {
     const account = await window.ethereum.enable()
     const address = account[0]
     createFFSRequest(address)
-    
+    const tokeno = createWalletJWTTokenRequest(username, password, address, token)
+    console.log(tokeno)
   }
 
   const onChange = (e) => {
@@ -209,12 +217,14 @@ const Login = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.create.get('user')
+  user: state.create.get('user'),
+  jwt_token: state.create.get('jwt_token')
 })
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     createFFSRequest,
+    createWalletJWTTokenRequest,
   }, dispatch)
 })
 
