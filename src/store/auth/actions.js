@@ -1,25 +1,27 @@
-export const USER_CREATEFFS_REQUEST = 'USER_CREATEFFS_REQUEST'
-export const USER_CREATEFFS_SUCCESS = 'USER_CREATEFFS_REQUEST'
-export const USER_CREATEFFS_FAILURE = 'USER_CREATEFFS_FAILURE'
+export const AUTHENTICATE_USER_REQUEST = 'AUTHENTICATE_USER_REQUEST'
+export const AUTHENTICATE_USER_SUCCESS = 'AUTHENTICATE_USER_SUCCESS'
+export const AUTHENTICATE_USER_FAILURE = 'AUTHENTICATE_USER_FAILURE'
 
-export const userCreateFFSRequest = (address) => ({
-  type: USER_CREATEFFS_REQUEST,
+export const authenticateUserRequest = (username, password, jwt_token) => ({
+  type: AUTHENTICATE_USER_REQUEST,
   payload: {
-    address,
+    username,
+    password,
+    jwt_token
   },
   meta: {
-    thunk: true,
-  },
+    thunk: true
+  }
 })
 
-export const userCreateFFSSuccess = (response, meta) => ({
-  type: USER_CREATEFFS_REQUEST,
+export const authenticateUserSuccess = (response, meta) => ({
+  type: AUTHENTICATE_USER_SUCCESS,
   payload: response,
-  meta,
+  meta
 })
 
-export const userCreateFFSFailure = (error, meta) => ({
-  type: USER_CREATEFFS_FAILURE,
+export const authenticateUserFailure = (error, meta) => ({
+  type: AUTHENTICATE_USER_FAILURE,
   payload: error,
-  meta,
+  meta
 })
