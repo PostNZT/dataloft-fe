@@ -12,7 +12,8 @@ import classNames from 'classnames'
 
 import { 
   createFFSRequest, 
-  createWalletJWTTokenRequest 
+  createWalletJWTTokenRequest,
+  createDataloftAccountRequest 
 } from 'store/create/actions'
 
 import { bindActionCreators } from 'redux'
@@ -45,7 +46,7 @@ const styles = (theme) => ({
     color: '#898c90',
   },
   graySubtitleWrapper: {
-    paddingLeft: 70,
+    paddingLeft: 60,
   },
   brandWrapper: {
     paddingLeft: 90,
@@ -78,11 +79,8 @@ const styles = (theme) => ({
 const Login = (props) => {
   const {
     classes,
-    createFFSRequest,
-    createWalletJWTTokenRequest,
-    user
+    createDataloftAccountRequest,
   } = props
-  const { token } = user 
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -91,9 +89,10 @@ const Login = (props) => {
   const handleClickLogin = async () => {
     const account = await window.ethereum.enable()
     const address = account[0]
-    createFFSRequest(address).then((test) => {
-      createWalletJWTTokenRequest(username, password, test.address, test.token)
-    })
+
+    const username = 'dataloft'
+    const password = 'testingpass'
+    createDataloftAccountRequest(username, password, address)
   }
 
   const onChange = (e) => {
@@ -137,7 +136,7 @@ const Login = (props) => {
                 variant='subtitle2'
                 className={classNames(classes.gray, classes.graySubtitleWrapper)}
               >
-                We're so excited to see on the loft again!
+                We're so excited to see you on the loft again!
               </Typography>
             </div>
             <div style={{ paddingBottom: 15 }}>
@@ -218,13 +217,15 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => ({
   user: state.create.get('user'),
-  jwt_token: state.create.get('jwt_token')
+  jwt_token: state.create.get('jwt_token'),
+  dataloft_account: state.create.get('dataloft_account')
 })
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     createFFSRequest,
     createWalletJWTTokenRequest,
+    createDataloftAccountRequest,
   }, dispatch)
 })
 

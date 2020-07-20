@@ -6,12 +6,16 @@ import {
   createFFSFailure,
   CREATE_WALLET_JWT_TOKEN_REQUEST,
   createWalletJWTTokenSuccess,
-  createWalletJWTTokenFailure
+  createWalletJWTTokenFailure,
+  CREATE_DATALOFT_ACCOUNT_REQUEST,
+  createDataloftAccountSuccess,
+  createDataloftAccountFailure,
 } from './actions'
 
 import {
   createFFS,
   createWalletJWTToken,
+  createDataloftAccount,
 } from 'services/api'
 
 function* createFFSRequest(payload, meta) {
@@ -44,6 +48,21 @@ function* createWalletJWTTokenRequest(payload, meta) {
   }
 }
 
+function* createDataloftAccountRequest(payload, meta) {
+  try {
+    const { username, password, address } = payload
+    const data = yield call(createDataloftAccount, username, password, address)
+
+    if (data.response) {
+      yield put(createDataloftAccountSuccess(data.response, meta))
+    } else {
+      yield put(createDataloftAccountFailure(data.error))
+    }
+  } catch (error) {
+    yield put(createDataloftAccountFailure(error))
+  }
+}
+
 function* watchCreateFFSRequest({ payload, meta }) {
   yield call(createFFSRequest, payload, meta)
 }
@@ -52,7 +71,12 @@ function* watchCreateWalletJWTTokenRequest({ payload, meta }) {
   yield call(createWalletJWTTokenRequest, payload, meta)
 }
 
+function* watchCreateDataloftAccountRequest({ payload, meta }) {
+  yield call(createDataloftAccountRequest, payload, meta)
+}
+
 export default function* sagas() {
   yield takeEvery(CREATE_FFS_REQUEST, watchCreateFFSRequest)
   yield takeEvery(CREATE_WALLET_JWT_TOKEN_REQUEST, watchCreateWalletJWTTokenRequest)
+  yield takeEvery(CREATE_DATALOFT_ACCOUNT_REQUEST, watchCreateDataloftAccountRequest)
 }

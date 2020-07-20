@@ -1,5 +1,5 @@
 import {
-  CREATE_FFS_SUCCESS, CREATE_WALLET_JWT_TOKEN_SUCCESS,
+  CREATE_FFS_SUCCESS, CREATE_WALLET_JWT_TOKEN_SUCCESS, CREATE_DATALOFT_ACCOUNT_SUCCESS,
 } from './actions'
 import { fromJS } from 'immutable'
 
@@ -8,6 +8,7 @@ const defaultState = fromJS({
       cids: [],
   },
   jwt_token: {},
+  dataloft_account: {}
 })
 
 export const create = (state = defaultState, { type, payload }) => {
@@ -16,6 +17,8 @@ export const create = (state = defaultState, { type, payload }) => {
       return state.set('user', payload)
     case CREATE_WALLET_JWT_TOKEN_SUCCESS:
       return state.set('jwt_token', payload)
+    case CREATE_DATALOFT_ACCOUNT_SUCCESS:
+      return state.set('dataloft_account', payload)
     default:
       return state
   }
