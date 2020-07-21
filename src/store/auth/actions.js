@@ -25,3 +25,31 @@ export const authenticateUserFailure = (error, meta) => ({
   payload: error,
   meta
 })
+
+export const CREATE_METAMASK_ACCOUNT_REQUEST = 'CREATE_METAMASK_ACCOUNT_REQUEST'
+export const CREATE_METAMASK_ACCOUNT_SUCCESS = 'CREATE_METAMASK_ACCOUNT_SUCCESS'
+export const CREATE_METAMASK_ACCOUNT_FAILURE = 'CREATE_METAMASK_ACCOUNT_FAILURE'
+
+export const createMetamaskAccountRequest = (username, password, address) => ({
+  type: CREATE_METAMASK_ACCOUNT_REQUEST,
+  payload: {
+    username,
+    password,
+    address
+  },
+  meta: {
+    thunk: true
+  }
+})
+
+export const createMetamaskAccountSuccess = (response, meta) => ({
+  type: CREATE_METAMASK_ACCOUNT_SUCCESS,
+  payload: response,
+  meta
+})
+
+export const createMetamaskAccountFailure = (error, meta) => ({
+  type: CREATE_METAMASK_ACCOUNT_FAILURE,
+  payload: error,
+  meta
+})

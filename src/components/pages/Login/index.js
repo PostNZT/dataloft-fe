@@ -16,6 +16,10 @@ import {
   createDataloftAccountRequest 
 } from 'store/create/actions'
 
+import {
+  createMetamaskAccountRequest
+} from 'store/auth/actions'
+
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -80,6 +84,7 @@ const Login = (props) => {
   const {
     classes,
     createDataloftAccountRequest,
+    createMetamaskAccountRequest,
   } = props
 
   const [username, setUsername] = useState('')
@@ -92,7 +97,16 @@ const Login = (props) => {
 
     const username = 'dataloft'
     const password = 'testingpass'
-    createDataloftAccountRequest(username, password, address)
+    createMetamaskAccountRequest(username, password, address)
+  }
+
+  const handleClickLoginMetamask = async () => {
+    const account = await window.ethereum.enable()
+    const address = account[0]
+
+    const username = 'dataloft'
+    const password = 'testingpass'
+    createMetamaskAccountRequest(username, password, address)
   }
 
   const onChange = (e) => {
@@ -173,16 +187,26 @@ const Login = (props) => {
             </div>
             {
               hasInstalledMetamask && (
-                <div className={classes.buttonWrapper}>
-                  <Button 
-                  variant="contained" 
-                  color="primary"
-                  type="submit"
-                  onClick={handleClickLogin}
-                  >
-                    Login with Metamask
-                  </Button>
-                </div>  
+                <React.Fragment>
+                  <div className={classes.buttonWrapper}>
+                    <Button 
+                      variant="contained" 
+                      color="primary"
+                      type="submit"
+                      onClick={handleClickLogin}
+                    >
+                      Login 
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      color="primary"
+                      type="submit"
+                      onClick={handleClickLoginMetamask}
+                    >
+                      Login with Metamask
+                    </Button>
+                  </div>
+                </React.Fragment>
               )
             }
             {
@@ -226,6 +250,7 @@ const mapDispatchToProps = (dispatch) => ({
     createFFSRequest,
     createWalletJWTTokenRequest,
     createDataloftAccountRequest,
+    createMetamaskAccountRequest,
   }, dispatch)
 })
 

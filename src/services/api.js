@@ -61,3 +61,23 @@ export const createDataloftAccount = (username, password, address) => {
     })
   })
 }
+
+export const createMetamaskAccount = (username, password, address) => {
+  const body = {
+    username, 
+    password,
+    address
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `${targetAPI}/auth/create/metamask`,
+      data: body
+    }).then(({data}) => {
+      resolve({ response: data })
+    }).catch((error) => {
+      reject({ error })
+    })
+  })
+}
