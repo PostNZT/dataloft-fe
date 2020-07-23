@@ -86,7 +86,6 @@ const Login = (props) => {
   const {
     classes,
     createDataloftAccountRequest,
-    createMetamaskAccountRequest,
   } = props
 
   const [username, setUsername] = useState('')
@@ -122,8 +121,6 @@ const Login = (props) => {
   }
 
   const isCompatible = hasCompatibleMetamask() ? true: false
-
-  const preventDefault = (event) => event.preventDefault()
   
   useEffect(() => {
     setHasInstalledMetamask(isCompatible)
@@ -266,19 +263,18 @@ const Login = (props) => {
                 </React.Fragment>
               ) 
             }
-            <div style={{ paddingBottom: 35, paddingLeft: 15 }}>
-              <Typography
-                  align='justify'
-                variant='subtitle2'
-                className={classNames(classes.gray)}
-              >
-                Need an account? &nbsp; 
-                <MuiLink component={Link} to={`/register`} className={classes.white}>
-                  Register
-                </MuiLink>
-              </Typography>
-            </div>
-            
+              <div style={{ paddingBottom: 35, paddingLeft: 15 }}>
+                <Typography
+                    align='justify'
+                  variant='subtitle2'
+                  className={classNames(classes.gray)}
+                >
+                  Need an account? &nbsp; 
+                  <MuiLink component={Link} to={`/register`} className={classes.white}>
+                    Register
+                  </MuiLink>
+                </Typography>
+              </div>
             </div>
          </div>
       </Container>

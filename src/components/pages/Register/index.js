@@ -141,7 +141,7 @@ const Register = (props) => {
                 Create an account
               </Typography>
             </div>
-            <div style={{ paddingBottom: 15 }}>
+            <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
               <InputBase
                 placeholder="Username"
                 classes={{
@@ -176,7 +176,7 @@ const Register = (props) => {
             {
               hasInstalledMetamask && (
                 <React.Fragment>
-                  <div className={classes.buttonWrapper}>
+                  <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
                     <Button 
                       variant="contained" 
                       color="primary"
@@ -220,11 +220,27 @@ const Register = (props) => {
                 </React.Fragment>
               ) 
             }
-            <div style={{ paddingBottom: 35 }}>
-              <MuiLink component={Link} to={`/login`} className={classes.white}>
-                Already have an account?
-              </MuiLink>
-            </div>
+            
+              <div style={{ paddingBottom: 35, paddingLeft: 15, paddingRight: 15 }}>
+                <MuiLink component={Link} to={`/login`} className={classes.white}>
+                  Already have an account?
+                </MuiLink>
+                <br/> <br />
+                <Typography
+                  align='justify'
+                  variant='p'
+                  className={classNames(classes.gray)}
+                >
+                  By registering, you agree to Dataloft's &nbsp; 
+                  <MuiLink component={Link} to={`/register`} className={classes.white}>
+                    Terms of Service
+                  </MuiLink>
+                  &nbsp; and &nbsp;
+                  <MuiLink component={Link} to={`/register`} className={classes.white}>
+                    Privacy Policy.
+                  </MuiLink>
+                </Typography>
+              </div>
             </div>
          </div>
       </Container>
