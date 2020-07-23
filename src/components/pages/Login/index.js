@@ -6,6 +6,8 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { hasCompatibleMetamask } from 'services/helpers'
 import Typography from '@material-ui/core/Typography'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
 import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
@@ -39,6 +41,9 @@ const styles = (theme) => ({
     backgroundImage: `url("./img/background/login-bg.jpg")`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat'
+  },
+  formLabel: {
+    width: '100%'
   },
   white: {
     color: 'white',
@@ -87,6 +92,7 @@ const Login = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
+  const [useMetamask, setUseMetamask] = useState(false)
 
   const handleClickLogin = () => {
     const username = 'dataloft'
@@ -94,13 +100,13 @@ const Login = (props) => {
     createDataloftAccountRequest(username, password)
   }
 
-  const handleClickLoginMetamask = async () => {
-    const account = await window.ethereum.enable()
-    const address = account[0]
-
-    const username = 'dataloft'
-    const password = 'testingpass'
-    createMetamaskAccountRequest(username, password, address)
+  const handleClickCheckbox = (e) => {
+    const { target } = e
+    const { name } = target
+    
+    if (name === 'metamask') {
+      setUseMetamask(!useMetamask)
+    }
   }
 
   const onChange = (e) => {
@@ -185,15 +191,54 @@ const Login = (props) => {
               hasInstalledMetamask && (
                 <React.Fragment>
                   <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
-                    <Button 
-                      variant="contained" 
-                      color="primary"
-                      type="submit"
-                      onClick={handleClickLogin}
-                      fullWidth
-                    >
-                      Login 
-                    </Button>
+                    <FormControlLabel
+                      className={classes.formLabel}
+                      control={
+                        <Checkbox
+                          name="metamask" 
+                          color="default"
+                          checked={useMetamask}
+                          value="remember"
+                          className={classes.white} 
+                          onClick={handleClickCheckbox}
+                        />
+                      }
+                      label={
+                        <Typography variant="subtitle2" className={classes.white}>
+                          Login with Metamask
+                        </Typography>
+                      }
+                    />
+                    {
+                      !useMetamask && (
+                        <React.Fragment>
+                          <Button 
+                          variant="contained" 
+                          color="primary"
+                          type="submit"
+                          onClick={handleClickLogin}
+                          fullWidth
+                        >
+                          Login 
+                        </Button>
+                        </React.Fragment>
+                      )
+                    }
+                    {
+                      useMetamask && (
+                        <React.Fragment>
+                          <Button 
+                          variant="contained" 
+                          color="primary"
+                          type="submit"
+                          onClick={handleClickLogin}
+                          fullWidth
+                        >
+                          Login with Metamask
+                        </Button>
+                        </React.Fragment>
+                      )
+                    }
                   </div>
                 </React.Fragment>
               )
