@@ -2,6 +2,9 @@
 
 Encrypted data drive on filecoin
 
+## ARCHITECTURE OF DATALOFT
+
+
 ## Development
 1. ``` npm install ```
 2. ``` npm run start ``` <br>
