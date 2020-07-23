@@ -9,6 +9,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
 import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
+import MuiLink from '@material-ui/core/Link'
+import { Link } from 'react-router-dom'
 
 import {
   createDataloftAccountRequest,
@@ -218,6 +220,11 @@ const Register = (props) => {
                 </React.Fragment>
               ) 
             }
+            <div style={{ paddingBottom: 35 }}>
+              <MuiLink component={Link} to={`/login`} className={classes.white}>
+                Already have an account?
+              </MuiLink>
+            </div>
             </div>
          </div>
       </Container>

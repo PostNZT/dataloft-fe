@@ -9,6 +9,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
 import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
+import MuiLink from '@material-ui/core/Link'
+import { Link } from 'react-router-dom'
 
 import {
   createDataloftAccountRequest,
@@ -115,6 +117,8 @@ const Login = (props) => {
 
   const isCompatible = hasCompatibleMetamask() ? true: false
 
+  const preventDefault = (event) => event.preventDefault()
+  
   useEffect(() => {
     setHasInstalledMetamask(isCompatible)
     //eslint-disable-next-line
@@ -145,7 +149,7 @@ const Login = (props) => {
                 We're so excited to see you on the loft again!
               </Typography>
             </div>
-            <div style={{ paddingBottom: 15 }}>
+            <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
               <InputBase
                 placeholder="Username"
                 classes={{
@@ -180,12 +184,13 @@ const Login = (props) => {
             {
               hasInstalledMetamask && (
                 <React.Fragment>
-                  <div className={classes.buttonWrapper}>
+                  <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
                     <Button 
                       variant="contained" 
                       color="primary"
                       type="submit"
                       onClick={handleClickLogin}
+                      fullWidth
                     >
                       Login 
                     </Button>
@@ -216,6 +221,19 @@ const Login = (props) => {
                 </React.Fragment>
               ) 
             }
+            <div style={{ paddingBottom: 35, paddingLeft: 15 }}>
+              <Typography
+                  align='justify'
+                variant='subtitle2'
+                className={classNames(classes.gray)}
+              >
+                Need an account? &nbsp; 
+                <MuiLink component={Link} to={`/register`} className={classes.white}>
+                  Register
+                </MuiLink>
+              </Typography>
+            </div>
+            
             </div>
          </div>
       </Container>
