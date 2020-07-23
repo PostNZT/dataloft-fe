@@ -23,8 +23,9 @@ import compose from 'recompose/compose'
 
 import { 
   BrandIcon,
+  Metamask, 
+  Dataloft
 } from 'components/elements'
-
 
 const styles = (theme) => ({
   paper: {
@@ -176,24 +177,35 @@ const Register = (props) => {
             {
               hasInstalledMetamask && (
                 <React.Fragment>
-                  <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
+                  <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15, display: 'flex', alignItems: 'center' }}>
+                  <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
                     <Button 
                       variant="contained" 
                       color="primary"
                       type="submit"
                       onClick={handleClickLogin}
-                      fullWidth
                     >
-                      Continue 
+                      <Dataloft />
+                      <Typography 
+                        variant='p'
+                      >
+                        Create w/ Dataloft
+                      </Typography>
                     </Button>
-                    {/* <Button 
+                    <Button 
                       variant="contained" 
                       color="primary"
                       type="submit"
                       onClick={handleClickLoginMetamask}
                     >
-                      Login with Metamask
-                    </Button> */}
+                      <Metamask />
+                      <Typography 
+                        variant='p'
+                      >
+                        Create w/ Metamask
+                      </Typography>
+                    </Button>
+                  </ButtonGroup>
                   </div>
                 </React.Fragment>
               )

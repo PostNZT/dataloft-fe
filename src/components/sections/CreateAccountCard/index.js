@@ -4,7 +4,7 @@ const CreateAccountCard = () => {
   return (
     <React.Fragment>
      <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
-        <Button 
+        {/* <Button 
           variant="contained" 
           color="primary"
           type="submit"
@@ -20,7 +20,7 @@ const CreateAccountCard = () => {
           onClick={handleClickLoginMetamask}
         >
           Login with Metamask
-        </Button>
+        </Button> */}
       </div>
     </React.Fragment>
   )
