@@ -3,7 +3,7 @@
 Encrypted data drive on filecoin
 
 ## ARCHITECTURE OF DATALOFT
-
+<img src="https://github.com/PostNZT/dataloft-fe/blob/master/arch.jpg">  
 
 ## Development
 1. ``` npm install ```
