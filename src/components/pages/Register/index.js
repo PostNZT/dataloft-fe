@@ -75,7 +75,8 @@ const styles = (theme) => ({
   },
 })
 
-const Login = (props) => {
+const Register = (props) => {
+
   const {
     classes,
     createDataloftAccountRequest,
@@ -135,14 +136,7 @@ const Login = (props) => {
                 variant='h6'
                 className={classes.white}
               >
-                Welcome back!
-              </Typography>
-              <Typography
-                align='justify'
-                variant='subtitle2'
-                className={classNames(classes.gray, classes.graySubtitleWrapper)}
-              >
-                We're so excited to see you on the loft again!
+                Create an account
               </Typography>
             </div>
             <div style={{ paddingBottom: 15 }}>
@@ -187,7 +181,15 @@ const Login = (props) => {
                       type="submit"
                       onClick={handleClickLogin}
                     >
-                      Login 
+                      Continue 
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      color="primary"
+                      type="submit"
+                      onClick={handleClickLoginMetamask}
+                    >
+                      Login with Metamask
                     </Button>
                   </div>
                 </React.Fragment>
@@ -238,4 +240,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, mapDispatchToProps)
-)(Login)
+)(Register)
