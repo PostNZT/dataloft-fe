@@ -1,24 +1,18 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
 import {
-  AUTHENTICATE_USER_REQUEST,
-  CREATE_METAMASK_ACCOUNT_REQUEST
+  CREATE_DATALOFT_ACCOUNT_REQUEST,
+  createDataloftAccountSuccess,
+  createDataloftAccountFailure,
+  CREATE_METAMASK_ACCOUNT_REQUEST,
+  createMetamaskAccountSuccess,
+  createMetamaskAccountFailure,
 } from './actions'
 
 import {
-  createMetamaskAccount,
+  createDataloftAccount,
+  createMetamaskAccount
 } from 'services/api'
-
-function* authenticateUserRequest(payload, meta) {
-  try {
-    // const { username, password, jwt_token } = payload
-
-    //create a logic for the auth
-
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 function* createMetamaskAccountRequest(payload, meta) {
   try {
@@ -35,16 +29,30 @@ function* createMetamaskAccountRequest(payload, meta) {
   }
 }
 
-
-function* watchAuthenticateUserRequest(payload, meta) {
-  yield call(authenticateUserRequest, payload, meta)
+function* createDataloftAccountRequest(payload, meta) {
+  try {
+    const { username, password } = payload
+    const data = yield call(createDataloftAccount, username, password)
+    
+    if (data.response) {
+      yield put(createDataloftAccountSuccess(data.response, meta))
+    } else {
+      yield put(createDataloftAccountFailure(data.error))
+    }
+  } catch (error) {
+    yield put(createDataloftAccountFailure(error))
+  }
 }
 
-function* watchCreateMetamaskAccountRequest(payload, meta) {
-  yield call(createMetamaskAccountRequest(payload, meta))
+function* watchCreateDataloftAccountRequest({ payload, meta }) {
+  yield call(createDataloftAccountRequest, payload, meta)
+}
+
+function* watchCreateMetamaskAccountRequest({ payload, meta }) {
+  yield call(createMetamaskAccountRequest, payload, meta)
 }
 
 export default function* sagas() {
-  yield takeEvery(AUTHENTICATE_USER_REQUEST, watchAuthenticateUserRequest)
+  yield takeEvery(CREATE_DATALOFT_ACCOUNT_REQUEST, watchCreateDataloftAccountRequest)
   yield takeEvery(CREATE_METAMASK_ACCOUNT_REQUEST, watchCreateMetamaskAccountRequest)
 }

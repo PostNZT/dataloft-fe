@@ -52,31 +52,3 @@ export const createWalletJWTTokenFailure = (error, meta) => ({
   payload: error,
   meta,
 })
-
-export const CREATE_DATALOFT_ACCOUNT_REQUEST = 'CREATE_DATALOFT_ACCOUNT_REQUEST'
-export const CREATE_DATALOFT_ACCOUNT_SUCCESS = 'CREATE_DATALOFT_ACCOUNT_SUCCESS'
-export const CREATE_DATALOFT_ACCOUNT_FAILURE = 'CREATE_DATALOFT_ACCOUNT_FAILURE'
-
-export const createDataloftAccountRequest = (username, password, address) => ({
-  type: CREATE_DATALOFT_ACCOUNT_REQUEST,
-  payload: {
-    username,
-    password,
-    address
-  },
-  meta: {
-    thunk: true,
-  }
-})
-
-export const createDataloftAccountSuccess = (response, meta) => ({
-  type: CREATE_DATALOFT_ACCOUNT_SUCCESS,
-  payload: response,
-  meta,
-})
-
-export const createDataloftAccountFailure = (error, meta) => ({
-  type: CREATE_DATALOFT_ACCOUNT_FAILURE,
-  payload: error,
-  meta,
-})

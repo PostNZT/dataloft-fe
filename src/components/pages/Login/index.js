@@ -10,13 +10,8 @@ import { FaChrome, FaFirefoxBrowser } from 'react-icons/fa'
 import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
 
-import { 
-  createFFSRequest, 
-  createWalletJWTTokenRequest,
-  createDataloftAccountRequest 
-} from 'store/create/actions'
-
 import {
+  createDataloftAccountRequest,
   createMetamaskAccountRequest
 } from 'store/auth/actions'
 
@@ -91,13 +86,10 @@ const Login = (props) => {
   const [password, setPassword] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
 
-  const handleClickLogin = async () => {
-    const account = await window.ethereum.enable()
-    const address = account[0]
-
+  const handleClickLogin = () => {
     const username = 'dataloft'
     const password = 'testingpass'
-    createMetamaskAccountRequest(username, password, address)
+    createDataloftAccountRequest(username, password)
   }
 
   const handleClickLoginMetamask = async () => {
@@ -240,15 +232,12 @@ const Login = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.create.get('user'),
-  jwt_token: state.create.get('jwt_token'),
-  dataloft_account: state.create.get('dataloft_account')
+  dataloft_account: state.create.get('dataloft_account'),
+  metamask_account: state.create.get('metamask_account')
 })
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
-    createFFSRequest,
-    createWalletJWTTokenRequest,
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
   }, dispatch)

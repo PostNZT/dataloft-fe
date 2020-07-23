@@ -42,17 +42,16 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
-export const createDataloftAccount = (username, password, address) => {
+export const createDataloftAccount = (username, password) => {
   const body = {
     username,
-    password,
-    address
+    password
   }
 
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
-      url: `${targetAPI}/auth/create`,
+      url: `${targetAPI}/auth/create/dataloft`,
       data: body,
     }).then(({data}) => {
       resolve({ response: data })
