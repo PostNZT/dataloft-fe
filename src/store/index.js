@@ -4,10 +4,12 @@ import { fork, all } from 'redux-saga/effects'
 import { tests } from './tests/reducers'
 import { auth } from './auth/reducers'
 import { create } from './create/reducers'
+import { encrypt } from './create/reducers'
 import { reducer as thunkReducer } from 'redux-saga-thunk'
 import * as testSagas from './tests/sagas'
 import * as authSagas from './auth/sagas'
 import * as createSagas from './create/sagas'
+import * as encryptSagas from './encrypt/sagas'
 
 export const rootReducer = combineReducers({
   thunk: thunkReducer,

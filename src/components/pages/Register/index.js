@@ -11,11 +11,16 @@ import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
 import MuiLink from '@material-ui/core/Link'
 import { Link } from 'react-router-dom'
+import * as sigUtil from 'eth-sig-util'
 
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest
 } from 'store/auth/actions'
+
+import {
+  encryptMessageRequest,
+} from 'store/encrypt/actions'
 
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
@@ -26,6 +31,7 @@ import {
   Metamask, 
   Dataloft
 } from 'components/elements'
+import { version } from 'pouchdb'
 
 const styles = (theme) => ({
   paper: {
@@ -84,6 +90,7 @@ const Register = (props) => {
     classes,
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
+    encryptMessageRequest,
   } = props
 
   const [username, setUsername] = useState('')
@@ -97,11 +104,38 @@ const Register = (props) => {
   }
 
   const handleClickLoginMetamask = async () => {
-    const account = await window.ethereum.enable()
-    const address = account[0]
+    const accounts = await window.ethereum.enable()
+    const address = accounts[0]
+    // const encryptedPublicKey = await window.ethereum.sendAsync(
+    //   {
+    //     jsonrpc: '2.0',
+    //     method: 'eth_getEncryptionPublicKey',
+    //     params: [accounts[0]],
+    //     from: accounts[0],
+    //   },
+    //   function (error, encryptionpublickey) {
+    //     if (!error) {
+    //       window.encryptionpublickey = encryptionpublickey.result;
+    //       console.log(encryptionpublickey.result)
+    //     } else {
+    //       console.log(error);
+    //     }
+    //   }
+    // )
 
-    const username = 'dataloft'
-    const password = 'testingpass'
+    const sample = await sigUtil.encrypt(
+      'kMwztNHPyQ8Zd7BXiDFCWbSMEpQGvJSDzI+nKsM2kBI=',
+      { data: 'Hello world!' },
+      'x25519-xsalsa20-poly1305'
+    )
+    console.log(sample)
+
+  //  const output = JSON.stringify(sample)
+  //   console.log(output)
+    const version = 'x25519-xsalsa20-poly1305'
+    const data = { username, password, address }
+    
+    // encryptMessageRequest(encryptedPublicKey, data, version)
     createMetamaskAccountRequest(username, password, address)
   }
 
@@ -270,6 +304,7 @@ const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
+    encryptMessageRequest,
   }, dispatch)
 })
 
