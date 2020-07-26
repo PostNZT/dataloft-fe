@@ -18,6 +18,9 @@ import MoreIcon from '@material-ui/icons/MoreVert'
 import { compose } from 'recompose'
 import Avatar from '@material-ui/core/Avatar'
 
+import { 
+  BrandIcon
+} from 'components/elements'
 
 const styles = (theme) => ({
   grow: {
@@ -173,9 +176,7 @@ const AppBar = (props) => {
       <div className={classes.grow}>
       <MuiAppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            DATALOFT
-          </Typography>
+          <BrandIcon height={70} style={{ paddingLeft: 15, paddingTop: 15 }}/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
