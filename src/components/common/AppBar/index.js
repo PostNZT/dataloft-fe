@@ -92,84 +92,17 @@ const styles = (theme) => ({
 
 const AppBar = (props) => {
   const { classes } = props
-  const [anchorElement, setAnchorElement] = useState(null)
-  const [mobileAnchorElement, setMobileAnchorElement] = useState(null)
+  
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const open = Boolean(anchorEl)
 
-  const isMenuOpen = Boolean(anchorElement)
-  const isMobileMenuOpen = Boolean(mobileAnchorElement)
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorElement(event.currentTarget)
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget)
   }
 
-  const handleMobileMenuClose = () => {
-    setMobileAnchorElement(null)
+  const handleClose = () => {
+    setAnchorEl(null)
   }
-
-  const handleMenuClose = () => {
-    setAnchorElement(null)
-    handleMobileMenuClose()
-  }
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileAnchorElement(event.currentTarget);
-  }
-
-  const menuId = 'account-menu'
-  const renderMenu = (
-    <Menu 
-      anchorElement = {anchorElement}
-      anchorOrigin = {{ vertical: 'top', horizontal: 'right' }}
-      id = {menuId}
-      keepMounted
-      transformOrigin = {{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
-    </Menu>
-  )
-
-  const mobileMenuId = 'account-menu-mobile'
-  const renderMobileMenu = (
-    <Menu
-      anchorElement = {mobileAnchorElement}
-      anchorOrigin= {{ vertical: 'top', horizontal: 'right' }}
-      id = {mobileMenuId}
-      keepMounted
-      transformOrigin = {{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <AddIcon />
-        </IconButton>
-        <p>Create</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsNoneIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>  
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-
-  )
 
   return (
     <React.Fragment>
@@ -193,30 +126,61 @@ const AppBar = (props) => {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Avatar className={classes.leftAdjust} src={`https://images.hive.blog/u/postnzt/avatar/small`} />
-            <Typography variant="subtitle1" className={classes.leftAdjust}>postnzt</Typography>
+            <Typography 
+              variant="subtitle1" 
+              className={classes.leftAdjust}
+              style={{ paddingTop: 5 }}
+              >
+                postnzt
+            </Typography>
             <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
               <AddIcon />
             </Fab>
-            <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
+            <Fab color="secondary" size="small" aria-label="notification" className={classes.leftAdjust}>
               <Badge badgeContent={17} color="secondary">
                 <NotificationsNoneIcon />
               </Badge>
             </Fab>
-            <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
+            <Fab 
+              color="secondary" 
+              size="small"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              className={classes.leftAdjust}
+            >
               <KeyboardArrowDownIcon />
             </Fab>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
+
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              classes={{
+                root: classes.inputRoot
+              }}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={handleClose}
             >
-              <AccountCircle />
-            </IconButton>
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+            </Menu>
+
+
+          
+          
           </div>
-          <div className={classes.sectionMobile}>
+          {/* ADD AFTER DONE WITH WEB UI
+            <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
@@ -226,11 +190,11 @@ const AppBar = (props) => {
             >
               <MoreIcon />
             </IconButton>
-          </div>
+          </div> */}
         </Toolbar>
       </MuiAppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {/* {renderMobileMenu} */}
+      {/* {renderMenu} */}
     </div>
     </React.Fragment>
   )

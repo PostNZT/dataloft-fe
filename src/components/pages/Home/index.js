@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { AppBar, TabPanel } from 'components'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
+import { useDropzone } from 'react-dropzone'
 
 import { 
   cardThemeBackground,
@@ -38,6 +39,12 @@ const Home = (props) => {
   const {
     classes
   } = props
+
+
+    const onDrop = useCallback(acceptedFiles => {
+      console.log(acceptedFiles)
+    }, [])
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   return (
     <React.Fragment>
@@ -71,16 +78,19 @@ const Home = (props) => {
               </Grid>
             </Grid>
             <Grid container>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <TabPanel />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <TabPanel />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <TabPanel />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
+                <TabPanel />
+              </Grid>
+              <Grid item xs={2}>
                 <TabPanel />
               </Grid>
             </Grid>
@@ -109,20 +119,15 @@ const Home = (props) => {
                 <TabPanel />
               </Grid>
             </Grid>
-            <Grid container style={{ paddingTop: 15}}>
-              <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-              <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-              <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-              <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-            </Grid>
+
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+              {
+                isDragActive ?
+                  <p>Drop the files here ...</p> :
+                  <p>Drag 'n' drop some files here, or click to select files</p>
+              }
+            </div>
           </Grid>
         </Grid>
         

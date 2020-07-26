@@ -10,7 +10,7 @@ import compose from 'recompose/compose'
 
 const styles = (theme) => ({
   root: {
-    maxWidth: 230,
+    maxWidth: 290,
   },
   media: {
     height: 0,
