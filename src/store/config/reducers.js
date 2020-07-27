@@ -9,7 +9,7 @@ import {
     }
   })
   
-  export const create = (state = defaultState, { type, payload }) => {
+  export const config = (state = defaultState, { type, payload }) => {
     switch (type) {
       case SET_DEFAULT_CONFIG_REQUEST:
         return state.set('ffs_config', payload)

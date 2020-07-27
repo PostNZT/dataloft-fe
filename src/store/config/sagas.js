@@ -21,7 +21,7 @@ function* watchSetDefaultConfigRequest({ payload, meta }) {
   yield call(setDefaultConfigRequest, payload, meta)
 }
 
-function* watchSetDefaultConfigRequest({ payload, meta }) {
+function* watchGetDefaultConfigRequest({ payload, meta }) {
   yield call(getDefaultConfigRequest, payload, meta)
 }
 
