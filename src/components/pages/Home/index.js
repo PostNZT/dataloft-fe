@@ -42,6 +42,13 @@ const Home = (props) => {
 
 
     const onDrop = useCallback(acceptedFiles => {
+      //FileImplementation for Dropping Files
+      // defaultConfig should be added
+      //implementation for the adding of file to the 
+      /**
+       *  pow.ffs.setDefaultConfig(payload.defaultConfig)
+       *  pow.ffs.getDefaultCidConfig(payload.cid)
+       */
       console.log(acceptedFiles)
     }, [])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
@@ -66,7 +73,10 @@ const Home = (props) => {
           </Grid>
           
           <Grid item xs={9} className={classNames(classes.paper, classes.cardThemeBackground, classes.whiteText)}>
-            <Grid container style={{ paddingBottom: 15 }}>
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+            
+              <Grid container style={{ paddingBottom: 15 }}>
               <Grid item xs={12}>
                 <Typography 
                   variant="h6" 
@@ -120,8 +130,6 @@ const Home = (props) => {
               </Grid>
             </Grid>
 
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
               {
                 isDragActive ?
                   <p>Drop the files here ...</p> :
