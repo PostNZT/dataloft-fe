@@ -4,7 +4,11 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import { withStyles } from '@material-ui/core/styles'
-import { AppBar, TabPanel } from 'components'
+import { 
+  AppBar, 
+  TabPanel,
+  UploadAccordion,
+} from 'components'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
@@ -73,10 +77,7 @@ const Home = (props) => {
           </Grid>
           
           <Grid item xs={9} className={classNames(classes.paper, classes.cardThemeBackground, classes.whiteText)}>
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-            
-              <Grid container style={{ paddingBottom: 15 }}>
+            <Grid container style={{ paddingBottom: 15 }}>
               <Grid item xs={12}>
                 <Typography 
                   variant="h6" 
@@ -85,6 +86,8 @@ const Home = (props) => {
                 >
                   Quick Access
                 </Typography>
+
+                <UploadAccordion />
               </Grid>
             </Grid>
             <Grid container>
@@ -105,6 +108,8 @@ const Home = (props) => {
               </Grid>
             </Grid>
             <Grid container style={{ paddingBottom: 15, paddingTop: 15 }}>
+              <div {...getRootProps()}>
+              <input {...getInputProps()} />
               <Grid item xs={12}>
                 <Typography 
                   variant="h6" 
@@ -114,6 +119,7 @@ const Home = (props) => {
                   Files
                 </Typography>
               </Grid>
+              </div>
             </Grid>
             <Grid container>
               <Grid item xs={3}>
@@ -135,8 +141,8 @@ const Home = (props) => {
                   <p>Drop the files here ...</p> :
                   <p>Drag 'n' drop some files here, or click to select files</p>
               }
-            </div>
           </Grid>
+         
         </Grid>
         
       </Container>
