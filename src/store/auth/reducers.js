@@ -6,16 +6,13 @@ import {
 import { fromJS } from 'immutable'
 
 const defaultState = fromJS({
-  dataloft_user: {},
-  metamask_user: {}
+  dataloft_user: {is_authenticated: false}
 })
 
 export const auth = (state = defaultState, { type, payload }) => {
   switch (type) {
     case CREATE_DATALOFT_ACCOUNT_SUCCESS:
       return state.set('dataloft_user', payload)
-    case CREATE_METAMASK_ACCOUNT_SUCCESS:
-      return state.set('metamask_user', payload)
     default:
       return state
   }
