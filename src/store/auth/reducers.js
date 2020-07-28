@@ -6,7 +6,7 @@ import {
 import { fromJS } from 'immutable'
 
 const defaultState = fromJS({
-  dataloft_user: {is_authenticated: false}
+  dataloft_user: {}
 })
 
 export const auth = (state = defaultState, { type, payload }) => {
