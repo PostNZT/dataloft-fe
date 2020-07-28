@@ -1,9 +1,9 @@
-export const AUTHENTICATE_USER_REQUEST = 'AUTHENTICATE_USER_REQUEST'
-export const AUTHENTICATE_USER_SUCCESS = 'AUTHENTICATE_USER_SUCCESS'
-export const AUTHENTICATE_USER_FAILURE = 'AUTHENTICATE_USER_FAILURE'
+export const AUTHENTICATE_DATALOFT_USER_REQUEST = 'AUTHENTICATE_DATALOFT_USER_REQUEST'
+export const AUTHENTICATE_DATALOFT_USER_SUCCESS = 'AUTHENTICATE_DATALOFT_USER_SUCCESS'
+export const AUTHENTICATE_DATALOFT_USER_FAILURE = 'AUTHENTICATE_DATALOFT_USER_FAILURE'
 
 export const authenticateUserRequest = (username, password, jwt_token) => ({
-  type: AUTHENTICATE_USER_REQUEST,
+  type: AUTHENTICATE_DATALOFT_USER_REQUEST,
   payload: {
     username,
     password,
@@ -15,16 +15,43 @@ export const authenticateUserRequest = (username, password, jwt_token) => ({
 })
 
 export const authenticateUserSuccess = (response, meta) => ({
-  type: AUTHENTICATE_USER_SUCCESS,
+  type: AUTHENTICATE_DATALOFT_USER_SUCCESS,
   payload: response,
   meta
 })
 
 export const authenticateUserFailure = (error, meta) => ({
-  type: AUTHENTICATE_USER_FAILURE,
+  type: AUTHENTICATE_DATALOFT_USER_FAILURE,
   payload: error,
   meta
 })
+
+export const GET_METAMASK_ADDRESS_REQUEST = 'GET_METAMASK_ADDRESS_REQUEST'
+export const GET_METAMASK_ADDRESS_SUCCESS = 'GET_METAMASK_ADDRESS_SUCCESS'
+export const GET_METAMASK_ADDRESS_FAILURE = 'GET_METAMASK_ADDRESS_FAILURE'
+
+export const getMetamaskAddressRequest = (address) => ({
+  type: GET_METAMASK_ADDRESS_REQUEST,
+  payload: {
+    address
+  },
+  meta: {
+    thunk: true
+  }
+})
+
+export const getMetamaskAddressSuccess = (response, meta) => ({
+  type: GET_METAMASK_ADDRESS_SUCCESS,
+  payload: response,
+  meta
+})
+
+export const getMetamaskAddressFailure = (error, meta) => ({
+  type: GET_METAMASK_ADDRESS_FAILURE,
+  payload: error,
+  meta
+})
+
 
 export const CREATE_DATALOFT_ACCOUNT_REQUEST = 'CREATE_DATALOFT_ACCOUNT_REQUEST'
 export const CREATE_DATALOFT_ACCOUNT_SUCCESS = 'CREATE_DATALOFT_ACCOUNT_SUCCESS'

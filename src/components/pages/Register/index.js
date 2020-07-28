@@ -14,7 +14,8 @@ import { Link } from 'react-router-dom'
 
 import {
   createDataloftAccountRequest,
-  createMetamaskAccountRequest
+  createMetamaskAccountRequest,
+  getMetamaskAddressRequest
 } from 'store/auth/actions'
 
 import { bindActionCreators } from 'redux'
@@ -88,26 +89,29 @@ const Register = (props) => {
       classes,
       createDataloftAccountRequest,
       dataloft_user,
+      getMetamaskAddressRequest,
+      metamask_data,
   } = props
+  const { is_authenticated } = metamask_data
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [address, setAddress] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
-  const [hasEnabledMetamask, setHasEnabledMetamask] = useState( false)
+  const [hasCreatedWithMetamask, setHasCreatedWithMetamask] = useState( false)
 
   const handleClickRegister = () => {
     createDataloftAccountRequest(username, password)
   }
 
-  const handleClickLoginMetamask = async () => {
+  const handleClickCreateMetamask = async () => {
     const account = await window.ethereum.enable()
-    console.log(account)
-    setHasEnabledMetamask(true)
-    // const address = account[0]
-    //
-    // const username = 'dataloft'
-    // const password = 'testingpass'
-    // createMetamaskAccountRequest(username, password, address)
+    const rawAddress = account[0]
+    setAddress(rawAddress)
+    getMetamaskAddressRequest(address).then((data) => {
+      // console.log(data)
+      setHasCreatedWithMetamask(data.is_authenticated)
+    })
   }
 
   const onChange = (e) => {
@@ -148,7 +152,7 @@ const Register = (props) => {
               </Typography>
             </div>
             {
-              hasEnabledMetamask  && (
+              hasCreatedWithMetamask  && (
                   <React.Fragment>
                     <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
                       <InputBase
@@ -186,7 +190,7 @@ const Register = (props) => {
               )
             }
             {
-              hasEnabledMetamask && (
+              hasCreatedWithMetamask && (
                   <React.Fragment>
                     <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                       <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -209,7 +213,7 @@ const Register = (props) => {
               )
             }
             {
-              !hasEnabledMetamask && hasInstalledMetamask && (
+              !hasCreatedWithMetamask && hasInstalledMetamask && (
                 <React.Fragment>
                   <div style={{paddingBottom: 10, display: 'flex', alignContent: 'center' }}>
                   <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -217,7 +221,7 @@ const Register = (props) => {
                       variant="contained"
                       color="primary"
                       type="submit"
-                      onClick={handleClickLoginMetamask}
+                      onClick={handleClickCreateMetamask}
                     >
                       <Metamask />
                       <Typography
@@ -284,12 +288,14 @@ const Register = (props) => {
 
 const mapStateToProps = (state) => ({
   dataloft_user: state.create.get('dataloft_user'),
+  metamask_data: state.auth.get('metamask_data'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
+    getMetamaskAddressRequest,
   }, dispatch)
 })
 

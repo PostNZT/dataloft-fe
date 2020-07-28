@@ -3,6 +3,24 @@ import config from 'config'
 
 const targetAPI = config.TARGET_API
 
+export const getMetamaskAddress = (address) => {
+  const body = {
+    address
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `${targetAPI}/auth/address`,
+      data: body
+    }).then(({data}) => {
+      resolve({ resolve: data })
+    }).catch((error) => {
+      reject({ error })
+    })
+  })
+}
+
 export const createFFS = (address) => {
   const body = {
     address

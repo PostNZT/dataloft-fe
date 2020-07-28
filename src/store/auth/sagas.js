@@ -7,11 +7,15 @@ import {
   CREATE_METAMASK_ACCOUNT_REQUEST,
   createMetamaskAccountSuccess,
   createMetamaskAccountFailure,
+  GET_METAMASK_ADDRESS_REQUEST,
+  getMetamaskAddressSuccess,
+  getMetamaskAddressFailure,
 } from './actions'
 
 import {
   createDataloftAccount,
-  createMetamaskAccount
+  createMetamaskAccount,
+  getMetamaskAddress
 } from 'services/api'
 
 function* createMetamaskAccountRequest(payload, meta) {
@@ -44,6 +48,22 @@ function* createDataloftAccountRequest(payload, meta) {
   }
 }
 
+function* getMetamaskAddressRequest(payload, meta) {
+  try{
+    const { address } = payload
+    const data = yield call(getMetamaskAddress, address)
+
+    if (data.resolve) {
+      yield put(getMetamaskAddressSuccess(data.resolve, meta))
+    } else {
+      yield put(getMetamaskAddressFailure(data.error))
+    }
+
+  } catch (error) {
+    yield put(getMetamaskAddressFailure(error))
+  }
+}
+
 function* watchCreateDataloftAccountRequest({ payload, meta }) {
   yield call(createDataloftAccountRequest, payload, meta)
 }
@@ -52,7 +72,12 @@ function* watchCreateMetamaskAccountRequest({ payload, meta }) {
   yield call(createMetamaskAccountRequest, payload, meta)
 }
 
+function* watchGetMetamaskAddressRequest({ payload, meta }) {
+  yield call(getMetamaskAddressRequest, payload, meta)
+}
+
 export default function* sagas() {
   yield takeEvery(CREATE_DATALOFT_ACCOUNT_REQUEST, watchCreateDataloftAccountRequest)
   yield takeEvery(CREATE_METAMASK_ACCOUNT_REQUEST, watchCreateMetamaskAccountRequest)
+  yield takeEvery(GET_METAMASK_ADDRESS_REQUEST, watchGetMetamaskAddressRequest)
 }
