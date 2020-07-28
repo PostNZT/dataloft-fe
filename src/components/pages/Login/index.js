@@ -97,6 +97,7 @@ const Login = (props) => {
     const username = 'dataloft'
     const password = 'testingpass'
     createDataloftAccountRequest(username, password)
+
   }
 
   const handleClickCheckbox = (e) => {

@@ -6,11 +6,11 @@ import {
 } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { withRouter } from 'react-router'
-import { Init } from 'components'
+import { Init, AuthGuard } from 'components'
 
 const RouteWithSubRoutes = (route) => {
   return (
-    <Route 
+    <Route
       path={route.path}
       render={props => (
         <route.component { ...props} routes={route.routes} />
@@ -27,11 +27,13 @@ const App = (props) => {
     <React.Fragment>
       <CssBaseline />
       <Init>
+        <AuthGuard>
         <Switch>
           {routes.map((route, i) => (
             <RouteWithSubRoutes key={i} {...route} />
           ))}
         </Switch>
+        </AuthGuard>
       </Init>
     </React.Fragment>
   )

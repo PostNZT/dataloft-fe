@@ -1,4 +1,4 @@
-import { 
+import {
     Home,
     Login,
     Register,
