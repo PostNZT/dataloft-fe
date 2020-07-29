@@ -52,13 +52,12 @@ export const getMetamaskAddressFailure = (error, meta) => ({
   meta
 })
 
-
-export const CREATE_DATALOFT_ACCOUNT_REQUEST = 'CREATE_DATALOFT_ACCOUNT_REQUEST'
-export const CREATE_DATALOFT_ACCOUNT_SUCCESS = 'CREATE_DATALOFT_ACCOUNT_SUCCESS'
-export const CREATE_DATALOFT_ACCOUNT_FAILURE = 'CREATE_DATALOFT_ACCOUNT_FAILURE'
+export const FC_CHAIN_HEAD_REQUEST = 'FC_CHAIN_HEAD_REQUEST'
+export const FC_CHAIN_HEAD_SUCCESS = 'FC_CHAIN_HEAD_SUCCESS'
+export const FC_CHAIN_HEAD_FAILURE = 'FC_CHAIN_HEAD_FAILURE'
 
 export const createDataloftAccountRequest = (username, password) => ({
-  type: CREATE_DATALOFT_ACCOUNT_REQUEST,
+  type: FC_CHAIN_HEAD_REQUEST,
   payload: {
     username,
     password
@@ -69,12 +68,41 @@ export const createDataloftAccountRequest = (username, password) => ({
 })
 
 export const createDataloftAccountSuccess = (response, meta) => ({
-  type: CREATE_DATALOFT_ACCOUNT_SUCCESS,
+  type: FC_CHAIN_HEAD_SUCCESS,
   payload: response,
   meta,
 })
 
 export const createDataloftAccountFailure = (error, meta) => ({
+  type: FC_CHAIN_HEAD_FAILURE,
+  payload: error,
+  meta,
+})
+
+
+
+export const CREATE_DATALOFT_ACCOUNT_REQUEST = 'CREATE_DATALOFT_ACCOUNT_REQUEST'
+export const CREATE_DATALOFT_ACCOUNT_SUCCESS = 'CREATE_DATALOFT_ACCOUNT_SUCCESS'
+export const CREATE_DATALOFT_ACCOUNT_FAILURE = 'CREATE_DATALOFT_ACCOUNT_FAILURE'
+
+export const fcChainHeadRequest = (username, password) => ({
+  type: CREATE_DATALOFT_ACCOUNT_REQUEST,
+  payload: {
+    username,
+    password
+  },
+  meta: {
+    thunk: true,
+  }
+})
+
+export const fcChainHeadSuccess = (response, meta) => ({
+  type: CREATE_DATALOFT_ACCOUNT_SUCCESS,
+  payload: response,
+  meta,
+})
+
+export const fcChainHeadFailure = (error, meta) => ({
   type: CREATE_DATALOFT_ACCOUNT_FAILURE,
   payload: error,
   meta,

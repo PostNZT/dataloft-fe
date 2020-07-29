@@ -15,8 +15,13 @@ import { Link } from 'react-router-dom'
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
-  getMetamaskAddressRequest
+  getMetamaskAddressRequest,
+  fcChainHeadRequest
 } from 'store/auth/actions'
+
+import {
+  getChainStateRequest
+} from 'store/lotus/actions'
 
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
@@ -88,6 +93,7 @@ const Register = (props) => {
       history,
       classes,
       createDataloftAccountRequest,
+      getChainStateRequest,
       dataloft_user,
       getMetamaskAddressRequest,
       metamask_data,
@@ -109,7 +115,7 @@ const Register = (props) => {
     const rawAddress = account[0]
     setAddress(rawAddress)
     getMetamaskAddressRequest(address).then((data) => {
-      // console.log(data)
+      console.log(data)
       setHasCreatedWithMetamask(data.is_authenticated)
     })
   }
@@ -293,9 +299,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
+    fcChainHeadRequest,
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
     getMetamaskAddressRequest,
+    getChainStateRequest,
   }, dispatch)
 })
 
