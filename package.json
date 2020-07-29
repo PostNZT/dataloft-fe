@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@filecoin-shipyard/lotus-client-provider-browser": "0.0.14",
+    "@filecoin-shipyard/lotus-client-rpc": "0.0.11",
+    "@filecoin-shipyard/lotus-client-schema": "0.0.12",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",

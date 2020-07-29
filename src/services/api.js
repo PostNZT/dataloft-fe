@@ -1,5 +1,8 @@
 import axios from 'axios'
 import config from 'config'
+import { LotusRPC } from "@filecoin-shipyard/lotus-client-rpc";
+import { BrowserProvider } from "@filecoin-shipyard/lotus-client-provider-browser";
+import { testnet } from "@filecoin-shipyard/lotus-client-schema";
 
 const targetAPI = config.TARGET_API
 
@@ -60,6 +63,28 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
+
+export const fcChainHead = () => {
+  const body = {
+    "jsonrpc":"2.0",
+    "method":"Filecoin.ChainHead",
+    "params":[],
+    "id":3
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `ws://localhost:7777/0/node/rpc/v0`,
+      data: body
+    }).then(({data}) => {
+      resolve({ response: data })
+    }).catch((error) => {
+      reject({ error })
+    })
+  })
+}
+
 export const createDataloftAccount = (username, password) => {
   const body = {
     username,
@@ -95,6 +120,30 @@ export const createMetamaskAccount = (username, password, address) => {
       resolve({ response: data })
     }).catch((error) => {
       reject({ error })
+    })
+  })
+}
+
+export const getClient = (options = { nodeOrMiner: "node", nodeNumber: 0 }) => {
+  // API endpoint for local Lotus devnet
+  const API = "ws://localhost:7777";
+
+  // Websocket endpoint for local Lotus devnet
+  const wsUrl = API + `/${options.nodeNumber}/${options.nodeOrMiner}/rpc/v0`;
+
+  // Creating and returning a Lotus client that can be used anywhere in the app
+  const provider = new BrowserProvider(wsUrl);
+  return new LotusRPC(provider, {
+    schema:
+      options.nodeOrMiner === "node" ? testnet.fullNode : testnet.storageMiner,
+  });
+}
+
+export const getChainStats = () => {
+  return new Promise((resolve, reject) => {
+    const client = getClient()
+    client.chainNotify((result) => {
+      resolve(result)
     })
   })
 }
