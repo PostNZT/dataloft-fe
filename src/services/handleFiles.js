@@ -153,9 +153,3 @@ export const decrypt = async (file, key) => {
     name: null
   }
 }
-
-export const getHint = async (file) => {
-  var zip = await JSZip.loadAsync(file)
-  var metadata = JSON.parse(await zip.file(".meta").async("string"))
-  return metadata.hint ? metadata.hint : null
-}

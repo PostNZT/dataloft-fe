@@ -27,13 +27,13 @@ const App = (props) => {
     <React.Fragment>
       <CssBaseline />
       <Init>
-        <AuthGuard>
+        {/* <AuthGuard> */}
         <Switch>
           {routes.map((route, i) => (
             <RouteWithSubRoutes key={i} {...route} />
           ))}
         </Switch>
-        </AuthGuard>
+        {/* </AuthGuard> */}
       </Init>
     </React.Fragment>
   )

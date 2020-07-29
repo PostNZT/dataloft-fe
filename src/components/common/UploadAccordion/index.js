@@ -52,8 +52,24 @@ const UploadAccordion = (props) => {
   
   return (
     <div className={classes.root}>
+      {/* <Accordion defaultExpanded>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography className={classes.heading}>General settings</Typography>
+          <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
+            maximus est, id dignissim quam.
+          </Typography>
+        </AccordionDetails>
+      </Accordion> */}
       <Accordion defaultExpanded>
-         <AccordionSummary
+        <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1c-content"
           id="panel1c-header"
@@ -61,23 +77,14 @@ const UploadAccordion = (props) => {
           <div className={classes.column}>
             <Typography className={classes.heading}>Upload File</Typography>
           </div>
-          <div className={classes.column}>
+          {/* <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
-          </div>
+          </div> */}
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
           <div className={classes.column} />
           <div className={classes.column}>
             <Chip label="Barbados" onDelete={() => {}} />
-          </div>
-          <div className={clsx(classes.column, classes.helper)}>
-            <Typography variant="caption">
-              Configure Storage Options
-              <br />
-              <a href="#secondary-heading-and-columns" className={classes.link}>
-                Learn more
-              </a>
-            </Typography>
           </div>
         </AccordionDetails>
         <Divider />

@@ -6,12 +6,14 @@ import { auth } from './auth/reducers'
 import { create } from './create/reducers'
 import { encrypt } from './encrypt/reducers'
 import { config } from './config/reducers'
+import { files } from './files/reducers'
 import { reducer as thunkReducer } from 'redux-saga-thunk'
 import * as testSagas from './tests/sagas'
 import * as authSagas from './auth/sagas'
 import * as createSagas from './create/sagas'
 import * as encryptSagas from './encrypt/sagas'
 import * as configSagas from './config/sagas'
+import * as filesSagas from './files/sagas'
 
 export const rootReducer = combineReducers({
   thunk: thunkReducer,
@@ -20,6 +22,7 @@ export const rootReducer = combineReducers({
   create,
   encrypt,
   config,
+  files,
 })
 
 export function* rootSaga() {
@@ -29,6 +32,7 @@ export function* rootSaga() {
     ...Object.values(createSagas),
     ...Object.values(encryptSagas),
     ...Object.values(configSagas),
+    ...Object.values(filesSagas),
   ].map(fork))
 }
 

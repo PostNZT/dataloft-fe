@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -12,6 +12,7 @@ import {
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
+import { bindActionCreators } from 'redux'
 
 import { 
   cardThemeBackground,
@@ -22,8 +23,13 @@ import {
   PlusIcon,
 } from 'components/elements'
 
+import { 
+  getDataFilesRequest 
+} from 'store/files/actions'
+
 import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
+import mainWorker from 'services/worker'
 
 const styles = (theme) => ({
   cardThemeBackground,
@@ -41,21 +47,19 @@ const styles = (theme) => ({
 
 const Home = (props) => {
   const {
-    classes
+    classes,
+    getDataFilesRequest
   } = props
 
-
-    const onDrop = useCallback(acceptedFiles => {
-      //FileImplementation for Dropping Files
-      // defaultConfig should be added
-      //implementation for the adding of file to the 
-      /**
-       *  pow.ffs.setDefaultConfig(payload.defaultConfig)
-       *  pow.ffs.getDefaultCidConfig(payload.cid)
-       */
-      console.log(acceptedFiles)
-    }, [])
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const [hasFile, setHasFile] = useState(false)
+  
+  const onDrop = useCallback(fileList => {
+    
+    console.log(fileList)
+    setHasFile(true)
+  }, [])
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+    
 
   return (
     <React.Fragment>
@@ -87,10 +91,10 @@ const Home = (props) => {
                   Quick Access
                 </Typography>
 
-                <UploadAccordion />
+               
               </Grid>
             </Grid>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs={2}>
                 <TabPanel />
               </Grid>
@@ -106,22 +110,22 @@ const Home = (props) => {
               <Grid item xs={2}>
                 <TabPanel />
               </Grid>
-            </Grid>
-            <Grid container style={{ paddingBottom: 15, paddingTop: 15 }}>
-              <div {...getRootProps()}>
+            </Grid> */}
+            <div {...getRootProps()}>
               <input {...getInputProps()} />
-              <Grid item xs={12}>
-                <Typography 
-                  variant="h6" 
-                  component="h2"
-                  className={classes.whiteText}
-                >
-                  Files
-                </Typography>
+              <Grid container style={{ paddingBottom: 15, paddingTop: 15 }}>
+                <Grid item xs={12}>
+                  <Typography 
+                    variant="h6" 
+                    component="h2"
+                    className={classes.whiteText}
+                  >
+                    Files
+                  </Typography>
+                </Grid>
               </Grid>
-              </div>
-            </Grid>
-            <Grid container>
+            </div>
+            {/* <Grid container>
               <Grid item xs={3}>
                 <TabPanel />
               </Grid>
@@ -134,15 +138,17 @@ const Home = (props) => {
               <Grid item xs={3}>
                 <TabPanel />
               </Grid>
-            </Grid>
-
-              {
-                isDragActive ?
-                  <p>Drop the files here ...</p> :
-                  <p>Drag 'n' drop some files here, or click to select files</p>
-              }
+            </Grid> */}
+        
+              
           </Grid>
-         
+          {
+            isDragActive || hasFile && (
+              <React.Fragment>
+                  <UploadAccordion />
+              </React.Fragment>
+            )
+          }
         </Grid>
         
       </Container>
@@ -151,6 +157,18 @@ const Home = (props) => {
 
 }
 
+const mapStateToProps = (state) => ({
+  data: state.files.get('data')
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({
+    getDataFilesRequest,
+  }, dispatch)
+})
+
+
 export default compose(
-  withStyles(styles)
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home)
