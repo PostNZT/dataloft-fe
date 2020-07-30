@@ -15,7 +15,7 @@ export const checkDataloft  = async(file) => {
   try {
     let zip = await JSZip.loadAsync(file)
     if ('.meta' in zip.files)
-      let content = JSON.parse(await zip.file('.meta').async('string'))
+      var content = JSON.parse(await zip.file('.meta').async('string'))
       if ('dataloft' in content) {
         if (content['dataloft' === true]) {
           return true
@@ -152,4 +152,10 @@ export const decrypt = async (file, key) => {
     error: "no-integrity",
     name: null
   }
+}
+
+export const getHint = async (file) => {
+  let zip = await JSZip.loadAsync(file);
+  let metadata = JSON.parse(await zip.file(".meta").async("string"));
+  return metadata.hint ? metadata.hint : null;
 }

@@ -1,27 +1,25 @@
-export const ENCRYPT_MESSAGE_REQUEST = 'ENCRYPT_MESSAGE_REQUEST'
-export const ENCRYPT_MESSAGE_SUCCESS = 'ENCRYPT_MESSAGE_SUCCESS'
-export const ENCRYPT_MESSAGE_FAILURE = 'ENCRYPT_MESSAGE_FAILURE'
+export const ENCRYPT_DATA_FILE_REQUEST = 'ENCRYPT_DATA_FILE_REQUEST'
+export const ENCRYPT_DATA_FILE_SUCCESS = 'ENCRYPT_DATA_FILE_SUCCESS'
+export const ENCRYPT_DATA_FILE_FAILURE = 'ENCRYPT_DATA_FILE_FAILURE'
 
-export const encryptMessageRequest = (encryptedPublicKey, data, version) => ({
-  type: ENCRYPT_MESSAGE_REQUEST,
+export const encryptDataFileRequest = (encryptedPublicKey, data, version) => ({
+  type: ENCRYPT_DATA_FILE_REQUEST,
   payload: {
-    encryptedPublicKey,
-    data,
-    version
+    
   },
   meta: {
     thunk: true
   }
 })
 
-export const encryptMessageSuccess = (response, meta) => ({
-  type: ENCRYPT_MESSAGE_SUCCESS,
+export const encryptDataFileSuccess = (response, meta) => ({
+  type: ENCRYPT_DATA_FILE_SUCCESS,
   payload: response,
   meta,
 })
 
-export const encryptMessageFailure = (error, meta) => ({
-  type: ENCRYPT_MESSAGE_FAILURE,
+export const encryptDataFileFailure = (error, meta) => ({
+  type: ENCRYPT_DATA_FILE_FAILURE,
   payload: error,
   meta,
 })

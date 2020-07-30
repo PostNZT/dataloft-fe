@@ -29,7 +29,6 @@ import {
 
 import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
-import mainWorker from 'services/worker'
 
 const styles = (theme) => ({
   cardThemeBackground,
@@ -54,8 +53,9 @@ const Home = (props) => {
   const [hasFile, setHasFile] = useState(false)
   
   const onDrop = useCallback(fileList => {
+    getDataFilesRequest(fileList)
     
-    console.log(fileList)
+    
     setHasFile(true)
   }, [])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})

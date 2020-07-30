@@ -1,27 +1,21 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import * as sigUtil from 'eth-sig-util'
 
 import {
-  ENCRYPT_MESSAGE_REQUEST  
+  ENCRYPT_DATA_FILE_REQUEST  
 } from './actions'
 
 
-function* encryptMessageRequest(payload, meta) {
-  const { encryptedPublicKey, data, version } = payload
+function* encryptDataFileRequest(payload, meta) {
+  const { data, filename, key, hint } = payload
 
-  const encryptedMessage = sigUtil.encrypt(
-    encryptedPublicKey,
-    data,
-    version
-  )
-  
-  console.log(encryptedMessage)
+  console.log('You have arrived at ENCRYPT')
+
 }
 
-function* watchEncryptMessageRequest({ payload, meta}) {
-  yield call(encryptMessageRequest, payload, meta)
+function* watchEncryptDataFileRequest({ payload, meta}) {
+  yield call(encryptDataFileRequest, payload, meta)
 }
 
 export default function* sagas() {
-  yield takeEvery(ENCRYPT_MESSAGE_REQUEST, watchEncryptMessageRequest)
+  yield takeEvery(ENCRYPT_DATA_FILE_REQUEST, watchEncryptDataFileRequest)
 }

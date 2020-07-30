@@ -4,10 +4,24 @@ import {
   GET_DATA_FILES_REQUEST
 } from './actions'
 
+import {
+  getHint,
+  handleFiles
+} from 'services/handleFiles'
+
 function* getDataFilesRequest(payload, meta) {
-  const { fileList, mode, hint  } = payload
+  const { fileList } = payload
   
-  console.log('testing')
+  const mode = yield call(handleFiles, fileList)
+  // if (mode === 'decrypt') {
+  //   const hint = getHint(fileList[0])
+  //   if (hint) {
+  //     onFilesAdded(fileList, mode, hint)
+  //   }
+  // } else {
+  //   onFilesAdded(fileList, mode)
+  // }
+
 
 }
 
