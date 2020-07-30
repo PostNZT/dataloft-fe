@@ -1,8 +1,8 @@
 import axios from 'axios'
 import config from 'config'
-import { LotusRPC } from "@filecoin-shipyard/lotus-client-rpc";
-import { BrowserProvider } from "@filecoin-shipyard/lotus-client-provider-browser";
-import { testnet } from "@filecoin-shipyard/lotus-client-schema";
+import { LotusRPC } from "@filecoin-shipyard/lotus-client-rpc"
+import { BrowserProvider } from "@filecoin-shipyard/lotus-client-provider-browser"
+import { testnet } from "@filecoin-shipyard/lotus-client-schema"
 
 const targetAPI = config.TARGET_API
 
