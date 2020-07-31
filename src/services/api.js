@@ -1,8 +1,9 @@
 import axios from 'axios'
 import config from 'config'
-import { LotusRPC } from "@filecoin-shipyard/lotus-client-rpc"
-import { BrowserProvider } from "@filecoin-shipyard/lotus-client-provider-browser"
-import { testnet } from "@filecoin-shipyard/lotus-client-schema"
+import { getClient } from "../utils/lotus";
+import { ipfs } from "../utils/ipfs";
+import {newAddress, newFromString, encode} from "@openworklabs/filecoin-address"
+const client = getClient();
 
 const targetAPI = config.TARGET_API
 
@@ -64,27 +65,6 @@ export const createWalletJWTToken = (username, password, address, token) => {
 }
 
 
-export const fcChainHead = () => {
-  const body = {
-    "jsonrpc":"2.0",
-    "method":"Filecoin.ChainHead",
-    "params":[],
-    "id":3
-  }
-
-  return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `ws://localhost:7777/0/node/rpc/v0`,
-      data: body
-    }).then(({data}) => {
-      resolve({ response: data })
-    }).catch((error) => {
-      reject({ error })
-    })
-  })
-}
-
 export const createDataloftAccount = (username, password) => {
   const body = {
     username,
@@ -124,26 +104,63 @@ export const createMetamaskAccount = (username, password, address) => {
   })
 }
 
-export const getClient = (options = { nodeOrMiner: "node", nodeNumber: 0 }) => {
-  // API endpoint for local Lotus devnet
-  const API = "ws://localhost:7777";
-
-  // Websocket endpoint for local Lotus devnet
-  const wsUrl = API + `/${options.nodeNumber}/${options.nodeOrMiner}/rpc/v0`;
-
-  // Creating and returning a Lotus client that can be used anywhere in the app
-  const provider = new BrowserProvider(wsUrl);
-  return new LotusRPC(provider, {
-    schema:
-      options.nodeOrMiner === "node" ? testnet.fullNode : testnet.storageMiner,
-  });
-}
-
-export const getChainStats = () => {
+export const getChainStats2 = () => {
   return new Promise((resolve, reject) => {
     const client = getClient()
-    client.chainNotify((result) => {
+    client.chainHead((result) => {
       resolve(result)
     })
   })
+}
+
+export const getChainStats = async () => {
+
+
+  const address = newFromString('t1hvuzpfdycc6z6mjgbiyaiojikd6wk2vwy7muuei')
+  const addressProtocol = address.protocol()
+  const addressPayload = address.payload()
+  const addressString = address.str
+
+  const networkPrefix = 't'
+  const encoded = encode(networkPrefix, address)
+  const newadd = newAddress(addressProtocol,addressPayload)
+  console.log(newadd)
+  console.log(addressPayload)
+  console.log(addressString)
+  console.log(encoded)
+  // const client = getClient()
+  // const resolve = await client.chainGetGenesis()
+  // console.log(resolve)
+}
+
+export const uploadToFilecoin = (payload) => async (dispatch) => {
+  const client = getClient()
+  for await (const result of ipfs.add(payload.fileBuffer)) {
+    // Creating a Storage Deal with a Miner
+    const dataRef = {
+      Data: {
+        TransferType: "graphsync",
+        Root: {
+          "/": result.path,
+        },
+        PieceCid: null,
+        PieceSize: 0,
+      },
+      Wallet: payload.defaultWalletAddress,
+      Miner: payload.targetMiner,
+      EpochPrice: payload.epochPrice,
+      MinBlocksDuration: 300,
+    };
+    const deal = await client.clientStartDeal(dataRef);
+
+    document.getElementById("uploadToFilecoin").innerText =
+      "Upload to Filecoin Network";
+
+    dispatch({
+      payload: {
+        id: deal["/"],
+        cid: result.path,
+      },
+    });
+  }
 }
