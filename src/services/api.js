@@ -64,7 +64,6 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
-
 export const createDataloftAccount = (username, password) => {
   const body = {
     username,
