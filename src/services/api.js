@@ -112,24 +112,10 @@ export const getChainStats2 = () => {
   })
 }
 
-export const getChainStats = async () => {
-
-
-  const address = newFromString('t1hvuzpfdycc6z6mjgbiyaiojikd6wk2vwy7muuei')
-  const addressProtocol = address.protocol()
-  const addressPayload = address.payload()
-  const addressString = address.str
-
-  const networkPrefix = 't'
-  const encoded = encode(networkPrefix, address)
-  const newadd = newAddress(addressProtocol,addressPayload)
-  console.log(newadd)
-  console.log(addressPayload)
-  console.log(addressString)
-  console.log(encoded)
-  // const client = getClient()
-  // const resolve = await client.chainGetGenesis()
-  // console.log(resolve)
+export const getChainStats = async (sig) => {
+  const client = getClient()
+  const resolve = await client.mpoolPush(sig)
+  console.log(resolve)
 }
 
 export const uploadToFilecoin = (payload) => async (dispatch) => {

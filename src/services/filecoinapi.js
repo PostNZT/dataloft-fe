@@ -9,8 +9,8 @@ const bip32 = require('bip32');
 const { ecdsaSign, ecdsaRecover, publicKeyConvert } = require('ethereum-cryptography/secp256k1')
 
 const config = {
-  apiAddress: 'http://127.0.0.1:7777/rpc/v0',
-  token: "cfca00c9-5157-4b0b-b743-1ae252f2b6d2", // required
+  apiAddress: 'http://127.0.0.1:7777/rest/v0/import',
+  token: "27e25efa-5fde-46fe-9380-83cd209e1a97", // required
 }
 
 
@@ -89,10 +89,10 @@ export async function transactionSignRawTest() {
 }
 
 
-export async function sendSignedMessage(message, sig) {
+export async function sendSignedMessage(sig) {
   const filecoin = new Filecoin(new LocalNodeProvider(config), config)
   // note, see section below on signedMessages
-  const tx = await filecoin.sendMessage(message, sig)
+  const tx = await filecoin.sendMessage(sig)
   return tx
 }
 

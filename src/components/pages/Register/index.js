@@ -16,7 +16,7 @@ import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
   getMetamaskAddressRequest,
-  fcChainHeadRequest
+  fcChainHeadRequest,
 } from 'store/auth/actions'
 
 import {
@@ -116,14 +116,12 @@ const Register = (props) => {
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
   const [hasCreatedWithMetamask, setHasCreatedWithMetamask] = useState( false)
   const [hasCreatedWithDataloft, setHasCreatedWithDataloft] = useState( false)
-
   const handleClickRegister = () => {
     const keys = genKeys()
     setPrivkey(keys)
     const fcAddress = keys.address
     setfilecoinAddress(fcAddress)
-
-    //createDataloftAccountRequest(username, password)
+    // createDataloftAccountRequest(username, password)
     setHasCreatedWithDataloft(true)
   }
 
@@ -136,11 +134,17 @@ const Register = (props) => {
       setHasCreatedWithMetamask(data.is_authenticated)
     })
   }
+
   const handleSentFilecoin = async () => {
     const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey)
-    console.log(signedMessage.message)
-    console.log(signedMessage.signature)
-    const tx = sendSignedMessage(signedMessage.message, signedMessage.signature)
+    const msg = signedMessage.message
+    const sig = signedMessage.signature
+    const Signature = {
+      'Signature': sig,
+      'Message': msg
+    }
+    console.log(Signature)
+    const tx = getChainStateRequest(Signature)
     console.log(tx)
   }
 

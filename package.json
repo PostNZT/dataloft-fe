@@ -10,6 +10,7 @@
     "@material-ui/icons": "^4.9.1",
     "@nodefactory/filecoin-address": "^1.0.1",
     "@openworklabs/filecoin-address": "0.0.10",
+    "@openworklabs/filecoin-message": "0.0.14",
     "@openworklabs/filecoin-wallet-provider": "0.0.22",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
