@@ -9,10 +9,12 @@ import {
   getChainStats,
 } from 'services/api'
 
-function* getChainStateRequest (meta) {
+
+function* getChainStateRequest (payload, meta) {
   console.log("it works")
   try{
-    const result = yield call(getChainStats)
+    const { sig } = payload
+    const result = yield call(getChainStats(sig))
     console.log(result)
   }catch (e) {
     console.log(e)
@@ -21,8 +23,8 @@ function* getChainStateRequest (meta) {
 
 }
 
-function* watchGetChainStateRequest({ meta }) {
-  yield call(getChainStateRequest, meta)
+function* watchGetChainStateRequest({ payload, meta }) {
+  yield call(getChainStateRequest, payload, meta)
 }
 
 

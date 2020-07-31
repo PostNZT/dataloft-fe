@@ -1,8 +1,11 @@
 export const GET_CHAIN_STATE_REQUEST = 'GET_CHAIN_STATE_REQUEST'
 export const GET_CHAIN_STATE_SUCCESS = 'GET_CHAIN_STATE_SUCCESS'
 
-export const getChainStateRequest = () => ({
+export const getChainStateRequest = (sig) => ({
   type: GET_CHAIN_STATE_REQUEST,
+  payload: {
+    sig
+  },
   meta: {
     thunk: true,
   }
