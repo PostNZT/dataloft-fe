@@ -5,6 +5,7 @@ import { tests } from './tests/reducers'
 import { auth } from './auth/reducers'
 import { create } from './create/reducers'
 import { encrypt } from './encrypt/reducers'
+import { encryptMultiple } from './encryptMultiple/reducers'
 import { decrypt } from './decrypt/reducers'
 import { config } from './config/reducers'
 import { files } from './files/reducers'
@@ -14,6 +15,7 @@ import * as testSagas from './tests/sagas'
 import * as authSagas from './auth/sagas'
 import * as createSagas from './create/sagas'
 import * as encryptSagas from './encrypt/sagas'
+import * as encryptMultipleSagas from './encryptMultiple/sagas'
 import * as decryptSagas from './decrypt/sagas'
 import * as configSagas from './config/sagas'
 import * as filesSagas from './files/sagas'
@@ -25,6 +27,7 @@ export const rootReducer = combineReducers({
   auth,
   create,
   encrypt,
+  encryptMultiple,
   config,
   files,
   lotus,
@@ -37,6 +40,7 @@ export function* rootSaga() {
     ...Object.values(authSagas),
     ...Object.values(createSagas),
     ...Object.values(encryptSagas),
+    ...Object.values(encryptMultipleSagas),
     ...Object.values(decryptSagas),
     ...Object.values(configSagas),
     ...Object.values(filesSagas),

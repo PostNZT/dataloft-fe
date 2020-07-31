@@ -11,43 +11,41 @@ export const getSHA256 = async(value) => {
   return await CryptoJS.SHA256(value).toString()
 }
 
-export const checkDataloft  = async(file) => {
+export const checkDataloft = async (file) => {
   try {
-    let zip = await JSZip.loadAsync(file)
-    if ('.meta' in zip.files)
-      var content = JSON.parse(await zip.file('.meta').async('string'))
-      if ('dataloft' in content) {
-        if (content['dataloft' === true]) {
-          return true
-        }
+    var zip = await JSZip.loadAsync(file);
+    if (".meta" in zip.files) {
+      var content = JSON.parse(await zip.file(".meta").async("string"));
+      if ("dataloft" in content) {
+          if (content["dataloft"] === true) {
+              return true;
+          }
       }
-
-  } catch (error){
-    console.log(error)
-  }
-  return false
-} 
+    }
+  } catch {}
+  return false;
+}
 
 function incrementProgress() {
   postMessage('incrementProgress')
 }
 
 export const handleFiles = async(fileList) => {
-  let numData = 0
+  var numCrypt = 0
   await asyncForEach(fileList, async file => {
-    let d = await checkDataloft(file)
-    if (d) {
-      numData += 1
+    var c = await checkDataloft(file)
+    if (c) {
+        numCrypt += 1
     }
   })
 
-  if (numData === 1 && fileList.length === 1) {
-    return 'decrypt'
+  if (numCrypt === 1 && fileList.length === 1) {
+    return "decrypt"
   } else {
     if (fileList.length === 1) {
-      return 'encrypt'
+        return "encrypt"
     } else if (fileList.length > 1) {
-      return 'encrypt-multiple'
+        return "encrypt-multiple"
     }
   }
 }

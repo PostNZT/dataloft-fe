@@ -2,10 +2,11 @@ export const DECRYPT_DATA_FILE_REQUEST = 'DECRYPT_DATA_FILE_REQUEST'
 export const DECRYPT_DATA_FILE_SUCCESS = 'DECRYPT_DATA_FILE_SUCCESS'
 export const DECRYPT_DATA_FILE_FAILURE = 'DECRYPT_DATA_FILE_FAILURE'
 
-export const decryptDataFileRequest = (payload, meta) => ({
+export const decryptDataFileRequest = (fileList, key) => ({
   type: DECRYPT_DATA_FILE_REQUEST,
   payload: {
-
+    fileList,
+    key
   },
   meta: {
     thunk: true

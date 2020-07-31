@@ -15,6 +15,7 @@
     "classnames": "^2.2.6",
     "crypto-js": "^4.0.0",
     "eth-sig-util": "^2.5.3",
+    "file-saver": "^2.0.2",
     "immutable": "^4.0.0-rc.12",
     "jszip": "^3.5.0",
     "pouchdb": "^7.2.1",

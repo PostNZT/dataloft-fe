@@ -23,9 +23,21 @@ import {
   PlusIcon,
 } from 'components/elements'
 
+import {
+  decryptDataFileRequest
+} from 'store/decrypt/actions'
+
 import { 
-  getDataFilesRequest 
-} from 'store/files/actions'
+  encryptDataFileRequest 
+} from 'store/encrypt/actions'
+
+import {
+  encryptMultipleDataFilesRequest
+} from 'store/encryptMultiple/actions'
+
+import {
+  handleFiles
+} from 'services/handleFiles'
 
 import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
@@ -47,13 +59,28 @@ const styles = (theme) => ({
 const Home = (props) => {
   const {
     classes,
-    getDataFilesRequest
+    encryptDataFileRequest,
+    decryptDataFileRequest,
+    encryptMultipleDataFilesRequest
   } = props
 
   const [hasFile, setHasFile] = useState(false)
   
-  const onDrop = useCallback(fileList => {
-    getDataFilesRequest(fileList)
+  const onDrop = useCallback( async (fileList) => {    
+    const mode = await handleFiles(fileList)
+     
+    const key = 'HACKFS2020WEWINASONE'
+    const hint = 'HACKFS2020WEWINASONE'
+ 
+    if (mode === 'encrypt') {
+      encryptDataFileRequest(fileList, key, hint)
+    } else if (mode === 'encrypt-multiple') {
+      encryptMultipleDataFilesRequest(fileList, key, hint)
+    } else if (mode === 'decrypt') {
+      decryptDataFileRequest(fileList, key)
+    }
+    
+    
     
     
     setHasFile(true)
@@ -163,7 +190,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
-    getDataFilesRequest,
+    encryptDataFileRequest,
+    decryptDataFileRequest,
+    encryptMultipleDataFilesRequest
   }, dispatch)
 })
 
