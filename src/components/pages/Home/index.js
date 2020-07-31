@@ -185,7 +185,7 @@ const Home = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.files.get('data')
+  
 })
 
 const mapDispatchToProps = (dispatch) => ({
