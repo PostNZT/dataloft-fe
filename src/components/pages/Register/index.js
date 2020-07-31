@@ -15,8 +15,21 @@ import { Link } from 'react-router-dom'
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
-  getMetamaskAddressRequest
+  getMetamaskAddressRequest,
+  fcChainHeadRequest
 } from 'store/auth/actions'
+
+import {
+  genKeys,
+  pubKeytoAddress,
+  transactionSignRaw,
+  recordAccountOnFilecoin,
+  sendSignedMessage
+} from 'services/filecoinapi'
+
+import {
+  getChainStateRequest
+} from 'store/lotus/actions'
 
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
@@ -88,20 +101,30 @@ const Register = (props) => {
       history,
       classes,
       createDataloftAccountRequest,
+      getChainStateRequest,
       dataloft_user,
       getMetamaskAddressRequest,
       metamask_data,
   } = props
   const { is_authenticated } = metamask_data
 
+  const [privKey, setPrivkey] = useState('')
+  const [filecoinAddress, setfilecoinAddress] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [address, setAddress] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
   const [hasCreatedWithMetamask, setHasCreatedWithMetamask] = useState( false)
+  const [hasCreatedWithDataloft, setHasCreatedWithDataloft] = useState( false)
 
   const handleClickRegister = () => {
-    createDataloftAccountRequest(username, password)
+    const keys = genKeys()
+    setPrivkey(keys)
+    const fcAddress = keys.address
+    setfilecoinAddress(fcAddress)
+
+    //createDataloftAccountRequest(username, password)
+    setHasCreatedWithDataloft(true)
   }
 
   const handleClickCreateMetamask = async () => {
@@ -109,9 +132,16 @@ const Register = (props) => {
     const rawAddress = account[0]
     setAddress(rawAddress)
     getMetamaskAddressRequest(address).then((data) => {
-      // console.log(data)
+      console.log(data)
       setHasCreatedWithMetamask(data.is_authenticated)
     })
+  }
+  const handleSentFilecoin = async () => {
+    const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey)
+    console.log(signedMessage.message)
+    console.log(signedMessage.signature)
+    const tx = sendSignedMessage(signedMessage.message, signedMessage.signature)
+    console.log(tx)
   }
 
   const onChange = (e) => {
@@ -152,7 +182,7 @@ const Register = (props) => {
               </Typography>
             </div>
             {
-              hasCreatedWithMetamask  && (
+              !hasCreatedWithDataloft && hasCreatedWithMetamask  && (
                   <React.Fragment>
                     <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
                       <InputBase
@@ -190,7 +220,7 @@ const Register = (props) => {
               )
             }
             {
-              hasCreatedWithMetamask && (
+              !hasCreatedWithDataloft && hasCreatedWithMetamask && (
                   <React.Fragment>
                     <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                       <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -210,6 +240,39 @@ const Register = (props) => {
                       </ButtonGroup>
                     </div>
                   </React.Fragment>
+              )
+            }
+            {
+              hasCreatedWithMetamask && hasCreatedWithDataloft && (
+                <React.Fragment>
+                  <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
+                    <p>Send 10 file coin to this address to create your account</p>
+                    <p>{filecoinAddress}</p>
+                  </div>
+                </React.Fragment>
+              )
+            }
+            {
+              hasCreatedWithMetamask && hasCreatedWithDataloft && (
+                <React.Fragment>
+                  <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
+                    <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        onClick={handleSentFilecoin}
+                      >
+                        <Dataloft />
+                        <Typography
+                          variant='p'
+                        >
+                          File Coin Sent
+                        </Typography>
+                      </Button>
+                    </ButtonGroup>
+                  </div>
+                </React.Fragment>
               )
             }
             {
@@ -296,6 +359,7 @@ const mapDispatchToProps = (dispatch) => ({
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
     getMetamaskAddressRequest,
+    getChainStateRequest,
   }, dispatch)
 })
 
