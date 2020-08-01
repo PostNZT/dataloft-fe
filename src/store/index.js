@@ -17,7 +17,6 @@ import * as encryptSagas from './encrypt/sagas'
 import * as encryptMultipleSagas from './encryptMultiple/sagas'
 import * as decryptSagas from './decrypt/sagas'
 import * as configSagas from './config/sagas'
-import * as filesSagas from './files/sagas'
 import * as lotusSagas from './lotus/sagas'
 
 export const rootReducer = combineReducers({
