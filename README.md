@@ -1,6 +1,7 @@
 # DATALOFT 
 
 Encrypted data drive on filecoin
+Dataloft encrypts and decrypts your data in the browser, it checks file integrity making it impossible to manipulate data file without the correct password.
 
 ## ARCHITECTURE OF DATALOFT
 <img src="https://github.com/PostNZT/dataloft-fe/blob/master/arch.jpg">  
