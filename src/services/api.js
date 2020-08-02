@@ -114,6 +114,7 @@ export const getChainStats2 = () => {
 
 export const getChainStats = async (sig) => {
   const client = getClient()
+  console.log(sig)
   const resolve = await client.mpoolPush(sig)
   console.log(resolve)
 }

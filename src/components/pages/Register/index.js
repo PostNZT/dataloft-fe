@@ -136,15 +136,16 @@ const Register = (props) => {
   }
 
   const handleSentFilecoin = async () => {
-    const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey)
-    const msg = signedMessage.message
-    const sig = signedMessage.signature
-    const Signature = {
-      'Signature': sig,
-      'Message': msg
-    }
-    console.log(Signature)
-    const tx = getChainStateRequest(Signature)
+    const str = {"Account":"Dataloft", "user": username, "password":password}
+    // var encoded = btoa(str)
+    // console.log(encoded)
+    // var decoded = atob(encoded)
+    // console.log(decoded)
+    // console.log(JSON.parse(decoded))
+    // var temp = JSON.parse(buf.toString());
+
+    const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, str)
+    const tx = getChainStateRequest(signedMessage)
     console.log(tx)
   }
 
