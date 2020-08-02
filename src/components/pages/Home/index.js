@@ -8,6 +8,7 @@ import {
   AppBar, 
   TabPanel,
   UploadAccordion,
+  ConfigModal
 } from 'components'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
@@ -65,13 +66,14 @@ const Home = (props) => {
   } = props
 
   const [hasFile, setHasFile] = useState(false)
+  const [openConfigModal, setOpenConfigModal] = useState(false)
   
   const onDrop = useCallback( async (fileList) => {    
     const mode = await handleFiles(fileList)
-     
+    
     const key = 'HACKFS2020WEWINASONE'
     const hint = 'HACKFS2020WEWINASONE'
- 
+    
     if (mode === 'encrypt') {
       encryptDataFileRequest(fileList, key, hint)
     } else if (mode === 'encrypt-multiple') {
@@ -79,15 +81,21 @@ const Home = (props) => {
     } else if (mode === 'decrypt') {
       decryptDataFileRequest(fileList, key)
     }
-    
-    
-    
-    
+
     setHasFile(true)
   }, [])
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-    
+  const handleUploadFile = () => {
+    setHasFile(true)
+    setOpenConfigModal(true)
+  }
 
+  const handleCloseConfigModal = () => {
+    setOpenConfigModal(false)
+    setHasFile(false)
+  }
+
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  
   return (
     <React.Fragment>
       <AppBar />
@@ -102,7 +110,7 @@ const Home = (props) => {
                 startIcon={<PlusIcon />}
                 size="large"
               >
-                Create
+                Upload
               </Button>
             </div>
           </Grid>
@@ -151,6 +159,7 @@ const Home = (props) => {
                   </Typography>
                 </Grid>
               </Grid>
+              
             </div>
             {/* <Grid container>
               <Grid item xs={3}>
@@ -172,10 +181,20 @@ const Home = (props) => {
           {
             isDragActive || hasFile && (
               <React.Fragment>
-                  <UploadAccordion />
+                <UploadAccordion handleUploadFile={handleUploadFile}/>
               </React.Fragment>
             )
           }
+          {
+            openConfigModal && (
+              <React.Fragment>
+                <ConfigModal 
+                  onClose={handleCloseConfigModal}
+                  open={openConfigModal}
+                />
+              </React.Fragment>
+            )
+          } 
         </Grid>
         
       </Container>

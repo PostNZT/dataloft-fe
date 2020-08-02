@@ -1,14 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import compose from 'recompose/compose'
-import clsx from 'clsx'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionActions from '@material-ui/core/AccordionActions'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Chip from '@material-ui/core/Chip'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 
@@ -48,18 +46,21 @@ const styles = (theme) => ({
 })
 
 const UploadAccordion = (props) => {
-  const { classes } = props
+  const { classes, handleUploadFile } = props
+
+  const handleUploadFileButton = () => {
+    handleUploadFile(false)
+  }
   
   return (
     <div className={classes.root}>
-      {/* <Accordion defaultExpanded>
+      <Accordion defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography className={classes.heading}>General settings</Typography>
-          <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
+          <Typography className={classes.heading}>General Upload Info</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -67,34 +68,19 @@ const UploadAccordion = (props) => {
             maximus est, id dignissim quam.
           </Typography>
         </AccordionDetails>
-      </Accordion> */}
-      <Accordion defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1c-content"
-          id="panel1c-header"
-        >
-          <div className={classes.column}>
-            <Typography className={classes.heading}>Upload File</Typography>
-          </div>
-          {/* <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
-          </div> */}
-        </AccordionSummary>
-        <AccordionDetails className={classes.details}>
-          <div className={classes.column} />
-          <div className={classes.column}>
-            <Chip label="Barbados" onDelete={() => {}} />
-          </div>
-        </AccordionDetails>
         <Divider />
         <AccordionActions>
           <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
+          <Button 
+            size="small" 
+            color="primary"
+            onClick={handleUploadFileButton}
+          >
             Upload
           </Button>
         </AccordionActions>
       </Accordion>
+    
     </div>
   )
 }
