@@ -53,11 +53,12 @@ export const getMetamaskAddressFailure = (error, meta) => ({
 })
 
 
-export const createDataloftAccountRequest = (username, password) => ({
+export const createDataloftAccountRequest = (username, password, address) => ({
   type: CREATE_DATALOFT_ACCOUNT_REQUEST,
   payload: {
     username,
-    password
+    password,
+    address
   },
   meta: {
     thunk: true,

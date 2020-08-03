@@ -1,34 +1,42 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
 import {
-  GET_CHAIN_STATE_REQUEST,
+  GET_SIGN_MESSAGE_REQUEST,
 } from './actions'
 
 import {
   getClient,
-  getChainStats,
+  getSignMessage,
 } from 'services/api'
+import {getSignMessageSuccess, getSignMessageFailure} from "../lotus/actions";
 
 
-function* getChainStateRequest (payload, meta) {
+
+function* getSignMessageRequest (payload, meta) {
   console.log("it works")
   try{
     const { sig } = payload
-    const result = yield call(getChainStats(sig))
-    console.log(result)
-  }catch (e) {
-    console.log(e)
+    const data = yield call(getSignMessage, sig)
+    console.log(data)
+    if (data) {
+      console.log("Success")
+      yield put(getSignMessageSuccess(data, meta))
+    } else {
+      console.log("Failure")
+      yield put(getSignMessageFailure(data.error))
+    }
+  }catch (error) {
+    console.log("Failure2")
+    yield put(getSignMessageFailure(error))
   }
-
-
 }
 
-function* watchGetChainStateRequest({ payload, meta }) {
-  yield call(getChainStateRequest, payload, meta)
+function* watchgetSignMessageRequest({ payload, meta }) {
+  yield call(getSignMessageRequest, payload, meta)
 }
 
 
 export default function* sagas() {
-  yield takeEvery(GET_CHAIN_STATE_REQUEST, watchGetChainStateRequest)
+  yield takeEvery(GET_SIGN_MESSAGE_REQUEST, watchgetSignMessageRequest)
 
 }

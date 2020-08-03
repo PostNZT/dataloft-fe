@@ -64,10 +64,11 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
-export const createDataloftAccount = (username, password) => {
+export const createDataloftAccount = (username, password, address) => {
   const body = {
     username,
-    password
+    password,
+    address
   }
 
   return new Promise((resolve, reject) => {
@@ -112,11 +113,11 @@ export const getChainStats2 = () => {
   })
 }
 
-export const getChainStats = async (sig) => {
-  const client = getClient()
-  console.log(sig)
-  const resolve = await client.mpoolPush(sig)
-  console.log(resolve)
+export const getSignMessage = async (sig) => {
+    const client = getClient()
+    const result = await client.mpoolPush(sig)
+    console.log(result)
+    return(result["/"])
 }
 
 export const uploadToFilecoin = (payload) => async (dispatch) => {
