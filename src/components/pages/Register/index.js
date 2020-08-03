@@ -19,14 +19,14 @@ import {
 } from 'store/auth/actions'
 
 import {
-  genKeys,
+  getFilecoinTransactionIdRequest
+} from 'store/register/actions'
+
+import {
+  generateKeys,
   recordAccountOnFilecoin,
 } from 'services/filecoinapi'
 
-import {
-  metamaskPublic,
-  metamaskEncrypt
-} from 'services/metamask'
 import {
   getSignMessageRequest
 } from 'store/lotus/actions'
@@ -103,52 +103,48 @@ const Register = (props) => {
   const {
       history,
       classes,
-      createDataloftAccountRequest,
+      filecoin,
       getSignMessageRequest,
-      dataloft_user,
       getMetamaskAddressRequest,
-      metamask_data,
+      getFilecoinTransactionIdRequest,
   } = props
-  const { is_authenticated } = metamask_data
-
+ 
   const [privKey, setPrivkey] = useState('')
   const [filecoinAddress, setfilecoinAddress] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [address, setAddress] = useState('')
+  const [metamaskAddress, setMetamaskAddress] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
   const [hasCreatedWithMetamask, setHasCreatedWithMetamask] = useState( false)
   const [hasCreatedWithDataloft, setHasCreatedWithDataloft] = useState( false)
+  
+  const handleClickCreateWithMetamask = async () => {
+    const account = await window.ethereum.enable()
+    const rawAddress = account[0]
+    getMetamaskAddressRequest(rawAddress).then((data) => {
+      setMetamaskAddress(rawAddress)
+      setHasCreatedWithMetamask(data.is_authenticated)
+    })
+  }
+  
   const handleClickRegister = () => {
-    const keys = genKeys()
+    const keys = generateKeys()
     setPrivkey(keys)
     const fcAddress = keys.address
     setfilecoinAddress(fcAddress)
     setHasCreatedWithDataloft(true)
   }
 
-  const handleClickCreateMetamask = async () => {
-    const account = await window.ethereum.enable()
-    const rawAddress = account[0]
-    setAddress(rawAddress)
-    getMetamaskAddressRequest(address).then((data) => {
-      console.log(data)
-      setHasCreatedWithMetamask(data.is_authenticated)
-    })
-  }
-
   const handleSentFilecoin = async () => {
-    const accounts = await window.ethereum.enable()
     window.ethereum.sendAsync(
       {
         jsonrpc: '2.0',
         method: 'eth_getEncryptionPublicKey',
-        params: [accounts[0]],
-        from: accounts[0],
+        params: [metamaskAddress],
+        from: metamaskAddress,
       },
        async function (error, encryptionpublickey) {
         if (!error) {
-          console.log(encryptionpublickey.result)
           const encryptedMessage = await web3.utils.toHex(
             JSON.stringify(
               encrypt(
@@ -158,7 +154,6 @@ const Register = (props) => {
               )
             )
           )
-          console.log(encryptionpublickey.result)
           const str = "{account:'Dataloft', user: '"+username+"', pubEncrypt:'"+encryptionpublickey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
           var myBuffer = [];
           var buffer = new Buffer(JSON.stringify(str))
@@ -166,13 +161,14 @@ const Register = (props) => {
             await myBuffer.push(buffer[i]);
           }
           const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
-          const tx = await getSignMessageRequest(signedMessage)
-          console.log(tx)
+          const transaction_id = await getSignMessageRequest(signedMessage)
+          getFilecoinTransactionIdRequest(transaction_id)
         } else {
           console.log(error)
         }
       }
-    )
+    )   
+    history.push('/')
   }
 
   const onChange = (e) => {
@@ -315,7 +311,7 @@ const Register = (props) => {
                       variant="contained"
                       color="primary"
                       type="submit"
-                      onClick={handleClickCreateMetamask}
+                      onClick={handleClickCreateWithMetamask}
                     >
                       <Metamask />
                       <Typography
@@ -381,12 +377,12 @@ const Register = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  dataloft_user: state.create.get('dataloft_user'),
-  metamask_data: state.auth.get('metamask_data'),
+  filecoin: state.register.get('filecoin')
 })
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
+    getFilecoinTransactionIdRequest,
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
     getMetamaskAddressRequest,

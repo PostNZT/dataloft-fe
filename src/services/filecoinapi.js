@@ -29,7 +29,7 @@ const MASTER_KEY = "xprv9s21ZrQH143K49QgrAgAVELf6ue2tZNHYUc7yfj8JGZY9SpZ38u8EfhW
 let MASTER_NODE = bip32.fromBase58(MASTER_KEY);
 
 // returns a 32 bit private key
-export function genKeys() {
+export function generateKeys() {
 
   var seed = filecoin_signer.generateMnemonic()
   console.log("m/44'/1'/0/0/0".split("/")[2].slice(0, -1))

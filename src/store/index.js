@@ -9,6 +9,7 @@ import { encryptMultiple } from './encryptMultiple/reducers'
 import { decrypt } from './decrypt/reducers'
 import { config } from './config/reducers'
 import { lotus } from './lotus/reducers'
+import { register } from './register/reducers'
 import { reducer as thunkReducer } from 'redux-saga-thunk'
 import * as testSagas from './tests/sagas'
 import * as authSagas from './auth/sagas'
@@ -18,6 +19,7 @@ import * as encryptMultipleSagas from './encryptMultiple/sagas'
 import * as decryptSagas from './decrypt/sagas'
 import * as configSagas from './config/sagas'
 import * as lotusSagas from './lotus/sagas'
+import * as registerSagas from './register/sagas'
 
 export const rootReducer = combineReducers({
   thunk: thunkReducer,
@@ -29,6 +31,7 @@ export const rootReducer = combineReducers({
   config,
   lotus,
   decrypt,
+  register
 })
 
 export function* rootSaga() {
@@ -41,6 +44,7 @@ export function* rootSaga() {
     ...Object.values(decryptSagas),
     ...Object.values(configSagas),
     ...Object.values(lotusSagas),
+    ...Object.values(registerSagas),
   ].map(fork))
 }
 
