@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import store from 'store/store'
 import { theme } from 'services/theme'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
 } from 'react-router-dom'
 
 ReactDOM.render(

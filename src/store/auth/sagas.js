@@ -35,8 +35,8 @@ function* createMetamaskAccountRequest(payload, meta) {
 
 function* createDataloftAccountRequest(payload, meta) {
   try {
-    const { username, password } = payload
-    const data = yield call(createDataloftAccount, username, password)
+    const { username, password, address } = payload
+    const data = yield call(createDataloftAccount, username, password, address)
     
     if (data.response) {
       yield put(createDataloftAccountSuccess(data.response, meta))
@@ -58,7 +58,6 @@ function* getMetamaskAddressRequest(payload, meta) {
     } else {
       yield put(getMetamaskAddressFailure(data.error))
     }
-
   } catch (error) {
     yield put(getMetamaskAddressFailure(error))
   }

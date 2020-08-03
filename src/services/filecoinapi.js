@@ -63,23 +63,36 @@ export function pubKeytoAddress(publicKey) {
 
 }
 
-export function recordAccountOnFilecoin(address, privKey) {
-  console.log(privKey.address)
+export function recordAccountOnFilecoin(address, privKey, param) {
+  const messageForSigning = {
+    "to": "t16yuzgsz5dy5kiwauwzcznxnc2hc6aa2adr6u77a",
+    "from": address,
+    "nonce": 1,
+    "value": "1",
+    "gasprice": "1",
+    "gaslimit": 1,
+    "method": 0,
+    "params": param
+  };
   const Message = {
     "to": "t16yuzgsz5dy5kiwauwzcznxnc2hc6aa2adr6u77a",
     "from": address,
     "nonce": 1,
-    "value": "100000",
-    "gasprice": "2500",
-    "gaslimit": 25000,
+    "value": "1",
+    "gasprice": "1",
+    "gaslimit": 1,
     "method": 0,
-    "params": ""
+    "params": param.toString('base64')
   };
 
-  var sig = filecoin_signer.transactionSign(Message, privKey.toString("hex"))
-  console.log(sig);
+  var signedMessage = filecoin_signer.transactionSign(messageForSigning, privKey.toString("hex"))
+  const sig = signedMessage.signature
+  const Signature = {
+    'Signature': sig,
+    'Message':Message
+  }
 
-  return sig
+  return Signature
 }
 
 export async function transactionSignRawTest() {

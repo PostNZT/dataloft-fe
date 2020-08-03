@@ -20,20 +20,20 @@ const RouteWithSubRoutes = (route) => {
 }
 
 const App = (props) => {
-  // const { location } = props
-  // const { pathname } = location
+  const { location } = props
+  const { pathname } = location
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Init>
-        {/* <AuthGuard> */}
+        <AuthGuard>
         <Switch>
           {routes.map((route, i) => (
             <RouteWithSubRoutes key={i} {...route} />
           ))}
         </Switch>
-        {/* </AuthGuard> */}
+        </AuthGuard>
       </Init>
     </React.Fragment>
   )

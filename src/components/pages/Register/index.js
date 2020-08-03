@@ -16,19 +16,19 @@ import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
   getMetamaskAddressRequest,
-  fcChainHeadRequest,
 } from 'store/auth/actions'
 
 import {
   genKeys,
-  pubKeytoAddress,
-  transactionSignRaw,
   recordAccountOnFilecoin,
-  sendSignedMessage
 } from 'services/filecoinapi'
 
 import {
-  getChainStateRequest
+  metamaskPublic,
+  metamaskEncrypt
+} from 'services/metamask'
+import {
+  getSignMessageRequest
 } from 'store/lotus/actions'
 
 import { bindActionCreators } from 'redux'
@@ -40,7 +40,10 @@ import {
   Metamask, 
   Dataloft
 } from 'components/elements'
+import web3 from "web3";
+import {encrypt} from "eth-sig-util";
 
+const {FilecoinNumber} = require('@openworklabs/filecoin-number')
 const styles = (theme) => ({
   paper: {
     display: 'flex',
@@ -101,7 +104,7 @@ const Register = (props) => {
       history,
       classes,
       createDataloftAccountRequest,
-      getChainStateRequest,
+      getSignMessageRequest,
       dataloft_user,
       getMetamaskAddressRequest,
       metamask_data,
@@ -121,7 +124,6 @@ const Register = (props) => {
     setPrivkey(keys)
     const fcAddress = keys.address
     setfilecoinAddress(fcAddress)
-    // createDataloftAccountRequest(username, password)
     setHasCreatedWithDataloft(true)
   }
 
@@ -136,16 +138,41 @@ const Register = (props) => {
   }
 
   const handleSentFilecoin = async () => {
-    const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey)
-    const msg = signedMessage.message
-    const sig = signedMessage.signature
-    const Signature = {
-      'Signature': sig,
-      'Message': msg
-    }
-    console.log(Signature)
-    const tx = getChainStateRequest(Signature)
-    console.log(tx)
+    const accounts = await window.ethereum.enable()
+    window.ethereum.sendAsync(
+      {
+        jsonrpc: '2.0',
+        method: 'eth_getEncryptionPublicKey',
+        params: [accounts[0]],
+        from: accounts[0],
+      },
+       async function (error, encryptionpublickey) {
+        if (!error) {
+          console.log(encryptionpublickey.result)
+          const encryptedMessage = await web3.utils.toHex(
+            JSON.stringify(
+              encrypt(
+                encryptionpublickey.result,
+                { data: "password:"+password+", privKey:"+privKey.privateKey},
+                'x25519-xsalsa20-poly1305'
+              )
+            )
+          )
+          console.log(encryptionpublickey.result)
+          const str = "{account:'Dataloft', user: '"+username+"', pubEncrypt:'"+encryptionpublickey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
+          var myBuffer = [];
+          var buffer = new Buffer(JSON.stringify(str))
+          for (var i = 0; i < buffer.length; i++) {
+            await myBuffer.push(buffer[i]);
+          }
+          const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
+          const tx = await getSignMessageRequest(signedMessage)
+          console.log(tx)
+        } else {
+          console.log(error)
+        }
+      }
+    )
   }
 
   const onChange = (e) => {
@@ -363,7 +390,7 @@ const mapDispatchToProps = (dispatch) => ({
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
     getMetamaskAddressRequest,
-    getChainStateRequest,
+    getSignMessageRequest,
   }, dispatch)
 })
 
