@@ -101,9 +101,9 @@ const Home = (props) => {
     } else if (mode === 'decrypt') {
       decryptDataFileRequest(fileList, key)
     }
-
     setHasFile(true)
   }, [])
+
   const handleUploadFile = () => {
     setHasFile(true)
     setOpenConfigModal(true)
@@ -114,7 +114,7 @@ const Home = (props) => {
     setHasFile(false)
   }
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({onDrop})
   
   return (
     <React.Fragment>
@@ -226,7 +226,7 @@ const Home = (props) => {
           
         </Grid>
           {
-            isDragActive || hasFile && (
+            hasFile && (
               <React.Fragment>
                 <UploadAccordion 
                   className={classes.accordion}

@@ -7,7 +7,6 @@ import {
 } from './actions'
 
 import {
-  getClient,
   getSignMessage,
 } from 'services/api'
 

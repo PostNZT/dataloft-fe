@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import compose from 'recompose/compose'
 import Accordion from '@material-ui/core/Accordion'
@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
-import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
 
 const styles = (theme) => ({

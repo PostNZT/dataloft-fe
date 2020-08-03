@@ -43,7 +43,7 @@ import {
 import web3 from "web3";
 import {encrypt} from "eth-sig-util";
 
-const {FilecoinNumber} = require('@openworklabs/filecoin-number')
+// const {FilecoinNumber} = require('@openworklabs/filecoin-number')
 const styles = (theme) => ({
   paper: {
     display: 'flex',
@@ -103,7 +103,6 @@ const Register = (props) => {
   const {
       history,
       classes,
-      filecoin,
       getSignMessageRequest,
       getMetamaskAddressRequest,
       getFilecoinTransactionIdRequest,
@@ -377,7 +376,7 @@ const Register = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  filecoin: state.register.get('filecoin')
+  
 })
 
 const mapDispatchToProps = (dispatch) => ({

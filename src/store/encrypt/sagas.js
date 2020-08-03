@@ -23,7 +23,7 @@ function* encryptDataFileRequest(payload, meta) {
       const dataInfo = { filename, key, hint }
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
       //should perform multipart/form-data
-      // FileSaver.saveAs(encrypted_data.file, encrypted_data.name)
+      FileSaver.saveAs(encrypted_data.file, encrypted_data.name)
       yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {
       yield put(encryptDataFileFailure(data.error))
