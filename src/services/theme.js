@@ -6,6 +6,7 @@ const secondary = '#3A3B3C'
 
 export const theme = createMuiTheme({
   palette: {
+    type: "dark",
     primary: {
       main: primary,
     },

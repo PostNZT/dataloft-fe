@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import { withStyles } from '@material-ui/core/styles'
 import { 
@@ -14,6 +14,9 @@ import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import { bindActionCreators } from 'redux'
+import { 
+  FilecoinIcon,
+} from 'components/elements'
 
 import { 
   cardThemeBackground,
@@ -55,6 +58,16 @@ const styles = (theme) => ({
   button: {
     borderRadius: 50,
   },
+  accordion: {
+    left: '71%',
+    right: 15,
+    position: 'fixed',
+    bottom: 15,
+    width: '28%',
+  },
+  activeBadgeColor : {
+    background: 'lightgreen !important'
+  }
 })
 
 const Home = (props) => {
@@ -65,9 +78,16 @@ const Home = (props) => {
     encryptMultipleDataFilesRequest
   } = props
 
+  // const dropzoneRef = createRef()
   const [hasFile, setHasFile] = useState(false)
   const [openConfigModal, setOpenConfigModal] = useState(false)
   
+  // const handleUploadButton = () => {
+  //   if (dropzoneRef.current) {
+  //     dropzoneRef.current.open()
+  //   }
+  // }
+
   const onDrop = useCallback( async (fileList) => {    
     const mode = await handleFiles(fileList)
     
@@ -109,13 +129,39 @@ const Home = (props) => {
                 className={classes.button}
                 startIcon={<PlusIcon />}
                 size="large"
+                // onClick={handleUploadButton}
               >
                 Upload
               </Button>
+              
             </div>
+            
+            <Grid item xs={12}>
+              <Typography 
+                variant="body1" 
+                className={classes.whiteText}
+              >
+                Network Stats
+              </Typography>
+              <Badge
+                color="error"
+                variant="dot"
+                overlap="circle"
+                classes={{ badge: classes.activeBadgeColor}}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <FilecoinIcon />
+              </Badge>
+            </Grid>
           </Grid>
+
           
           <Grid item xs={9} className={classNames(classes.paper, classes.cardThemeBackground, classes.whiteText)}>
+          <div {...getRootProps()}>
+              <input {...getInputProps()} />
             <Grid container style={{ paddingBottom: 15 }}>
               <Grid item xs={12}>
                 <Typography 
@@ -146,8 +192,7 @@ const Home = (props) => {
                 <TabPanel />
               </Grid>
             </Grid> */}
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
+
               <Grid container style={{ paddingBottom: 15, paddingTop: 15 }}>
                 <Grid item xs={12}>
                   <Typography 
@@ -160,8 +205,8 @@ const Home = (props) => {
                 </Grid>
               </Grid>
               
-            </div>
-            {/* <Grid container>
+
+            <Grid container>
               <Grid item xs={3}>
                 <TabPanel />
               </Grid>
@@ -174,14 +219,19 @@ const Home = (props) => {
               <Grid item xs={3}>
                 <TabPanel />
               </Grid>
-            </Grid> */}
+            </Grid>
         
-              
+            </div>
           </Grid>
+          
+        </Grid>
           {
             isDragActive || hasFile && (
               <React.Fragment>
-                <UploadAccordion handleUploadFile={handleUploadFile}/>
+                <UploadAccordion 
+                  className={classes.accordion}
+                  handleUploadFile={handleUploadFile}
+                />
               </React.Fragment>
             )
           }
@@ -195,17 +245,11 @@ const Home = (props) => {
               </React.Fragment>
             )
           } 
-        </Grid>
-        
       </Container>
     </React.Fragment>
   )
 
 }
-
-const mapStateToProps = (state) => ({
-  
-})
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
@@ -218,5 +262,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(null, mapDispatchToProps)
 )(Home)

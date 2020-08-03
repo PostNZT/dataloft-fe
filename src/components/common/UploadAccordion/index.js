@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
+import { bindActionCreators } from 'redux'
+import { connect} from 'react-redux'
 
 const styles = (theme) => ({
   root: {
@@ -46,7 +48,8 @@ const styles = (theme) => ({
 })
 
 const UploadAccordion = (props) => {
-  const { classes, handleUploadFile } = props
+  const { classes, handleUploadFile, file_info, className } = props
+  const { filename, key, hint } = file_info
 
   const handleUploadFileButton = () => {
     handleUploadFile(false)
@@ -54,7 +57,7 @@ const UploadAccordion = (props) => {
   
   return (
     <div className={classes.root}>
-      <Accordion defaultExpanded>
+      <Accordion className={className} defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
@@ -62,18 +65,21 @@ const UploadAccordion = (props) => {
         >
           <Typography className={classes.heading}>General Upload Info</Typography>
         </AccordionSummary>
+        <Divider />
         <AccordionDetails>
           <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam.
+            File Name: &nbsp; {filename}
+            <br />
+            Password: &nbsp;{key}
+            <br />
+            Hint: &nbsp; {hint}
           </Typography>
         </AccordionDetails>
         <Divider />
         <AccordionActions>
           <Button size="small">Cancel</Button>
           <Button 
-            size="small" 
-            color="primary"
+            size="small"
             onClick={handleUploadFileButton}
           >
             Upload
@@ -85,6 +91,12 @@ const UploadAccordion = (props) => {
   )
 }
 
+
+const mapStateToProps = (state) => ({
+  file_info: state.encrypt.get('encrypted_data'),
+})
+
 export default compose(
-  withStyles(styles)
+  withStyles(styles),
+  connect(mapStateToProps)
 )(UploadAccordion)
