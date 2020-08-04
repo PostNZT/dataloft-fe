@@ -2,6 +2,7 @@
   "name": "dataloft-fe",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@filecoin-shipyard/lotus-client-provider-browser": "0.0.14",
     "@filecoin-shipyard/lotus-client-rpc": "0.0.11",
