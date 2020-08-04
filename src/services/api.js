@@ -1,11 +1,13 @@
 import axios from 'axios'
 import config from 'config'
-import { getClient } from "../utils/lotus";
-import { ipfs } from "../utils/ipfs";
-import {newAddress, newFromString, encode} from "@openworklabs/filecoin-address"
+import { getClient } from "../utils/lotus"
+import { ipfs } from "../utils/ipfs"
 const client = getClient();
 
 const targetAPI = config.TARGET_API
+const POW_HOST = config.POW_HOST
+
+
 
 export const getMetamaskAddress = (address) => {
   const body = {
@@ -151,18 +153,4 @@ export const uploadToFilecoin = (payload) => async (dispatch) => {
     });
   }
 }
-
-export const readFileAsBuffer = async (payload) => {
-  console.log(payload)
-  const fileReader = new FileReader()
-  fileReader.onloadend = function () {
-    const base64data = fileReader.result
-    console.log(base64data)
-  }
-  fileReader.readAsDataURL(payload)
-
-  // console.log(bufferData)
-
-}
-
 

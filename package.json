@@ -15,6 +15,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@textile/powergate-client": "^0.2.0",
     "@zondax/filecoin-signing-tools": "^0.6.3",
     "axios": "^0.19.2",
     "cbor-js": "^0.1.0",

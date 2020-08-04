@@ -91,7 +91,6 @@ export const encrypt = async (data, filename, key, hint) => {
     sha256After: sha256HashEncrypted
   };
 
-  incrementProgress()
 
   let zip = new JSZip()
   zip.file(".meta", JSON.stringify(metadata))
@@ -100,16 +99,14 @@ export const encrypt = async (data, filename, key, hint) => {
     base64: true
   })
 
-  let newZip = await zip.generateAsync({
-    type: "blob"
+  let dataFile = await zip.generateAsync({
+    type: "uint8array"
   })
 
-  incrementProgress()
-
   return {
-    file: newZip,
+    file: dataFile,
     name: md5 + ".dataloft"
-  }
+  } 
 }
 
 export const decrypt = async (file, key) => {
