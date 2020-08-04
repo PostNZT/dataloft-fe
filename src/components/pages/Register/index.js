@@ -15,11 +15,11 @@ import { Link } from 'react-router-dom'
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
-  getMetamaskAddressRequest,
 } from 'store/auth/actions'
 
 import {
-  getFilecoinTransactionIdRequest
+  getMetamaskAddressRequest,
+  getFilecoinSignedTransactionRequest
 } from 'store/register/actions'
 
 import {
@@ -42,8 +42,8 @@ import {
 } from 'components/elements'
 import web3 from "web3";
 import {encrypt} from "eth-sig-util";
+import { getMetamaskAddress } from '../../../services/api'
 
-// const {FilecoinNumber} = require('@openworklabs/filecoin-number')
 const styles = (theme) => ({
   paper: {
     display: 'flex',
@@ -105,7 +105,7 @@ const Register = (props) => {
       classes,
       getSignMessageRequest,
       getMetamaskAddressRequest,
-      getFilecoinTransactionIdRequest,
+      getFilecoinSignedTransactionRequest,
   } = props
  
   const [privKey, setPrivkey] = useState('')
@@ -120,10 +120,18 @@ const Register = (props) => {
   const handleClickCreateWithMetamask = async () => {
     const account = await window.ethereum.enable()
     const rawAddress = account[0]
-    getMetamaskAddressRequest(rawAddress).then((data) => {
-      setMetamaskAddress(rawAddress)
-      setHasCreatedWithMetamask(data.is_authenticated)
-    })
+    getMetamaskAddressRequest(rawAddress)
+    
+    /**
+     * removed the data.is_authenticated 
+     * replaced with signed_transaction
+     * 
+     * getMetamaskAddressRequest(rawAddress).then((data) => {
+     * setMetamaskAddress(rawAddress)
+     * setHasCreatedWithMetamask(data.is_authenticated)
+     * })
+     */
+    
   }
   
   const handleClickRegister = () => {
@@ -160,8 +168,8 @@ const Register = (props) => {
             await myBuffer.push(buffer[i]);
           }
           const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
-          const transaction_id = await getSignMessageRequest(signedMessage)
-          getFilecoinTransactionIdRequest(transaction_id)
+          const signed_transaction = await getSignMessageRequest(signedMessage)
+          getFilecoinSignedTransactionRequest(signed_transaction)
         } else {
           console.log(error)
         }
@@ -381,7 +389,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
-    getFilecoinTransactionIdRequest,
+    getFilecoinSignedTransactionRequest,
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
     getMetamaskAddressRequest,

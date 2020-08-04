@@ -26,33 +26,6 @@ export const authenticateUserFailure = (error, meta) => ({
   meta
 })
 
-export const GET_METAMASK_ADDRESS_REQUEST = 'GET_METAMASK_ADDRESS_REQUEST'
-export const GET_METAMASK_ADDRESS_SUCCESS = 'GET_METAMASK_ADDRESS_SUCCESS'
-export const GET_METAMASK_ADDRESS_FAILURE = 'GET_METAMASK_ADDRESS_FAILURE'
-
-export const getMetamaskAddressRequest = (address) => ({
-  type: GET_METAMASK_ADDRESS_REQUEST,
-  payload: {
-    address
-  },
-  meta: {
-    thunk: true
-  }
-})
-
-export const getMetamaskAddressSuccess = (response, meta) => ({
-  type: GET_METAMASK_ADDRESS_SUCCESS,
-  payload: response,
-  meta
-})
-
-export const getMetamaskAddressFailure = (error, meta) => ({
-  type: GET_METAMASK_ADDRESS_FAILURE,
-  payload: error,
-  meta
-})
-
-
 export const createDataloftAccountRequest = (username, password, address) => ({
   type: CREATE_DATALOFT_ACCOUNT_REQUEST,
   payload: {

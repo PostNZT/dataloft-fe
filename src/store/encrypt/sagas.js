@@ -20,7 +20,7 @@ function* encryptDataFileRequest(payload, meta) {
     const data = yield call (fileToData, fileList[0])
     if (data) {
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
-      const dataInfo = { filename, key, hint, base64: encrypted_data.file }
+      const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
       yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {
       yield put(encryptDataFileFailure(data.error))

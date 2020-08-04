@@ -5,8 +5,6 @@ import { ipfs } from "../utils/ipfs"
 const client = getClient();
 
 const targetAPI = config.TARGET_API
-const POW_HOST = config.POW_HOST
-
 
 
 export const getMetamaskAddress = (address) => {

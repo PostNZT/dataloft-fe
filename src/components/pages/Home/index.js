@@ -102,7 +102,7 @@ const Home = (props) => {
       decryptDataFileRequest(fileList, key)
     }
     setHasFile(true)
-  }, [])
+  }, [encryptDataFileRequest, encryptMultipleDataFilesRequest, decryptDataFileRequest])
 
   const handleUploadFile = () => {
     setHasFile(true)
