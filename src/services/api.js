@@ -2,7 +2,6 @@ import axios from 'axios'
 import config from 'config'
 import { getClient } from "../utils/lotus"
 import { ipfs } from "../utils/ipfs"
-const client = getClient();
 
 const targetAPI = config.TARGET_API
 

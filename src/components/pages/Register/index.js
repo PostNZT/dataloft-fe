@@ -41,8 +41,7 @@ import {
   Dataloft
 } from 'components/elements'
 import web3 from "web3";
-import {encrypt} from "eth-sig-util";
-import { getMetamaskAddress } from '../../../services/api'
+import {encrypt} from "eth-sig-util"
 
 const styles = (theme) => ({
   paper: {
