@@ -5,7 +5,7 @@ import {
 import { fromJS } from 'immutable'
 
 const defaultState = fromJS({
-  dataloft_user: {
+  user: {
     metamask_address: []
   },
   filecoin: {
@@ -18,7 +18,7 @@ const defaultState = fromJS({
 export const register = (state = defaultState, { type, payload }) => {
   switch (type) {
     case GET_METAMASK_ADDRESS_SUCCESS:
-      return state.set('dataloft_user', payload)
+      return state.set('user', payload)
     case GET_FILECOIN_SIGNED_TRANSACTION_SUCCESS:
       return state.set('filecoin', payload)
     default:

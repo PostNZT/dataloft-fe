@@ -101,11 +101,11 @@ const styles = (theme) => ({
 const Register = (props) => {
 
   const {
-      history,
-      classes,
-      getSignMessageRequest,
-      getMetamaskAddressRequest,
-      getFilecoinSignedTransactionRequest,
+    history,
+    classes,
+    getSignMessageRequest,
+    getMetamaskAddressRequest,
+    getFilecoinSignedTransactionRequest,
   } = props
  
   const [privKey, setPrivkey] = useState('')
@@ -113,25 +113,18 @@ const Register = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [metamaskAddress, setMetamaskAddress] = useState('')
+  const [hasMetamaskAddress, setHasMetamaskAddress] = useState(false)
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
-  const [hasCreatedWithMetamask, setHasCreatedWithMetamask] = useState( false)
   const [hasCreatedWithDataloft, setHasCreatedWithDataloft] = useState( false)
   
   const handleClickCreateWithMetamask = async () => {
     const account = await window.ethereum.enable()
     const rawAddress = account[0]
-    getMetamaskAddressRequest(rawAddress)
-    
-    /**
-     * removed the data.is_authenticated 
-     * replaced with signed_transaction
-     * 
-     * getMetamaskAddressRequest(rawAddress).then((data) => {
-     * setMetamaskAddress(rawAddress)
-     * setHasCreatedWithMetamask(data.is_authenticated)
-     * })
-     */
-    
+    getMetamaskAddressRequest(rawAddress).then(() => {
+      setMetamaskAddress(rawAddress)
+      setHasMetamaskAddress(true)
+    })
+
   }
   
   const handleClickRegister = () => {
@@ -175,7 +168,7 @@ const Register = (props) => {
         }
       }
     )   
-    history.push('/')
+    history.push('/login')
   }
 
   const onChange = (e) => {
@@ -216,7 +209,7 @@ const Register = (props) => {
               </Typography>
             </div>
             {
-              !hasCreatedWithDataloft && hasCreatedWithMetamask  && (
+              !hasCreatedWithDataloft && hasMetamaskAddress  && (
                   <React.Fragment>
                     <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
                       <InputBase
@@ -254,7 +247,7 @@ const Register = (props) => {
               )
             }
             {
-              !hasCreatedWithDataloft && hasCreatedWithMetamask && (
+              !hasCreatedWithDataloft && hasMetamaskAddress && (
                   <React.Fragment>
                     <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                       <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -277,7 +270,7 @@ const Register = (props) => {
               )
             }
             {
-              hasCreatedWithMetamask && hasCreatedWithDataloft && (
+              hasMetamaskAddress && hasCreatedWithDataloft && (
                 <React.Fragment>
                   <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
                     <p>Send 10 file coin to this address to create your account</p>
@@ -287,7 +280,7 @@ const Register = (props) => {
               )
             }
             {
-              hasCreatedWithMetamask && hasCreatedWithDataloft && (
+              hasMetamaskAddress && hasCreatedWithDataloft && (
                 <React.Fragment>
                   <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                     <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -310,7 +303,7 @@ const Register = (props) => {
               )
             }
             {
-              !hasCreatedWithMetamask && hasInstalledMetamask && (
+              !hasMetamaskAddress && hasInstalledMetamask && (
                 <React.Fragment>
                   <div style={{paddingBottom: 10, display: 'flex', alignContent: 'center' }}>
                   <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -383,10 +376,6 @@ const Register = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  
-})
-
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     getFilecoinSignedTransactionRequest,
@@ -399,5 +388,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(null, mapDispatchToProps)
 )(Register)

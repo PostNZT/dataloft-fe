@@ -8,13 +8,13 @@ import {
   getFilecoinSignedTransactionSuccess,
   getFilecoinSignedTransactionFailure
 } from './actions'
-import { getMetamaskAddress } from '../../services/api'
 
 function* getMetamaskAddressRequest(payload, meta) {
   try{
     const { address } = payload
     if (address) {
-      yield put(getMetamaskAddressSuccess( {metamask_address: address}, meta))
+      const result = { metamask_address: address }
+      yield put(getMetamaskAddressSuccess(result, meta))
     } else {
       yield put(getMetamaskAddressFailure(address.error, meta))
     }

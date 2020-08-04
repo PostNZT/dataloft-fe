@@ -7,15 +7,11 @@ import {
   CREATE_METAMASK_ACCOUNT_REQUEST,
   createMetamaskAccountSuccess,
   createMetamaskAccountFailure,
-  GET_METAMASK_ADDRESS_REQUEST,
-  getMetamaskAddressSuccess,
-  getMetamaskAddressFailure,
 } from './actions'
 
 import {
   createDataloftAccount,
   createMetamaskAccount,
-  getMetamaskAddress,
 } from 'services/api'
 
 function* createMetamaskAccountRequest(payload, meta) {
