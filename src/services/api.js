@@ -151,3 +151,18 @@ export const uploadToFilecoin = (payload) => async (dispatch) => {
     });
   }
 }
+
+export const readFileAsBuffer = async (payload) => {
+  console.log(payload)
+  const fileReader = new FileReader()
+  fileReader.onloadend = function () {
+    const base64data = fileReader.result
+    console.log(base64data)
+  }
+  fileReader.readAsDataURL(payload)
+
+  // console.log(bufferData)
+
+}
+
+
