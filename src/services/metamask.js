@@ -1,32 +1,36 @@
 import {encrypt} from 'eth-sig-util'
 import web3 from 'web3'
-export function metamaskPublic(accounts) {
-  window.ethereum.sendAsync(
-    {
-      jsonrpc: '2.0',
-      method: 'eth_getEncryptionPublicKey',
-      params: [accounts[0]],
-      from: accounts[0],
-    },
-    function (error, encryptionpublickey) {
-      if (!error) {
-        return encryptionpublickey.result;
-      } else {
-        console.log(error);
+export async function metamaskPublic(address) {
+  return new Promise((resolve, reject) => {
+     window.ethereum.sendAsync(
+      {
+        jsonrpc: '2.0',
+        method: 'eth_getEncryptionPublicKey',
+        params: [address],
+        from: address,
+      },
+      function (error, encryptionpublickey) {
+        if (!error) {
+          resolve(encryptionpublickey.result)
+        } else {
+          reject(error)
+        }
       }
-    }
-  )
+    )
+  })
 }
 
 export async function metamaskEncrypt(data, pubKey) {
-  const encryptedMessage = web3.toHex(
+  console.log(data)
+  const encryptedMessage = web3.utils.toHex(
     JSON.stringify(
       encrypt(
         pubKey,
-        { data: data },
+        data,
         'x25519-xsalsa20-poly1305'
       )
     )
   )
   console.log(encryptedMessage)
 }
+
