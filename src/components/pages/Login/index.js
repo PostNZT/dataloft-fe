@@ -121,7 +121,7 @@ const Login = (props) => {
 
   return (
     <div className={classes.page}>
-      <ParticleBackground>
+      {/* <ParticleBackground> */}
         <div>
           <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -234,7 +234,7 @@ const Login = (props) => {
           </div>
         </Container>
         </div>
-      </ParticleBackground>
+      {/* </ParticleBackground> */}
     </div>
   )
 }
