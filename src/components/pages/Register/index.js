@@ -31,6 +31,15 @@ import {
   getSignMessageRequest
 } from 'store/lotus/actions'
 
+import {
+  authorize,
+  create,
+  start,
+  collectionFromObject,
+  instances,
+  createQuery
+} from 'services/threadsDb'
+
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -40,8 +49,8 @@ import {
   Metamask, 
   Dataloft
 } from 'components/elements'
-import web3 from "web3";
-import {encrypt} from "eth-sig-util"
+import {boxRegister} from 'services/3box';
+import {metamaskEncrypt, metamaskPublic} from "services/metamask";
 
 const styles = (theme) => ({
   paper: {
@@ -105,25 +114,26 @@ const Register = (props) => {
     getSignMessageRequest,
     getMetamaskAddressRequest,
     getFilecoinSignedTransactionRequest,
+    createDataloftAccountRequest,
   } = props
- 
+
   const [privKey, setPrivkey] = useState('')
   const [filecoinAddress, setfilecoinAddress] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [metamaskAddress, setMetamaskAddress] = useState('')
+  const [identity, setIdentity] = useState('')
   const [hasMetamaskAddress, setHasMetamaskAddress] = useState(false)
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
   const [hasCreatedWithDataloft, setHasCreatedWithDataloft] = useState( false)
-  
+
   const handleClickCreateWithMetamask = async () => {
-    const account = await window.ethereum.enable()
-    const rawAddress = account[0]
-    getMetamaskAddressRequest(rawAddress).then(() => {
-      setMetamaskAddress(rawAddress)
+    const getIdentity = await boxRegister()
+    setIdentity(getIdentity.identity)
+    getMetamaskAddressRequest(getIdentity.address).then((data) => {
+      setMetamaskAddress(getIdentity.address)
       setHasMetamaskAddress(true)
     })
-
   }
   
   const handleClickRegister = () => {
@@ -135,39 +145,39 @@ const Register = (props) => {
   }
 
   const handleSentFilecoin = async () => {
-    window.ethereum.sendAsync(
-      {
-        jsonrpc: '2.0',
-        method: 'eth_getEncryptionPublicKey',
-        params: [metamaskAddress],
-        from: metamaskAddress,
-      },
-       async function (error, encryptionpublickey) {
-        if (!error) {
-          const encryptedMessage = await web3.utils.toHex(
-            JSON.stringify(
-              encrypt(
-                encryptionpublickey.result,
-                { data: "password:"+password+", privKey:"+privKey.privateKey},
-                'x25519-xsalsa20-poly1305'
-              )
-            )
-          )
-          const str = "{account:'Dataloft', user: '"+username+"', pubEncrypt:'"+encryptionpublickey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
-          var myBuffer = [];
-          var buffer = new Buffer(JSON.stringify(str))
-          for (var i = 0; i < buffer.length; i++) {
-            await myBuffer.push(buffer[i]);
-          }
-          const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
-          const signed_transaction = await getSignMessageRequest(signedMessage)
-          getFilecoinSignedTransactionRequest(signed_transaction)
-        } else {
-          console.log(error)
-        }
-      }
-    )   
-    history.push('/login')
+    const pubKey = await metamaskPublic(metamaskAddress)
+    const msg = { data: "password:"+password+", privKey:"+privKey.privateKey}
+    const encryptedMessage = metamaskEncrypt(msg, pubKey)
+
+    const obj = {
+      account:'Dataloft',
+      user: username,
+      pubEncrypt:pubKey.result,
+      encryptedKeys:encryptedMessage
+    }
+
+    const str = "{account:'Dataloft', user: '"+username+"', pubkey:'"+pubKey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
+
+    var myBuffer = [];
+    var buffer = new Buffer(JSON.stringify(str))
+    for (var i = 0; i < buffer.length; i++) {
+      await myBuffer.push(buffer[i]);
+    }
+
+    const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
+    const signed_transaction = await getSignMessageRequest(signedMessage)
+    // console.log(signedMessage)
+    const tx = await getFilecoinSignedTransactionRequest(signed_transaction)
+    const db = await create()
+    const startDb = await start(db ,identity)
+    console.log(db)
+    const collection = await collectionFromObject(db)
+    console.log(collection);
+    // const instance = await instances(db, obj)
+    console.log(username)
+    //const query = await createQuery(db, username)
+    await createDataloftAccountRequest(username, password, filecoinAddress)
+    history.push('/')
   }
 
   const onChange = (e) => {
