@@ -167,6 +167,12 @@ const Register = (props) => {
         }
       }
     )   
+
+    /**
+     * CREATE A SAGA ON AUTH (USER) THAT SHOULD HANDLE CREATEFFS 
+     * IF(SIGNED_TRANSACTION) -> CREATEFFS 
+     */
+
     history.push('/login')
   }
 

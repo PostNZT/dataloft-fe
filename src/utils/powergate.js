@@ -6,10 +6,15 @@ import {
 } from 'utils/database' 
 
 
-const HOST = config.POW_HOST
+const POW_HOST = config.POW_HOST
 
-export const POW_HOST = createPow({ HOST })
+export const powergate = createPow({ POW_HOST })
 
+export const networkHealth = async() => {
+  const { status, messageList } = await powergate.health.check()
+  const { peersList } = await pow.net.peers()
+  
+}
 
 export const createFFS = async(payload) => {
   const { address } = payload
