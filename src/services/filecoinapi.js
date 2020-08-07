@@ -6,8 +6,8 @@ const bip32 = require('bip32');
 const { publicKeyConvert } = require('ethereum-cryptography/secp256k1')
 
 const config = {
-  apiAddress: 'http://127.0.0.1:7777/rest/v0/import',
-  token: "27e25efa-5fde-46fe-9380-83cd209e1a97", // required
+  apiAddress: 'http://51.210.121.212:7777/rest/v0/import',
+  token: "", // required
 }
 
 
