@@ -54,7 +54,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "fix-memory-limit": "cross-env LIMIT=2048 increase-memory-limit"
+  },
+  "devDependencies": {
+    "increase-memory-limit": "^1.0.3",
+    "cross-env": "^5.0.5"
+  }
   },
   "eslintConfig": {
     "extends": "react-app"
