@@ -7,15 +7,15 @@ import {
   CREATE_METAMASK_ACCOUNT_REQUEST,
   createMetamaskAccountSuccess,
   createMetamaskAccountFailure,
-  GET_METAMASK_ADDRESS_REQUEST,
-  getMetamaskAddressSuccess,
-  getMetamaskAddressFailure,
+  AUTHENTICATE_DATALOFT_USER_REQUEST,
+  authenticateUserSuccess,
+  authenticateUserFailure,
 } from './actions'
 
 import {
   createDataloftAccount,
   createMetamaskAccount,
-  getMetamaskAddress,
+  authenticateUser
 } from 'services/api'
 
 function* createMetamaskAccountRequest(payload, meta) {
@@ -35,11 +35,12 @@ function* createMetamaskAccountRequest(payload, meta) {
 
 function* createDataloftAccountRequest(payload, meta) {
   try {
-    const { username, password, address } = payload
-    const data = yield call(createDataloftAccount, username, password, address)
+    const { username, pubEncrypt, encryptedKeys, filecoinTx } = payload
+    const data = yield call(createDataloftAccount, username, pubEncrypt, encryptedKeys, filecoinTx)
     
     if (data.response) {
-      yield put(createDataloftAccountSuccess(data.response, meta))
+      const data_returned = data.response
+      yield put(createDataloftAccountSuccess(data_returned, meta))
     } else {
       yield put(createDataloftAccountFailure(data.error))
     }
@@ -48,20 +49,39 @@ function* createDataloftAccountRequest(payload, meta) {
   }
 }
 
-function* getMetamaskAddressRequest(payload, meta) {
-  try{
-    const { address } = payload
-    const data = yield call(getMetamaskAddress, address)
+function* authenticateUserRequest(payload, meta) {
+  try {
+    const { username, password } = payload
+    const data = yield call(authenticateUser, username, password)
 
-    if (data.resolve) {
-      yield put(getMetamaskAddressSuccess(data.resolve, meta))
+    if (data.response) {
+      const data_returned = data.response
+      yield put(authenticateUserSuccess(data_returned, meta))
     } else {
-      yield put(getMetamaskAddressFailure(data.error))
+      yield put(authenticateUserFailure(data.error))
     }
   } catch (error) {
-    yield put(getMetamaskAddressFailure(error))
+    yield put(authenticateUserFailure(error))
   }
 }
+
+/** 
+ * SHOULD BE IMPLEMENTED ON REGISTER
+*/
+// function* getMetamaskAddressRequest(payload, meta) {
+//   try{
+//     const { address } = payload
+//     const data = yield call(getMetamaskAddress, address)
+
+//     if (data.resolve) {
+//       yield put(getMetamaskAddressSuccess(data.resolve, meta))
+//     } else {
+//       yield put(getMetamaskAddressFailure(data.error))
+//     }
+//   } catch (error) {
+//     yield put(getMetamaskAddressFailure(error))
+//   }
+// }
 
 function* watchCreateDataloftAccountRequest({ payload, meta }) {
   yield call(createDataloftAccountRequest, payload, meta)
@@ -71,12 +91,12 @@ function* watchCreateMetamaskAccountRequest({ payload, meta }) {
   yield call(createMetamaskAccountRequest, payload, meta)
 }
 
-function* watchGetMetamaskAddressRequest({ payload, meta }) {
-  yield call(getMetamaskAddressRequest, payload, meta)
+function* watchAuthenticateUserRequest({ payload, meta }) {
+  yield call(authenticateUserRequest, payload, meta)
 }
 
 export default function* sagas() {
   yield takeEvery(CREATE_DATALOFT_ACCOUNT_REQUEST, watchCreateDataloftAccountRequest)
   yield takeEvery(CREATE_METAMASK_ACCOUNT_REQUEST, watchCreateMetamaskAccountRequest)
-  yield takeEvery(GET_METAMASK_ADDRESS_REQUEST, watchGetMetamaskAddressRequest)
+  yield takeEvery(AUTHENTICATE_DATALOFT_USER_REQUEST, watchAuthenticateUserRequest)
 }

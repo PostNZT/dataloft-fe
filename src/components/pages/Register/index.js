@@ -15,11 +15,11 @@ import { Link } from 'react-router-dom'
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
-  getMetamaskAddressRequest,
 } from 'store/auth/actions'
 
 import {
-  getFilecoinTransactionIdRequest
+  getMetamaskAddressRequest,
+  getFilecoinSignedTransactionRequest
 } from 'store/register/actions'
 
 import {
@@ -31,6 +31,15 @@ import {
   getSignMessageRequest
 } from 'store/lotus/actions'
 
+import {
+  authorize,
+  createThreadDB,
+  start,
+  collectionFromObject,
+  instances,
+  createQuery
+} from 'services/threadsDb'
+
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -40,10 +49,9 @@ import {
   Metamask, 
   Dataloft
 } from 'components/elements'
-import web3 from "web3";
-import {encrypt} from "eth-sig-util";
+import {boxRegister} from 'services/3box';
+import {metamaskEncrypt, metamaskPublic} from "services/metamask";
 
-// const {FilecoinNumber} = require('@openworklabs/filecoin-number')
 const styles = (theme) => ({
   paper: {
     display: 'flex',
@@ -101,28 +109,30 @@ const styles = (theme) => ({
 const Register = (props) => {
 
   const {
-      history,
-      classes,
-      getSignMessageRequest,
-      getMetamaskAddressRequest,
-      getFilecoinTransactionIdRequest,
+    history,
+    classes,
+    getSignMessageRequest,
+    getMetamaskAddressRequest,
+    getFilecoinSignedTransactionRequest,
+    createDataloftAccountRequest,
   } = props
- 
+
   const [privKey, setPrivkey] = useState('')
   const [filecoinAddress, setfilecoinAddress] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [metamaskAddress, setMetamaskAddress] = useState('')
+  const [identity, setIdentity] = useState('')
+  const [hasMetamaskAddress, setHasMetamaskAddress] = useState(false)
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
-  const [hasCreatedWithMetamask, setHasCreatedWithMetamask] = useState( false)
   const [hasCreatedWithDataloft, setHasCreatedWithDataloft] = useState( false)
-  
+
   const handleClickCreateWithMetamask = async () => {
-    const account = await window.ethereum.enable()
-    const rawAddress = account[0]
-    getMetamaskAddressRequest(rawAddress).then((data) => {
-      setMetamaskAddress(rawAddress)
-      setHasCreatedWithMetamask(data.is_authenticated)
+    const getIdentity = await boxRegister()
+    setIdentity(getIdentity.identity)
+    getMetamaskAddressRequest(getIdentity.address).then((data) => {
+      setMetamaskAddress(getIdentity.address)
+      setHasMetamaskAddress(true)
     })
   }
   
@@ -135,38 +145,39 @@ const Register = (props) => {
   }
 
   const handleSentFilecoin = async () => {
-    window.ethereum.sendAsync(
-      {
-        jsonrpc: '2.0',
-        method: 'eth_getEncryptionPublicKey',
-        params: [metamaskAddress],
-        from: metamaskAddress,
-      },
-       async function (error, encryptionpublickey) {
-        if (!error) {
-          const encryptedMessage = await web3.utils.toHex(
-            JSON.stringify(
-              encrypt(
-                encryptionpublickey.result,
-                { data: "password:"+password+", privKey:"+privKey.privateKey},
-                'x25519-xsalsa20-poly1305'
-              )
-            )
-          )
-          const str = "{account:'Dataloft', user: '"+username+"', pubEncrypt:'"+encryptionpublickey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
-          var myBuffer = [];
-          var buffer = new Buffer(JSON.stringify(str))
-          for (var i = 0; i < buffer.length; i++) {
-            await myBuffer.push(buffer[i]);
-          }
-          const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
-          const transaction_id = await getSignMessageRequest(signedMessage)
-          getFilecoinTransactionIdRequest(transaction_id)
-        } else {
-          console.log(error)
-        }
-      }
-    )   
+    const pubKey = await metamaskPublic(metamaskAddress)
+    const msg = { data: "password:"+password+", privKey:"+privKey.privateKey}
+    const encryptedMessage = await metamaskEncrypt(msg, pubKey)
+    console.log(encryptedMessage);
+
+    const obj = {
+      account:'Dataloft',
+      user:username,
+      pubEncrypt:pubKey,
+      encryptedKeys:encryptedMessage,
+    }
+    console.log(obj)
+    const str = "{account:'Dataloft', user: '"+username+"', pubkey:'"+pubKey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
+
+    var myBuffer = [];
+    var buffer = await new Buffer(JSON.stringify(str))
+    for (var i = 0; i < buffer.length; i++) {
+        myBuffer.push(buffer[i]);
+    }
+
+    const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
+    const signed_transaction = await getSignMessageRequest(signedMessage)
+    // console.log(signedMessage)
+    const tx = await getFilecoinSignedTransactionRequest(signed_transaction)
+    const db = await createThreadDB()
+    const startDb = await start(db ,identity)
+    console.log(db)
+    const collection = await collectionFromObject(db)
+    console.log(collection)
+    const instance = await instances(db, obj)
+    console.log(username)
+    //const query = await createQuery(db, username)
+    await createDataloftAccountRequest(username, pubKey, encryptedMessage, signed_transaction)
     history.push('/')
   }
 
@@ -208,7 +219,7 @@ const Register = (props) => {
               </Typography>
             </div>
             {
-              !hasCreatedWithDataloft && hasCreatedWithMetamask  && (
+              !hasCreatedWithDataloft && hasMetamaskAddress  && (
                   <React.Fragment>
                     <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
                       <InputBase
@@ -246,7 +257,7 @@ const Register = (props) => {
               )
             }
             {
-              !hasCreatedWithDataloft && hasCreatedWithMetamask && (
+              !hasCreatedWithDataloft && hasMetamaskAddress && (
                   <React.Fragment>
                     <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                       <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -269,7 +280,7 @@ const Register = (props) => {
               )
             }
             {
-              hasCreatedWithMetamask && hasCreatedWithDataloft && (
+              hasMetamaskAddress && hasCreatedWithDataloft && (
                 <React.Fragment>
                   <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
                     <p>Send 10 file coin to this address to create your account</p>
@@ -279,7 +290,7 @@ const Register = (props) => {
               )
             }
             {
-              hasCreatedWithMetamask && hasCreatedWithDataloft && (
+              hasMetamaskAddress && hasCreatedWithDataloft && (
                 <React.Fragment>
                   <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                     <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -302,7 +313,7 @@ const Register = (props) => {
               )
             }
             {
-              !hasCreatedWithMetamask && hasInstalledMetamask && (
+              !hasMetamaskAddress && hasInstalledMetamask && (
                 <React.Fragment>
                   <div style={{paddingBottom: 10, display: 'flex', alignContent: 'center' }}>
                   <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
@@ -375,13 +386,9 @@ const Register = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  
-})
-
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
-    getFilecoinTransactionIdRequest,
+    getFilecoinSignedTransactionRequest,
     createDataloftAccountRequest,
     createMetamaskAccountRequest,
     getMetamaskAddressRequest,
@@ -391,5 +398,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(null, mapDispatchToProps)
 )(Register)

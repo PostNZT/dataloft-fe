@@ -26,7 +26,7 @@ const styles = (theme) => ({
 
 
 const ConfigModal = (props) => {
-  const { open, onClose, classes } = props
+  const { open, onClose } = props
 
 
   return(

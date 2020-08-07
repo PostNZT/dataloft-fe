@@ -1,4 +1,7 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { 
+  call, 
+  // put, 
+  takeEvery } from 'redux-saga/effects'
 
 import {
   SET_DEFAULT_CONFIG_REQUEST, GET_DEFAULT_CONFIG_REQUEST,

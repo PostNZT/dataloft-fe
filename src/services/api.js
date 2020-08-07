@@ -1,11 +1,10 @@
 import axios from 'axios'
 import config from 'config'
-import { getClient } from "../utils/lotus";
-import { ipfs } from "../utils/ipfs";
-import {newAddress, newFromString, encode} from "@openworklabs/filecoin-address"
-const client = getClient();
+import { getClient } from "../utils/lotus"
+import { ipfs } from "../utils/ipfs"
 
 const targetAPI = config.TARGET_API
+
 
 export const getMetamaskAddress = (address) => {
   const body = {
@@ -64,17 +63,37 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
-export const createDataloftAccount = (username, password, address) => {
+export const createDataloftAccount = (username, pubEncrypt, encryptedKeys, filecoinTx) => {
   const body = {
     username,
-    password,
-    address
+    pubEncrypt,
+    encryptedKeys,
+    filecoinTx
   }
 
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `${targetAPI}/auth/create/dataloft`,
+      data: body,
+    }).then(({data}) => {
+      resolve({ response: data })
+    }).catch((error) => {
+      reject({ error })
+    })
+  })
+}
+
+export const authenticateUser = (username, password) => {
+  const body = {
+    username,
+    password
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `${targetAPI}/auth/user/dataloft`,
       data: body,
     }).then(({data}) => {
       resolve({ response: data })
@@ -151,3 +170,4 @@ export const uploadToFilecoin = (payload) => async (dispatch) => {
     });
   }
 }
+

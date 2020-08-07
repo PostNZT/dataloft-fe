@@ -1,26 +1,51 @@
-//SHOULD GET THE TX_ID AND STORE IT GLOBALLY
-export const GET_FILECOIN_TRANSACTION_ID_REQUEST = 'GET_FILECOIN_TRANSACTION_ID_REQUEST'
-export const GET_FILECOIN_TRANSACTION_ID_SUCCESS = 'GET_FILECOIN_TRANSACTION_ID_SUCCESS'
-export const GET_FILECOIN_TRANSACTION_ID_FAILURE = 'GET_FILECOIN_TRANSACTION_ID_FAILURE'
+export const GET_METAMASK_ADDRESS_REQUEST = 'GET_METAMASK_ADDRESS_REQUEST'
+export const GET_METAMASK_ADDRESS_SUCCESS = 'GET_METAMASK_ADDRESS_SUCCESS'
+export const GET_METAMASK_ADDRESS_FAILURE = 'GET_METAMASK_ADDRESS_FAILURE'
 
-export const getFilecoinTransactionIdRequest = (transaction_id) => ({
-  type: GET_FILECOIN_TRANSACTION_ID_REQUEST,
+export const getMetamaskAddressRequest = (address) => ({
+  type: GET_METAMASK_ADDRESS_REQUEST,
   payload: {
-    transaction_id
+    address
   },
   meta: {
     thunk: true
   }
 })
 
-export const getFilecoinTransactionIdSuccess = (response, meta) => ({
-  type: GET_FILECOIN_TRANSACTION_ID_SUCCESS,
+export const getMetamaskAddressSuccess = (response, meta) => ({
+  type: GET_METAMASK_ADDRESS_SUCCESS,
   payload: response,
   meta
 })
 
-export const getFilecoinTransactionIdFailure = (error, meta) => ({
-  type: GET_FILECOIN_TRANSACTION_ID_FAILURE,
+export const getMetamaskAddressFailure = (error, meta) => ({
+  type: GET_METAMASK_ADDRESS_FAILURE,
+  payload: error,
+  meta
+})
+
+export const GET_FILECOIN_SIGNED_TRANSACTION_REQUEST = 'GET_FILECOIN_SIGNED_TRANSACTION_REQUEST'
+export const GET_FILECOIN_SIGNED_TRANSACTION_SUCCESS = 'GET_FILECOIN_SIGNED_TRANSACTION_SUCCESS'
+export const GET_FILECOIN_SIGNED_TRANSACTION_FAILURE = 'GET_FILECOIN_SIGNED_TRANSACTION_FAILURE'
+
+export const getFilecoinSignedTransactionRequest = (signed_transaction) => ({
+  type: GET_FILECOIN_SIGNED_TRANSACTION_REQUEST,
+  payload: {
+    signed_transaction
+  },
+  meta: {
+    thunk: true
+  }
+})
+
+export const getFilecoinSignedTransactionSuccess = (response, meta) => ({
+  type: GET_FILECOIN_SIGNED_TRANSACTION_SUCCESS,
+  payload: response,
+  meta
+})
+
+export const getFilecoinSignedTransactionFailure = (error, meta) => ({
+  type: GET_FILECOIN_SIGNED_TRANSACTION_FAILURE,
   payload: error,
   meta
 })

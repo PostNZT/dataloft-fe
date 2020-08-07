@@ -1,12 +1,9 @@
-import { newFromString, encode, newAddress, validateAddressString } from "@openworklabs/filecoin-address";
-import sigUtil from "eth-sig-util";
+import { encode, newAddress, validateAddressString } from "@openworklabs/filecoin-address"
 import ethUtil from "ethereumjs-util"
 import filecoin_signer from "@zondax/filecoin-signing-tools/js"
 import Filecoin, { LocalNodeProvider, } from '@openworklabs/filecoin-wallet-provider'
-const { randomBytes } = require('crypto')
-const secp256k1 = require('secp256k1')
 const bip32 = require('bip32');
-const { ecdsaSign, ecdsaRecover, publicKeyConvert } = require('ethereum-cryptography/secp256k1')
+const { publicKeyConvert } = require('ethereum-cryptography/secp256k1')
 
 const config = {
   apiAddress: 'http://127.0.0.1:7777/rest/v0/import',

@@ -1,5 +1,4 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import FileSaver from "file-saver"
 
 import {
   encrypt,
@@ -17,13 +16,11 @@ function* encryptDataFileRequest(payload, meta) {
   try {
     const { fileList, key, hint } = payload
     const { name: filename } = fileList[0]
-    
+   
     const data = yield call (fileToData, fileList[0])
     if (data) {
-      const dataInfo = { filename, key, hint }
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
-      //should perform multipart/form-data
-      FileSaver.saveAs(encrypted_data.file, encrypted_data.name)
+      const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
       yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {
       yield put(encryptDataFileFailure(data.error))
