@@ -15,7 +15,7 @@ import MuiLink from '@material-ui/core/Link'
 import { Link } from 'react-router-dom'
 
 import {
-  createDataloftAccountRequest,
+  authenticateUserRequest,
   createMetamaskAccountRequest
 } from 'store/auth/actions'
 
@@ -85,7 +85,7 @@ const styles = (theme) => ({
 const Login = (props) => {
   const {
     classes,
-    createDataloftAccountRequest,
+    authenticateUserRequest,
   } = props
 
   const [username, setUsername] = useState('')
@@ -96,7 +96,7 @@ const Login = (props) => {
   const handleClickLogin = () => {
     const username = 'dataloft'
     const password = 'testingpass'
-    createDataloftAccountRequest(username, password)
+    authenticateUserRequest(username, password)
 
   }
 
@@ -290,7 +290,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
-    createDataloftAccountRequest,
+    authenticateUserRequest,
     createMetamaskAccountRequest,
   }, dispatch)
 })

@@ -33,7 +33,7 @@ import {
 
 import {
   authorize,
-  create,
+  createThreadDB,
   start,
   collectionFromObject,
   instances,
@@ -147,36 +147,37 @@ const Register = (props) => {
   const handleSentFilecoin = async () => {
     const pubKey = await metamaskPublic(metamaskAddress)
     const msg = { data: "password:"+password+", privKey:"+privKey.privateKey}
-    const encryptedMessage = metamaskEncrypt(msg, pubKey)
+    const encryptedMessage = await metamaskEncrypt(msg, pubKey)
+    console.log(encryptedMessage);
 
     const obj = {
       account:'Dataloft',
-      user: username,
-      pubEncrypt:pubKey.result,
-      encryptedKeys:encryptedMessage
+      user:username,
+      pubEncrypt:pubKey,
+      encryptedKeys:encryptedMessage,
     }
-
+    console.log(obj)
     const str = "{account:'Dataloft', user: '"+username+"', pubkey:'"+pubKey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
 
     var myBuffer = [];
-    var buffer = new Buffer(JSON.stringify(str))
+    var buffer = await new Buffer(JSON.stringify(str))
     for (var i = 0; i < buffer.length; i++) {
-      await myBuffer.push(buffer[i]);
+        myBuffer.push(buffer[i]);
     }
 
     const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
     const signed_transaction = await getSignMessageRequest(signedMessage)
     // console.log(signedMessage)
     const tx = await getFilecoinSignedTransactionRequest(signed_transaction)
-    const db = await create()
+    const db = await createThreadDB()
     const startDb = await start(db ,identity)
     console.log(db)
     const collection = await collectionFromObject(db)
-    console.log(collection);
-    // const instance = await instances(db, obj)
+    console.log(collection)
+    const instance = await instances(db, obj)
     console.log(username)
     //const query = await createQuery(db, username)
-    await createDataloftAccountRequest(username, password, filecoinAddress)
+    await createDataloftAccountRequest(username, pubKey, encryptedMessage, signed_transaction)
     history.push('/')
   }
 

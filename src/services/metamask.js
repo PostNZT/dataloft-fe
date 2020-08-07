@@ -31,6 +31,6 @@ export async function metamaskEncrypt(data, pubKey) {
       )
     )
   )
-  console.log(encryptedMessage)
+  return(encryptedMessage)
 }
 

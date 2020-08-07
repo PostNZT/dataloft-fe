@@ -2,12 +2,11 @@ export const AUTHENTICATE_DATALOFT_USER_REQUEST = 'AUTHENTICATE_DATALOFT_USER_RE
 export const AUTHENTICATE_DATALOFT_USER_SUCCESS = 'AUTHENTICATE_DATALOFT_USER_SUCCESS'
 export const AUTHENTICATE_DATALOFT_USER_FAILURE = 'AUTHENTICATE_DATALOFT_USER_FAILURE'
 
-export const authenticateUserRequest = (username, password, jwt_token) => ({
+export const authenticateUserRequest = (username, password) => ({
   type: AUTHENTICATE_DATALOFT_USER_REQUEST,
   payload: {
     username,
-    password,
-    jwt_token
+    password
   },
   meta: {
     thunk: true
@@ -31,12 +30,13 @@ export const CREATE_DATALOFT_ACCOUNT_SUCCESS = 'CREATE_DATALOFT_ACCOUNT_SUCCESS'
 export const CREATE_DATALOFT_ACCOUNT_FAILURE = 'CREATE_DATALOFT_ACCOUNT_FAILURE'
 
 
-export const createDataloftAccountRequest = (username, password, address) => ({
+export const createDataloftAccountRequest = (username, pubEncrypt, encryptedKeys, filecoinTx) => ({
   type: CREATE_DATALOFT_ACCOUNT_REQUEST,
   payload: {
     username,
-    password,
-    address
+    pubEncrypt,
+    encryptedKeys,
+    filecoinTx
   },
   meta: {
     thunk: true,

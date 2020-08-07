@@ -63,17 +63,37 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
-export const createDataloftAccount = (username, password, address) => {
+export const createDataloftAccount = (username, pubEncrypt, encryptedKeys, filecoinTx) => {
   const body = {
     username,
-    password,
-    address
+    pubEncrypt,
+    encryptedKeys,
+    filecoinTx
   }
 
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `${targetAPI}/auth/create/dataloft`,
+      data: body,
+    }).then(({data}) => {
+      resolve({ response: data })
+    }).catch((error) => {
+      reject({ error })
+    })
+  })
+}
+
+export const authenticateUser = (username, password) => {
+  const body = {
+    username,
+    password
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `${targetAPI}/auth/user/dataloft`,
       data: body,
     }).then(({data}) => {
       resolve({ response: data })

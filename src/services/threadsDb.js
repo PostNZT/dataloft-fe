@@ -13,7 +13,7 @@ export async function authorize (identity) {
   return client
 }
 
-export async function create () {
+export async function createThreadDB () {
   const db = await Database.withKeyInfo(keyinfo, "test5", undefined, undefined)
   console.log(db)
   return db
