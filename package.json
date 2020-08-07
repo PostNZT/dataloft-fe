@@ -21,6 +21,7 @@
     "@textile/threads-core": "^0.3.0",
     "@textile/threads-database": "^0.7.1",
     "@zondax/filecoin-signing-tools": "^0.6.3",
+    "@textile/threads-core": "^0.3.0",
     "axios": "^0.19.2",
     "cbor-js": "^0.1.0",
     "classnames": "^2.2.6",
