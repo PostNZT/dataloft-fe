@@ -21,7 +21,6 @@
     "@textile/threads-core": "^0.3.0",
     "@textile/threads-database": "^0.7.1",
     "@zondax/filecoin-signing-tools": "^0.6.3",
-    "@textile/threads-core": "^0.3.0",
     "axios": "^0.19.2",
     "cbor-js": "^0.1.0",
     "classnames": "^2.2.6",
@@ -59,7 +58,8 @@
   },
   "devDependencies": {
     "increase-memory-limit": "^1.0.3",
-    "cross-env": "^5.0.5"
+    "cross-env": "^5.0.5",
+    "@babel/types": "^7.10.5"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,8 +75,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/types": "^7.10.5"
   }
 }
