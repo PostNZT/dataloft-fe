@@ -18,7 +18,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@zondax/filecoin-signing-tools": "^0.6.3",
-    "@textile/threads-core",
+    "@textile/threads-core": "^0.3.0",
     "axios": "^0.19.2",
     "cbor-js": "^0.1.0",
     "classnames": "^2.2.6",
