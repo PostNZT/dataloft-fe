@@ -29,6 +29,7 @@
     "jszip": "^3.5.0",
     "notistack": "^0.9.17",
     "pouchdb": "^7.2.1",
+    "react-tsparticles": "^1.17.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.2",
