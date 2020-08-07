@@ -10,7 +10,6 @@ const config = {
   token: "", // required
 }
 
-
 const EXAMPLE_TRANSACTION = {
   "to": "t17uoq6tp427uzv7fztkbsnn64iwotfrristwpryy",
   "from": "t1d2xrzcslx7xlbbylc5c3d5lvandqw4iwl6epxba",
@@ -57,7 +56,6 @@ export function pubKeytoAddress(publicKey) {
   console.log(validateAddressString(encoded))
 
   return encoded
-
 }
 
 export function recordAccountOnFilecoin(address, privKey, param) {
