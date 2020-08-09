@@ -39,14 +39,9 @@ const styles = (theme) => ({
   },
   page: {
     height: '100vh',
-    // background: 'rgb(255,255,255)',
-    background: 'linear-gradient(315deg, #3f0d12 0%, #a71d31 74%)',
-    backgroundColor: '#3f0d12'
-
-
-    // backgroundImage: 'url("https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
-    // backgroundSize: 'cover',
-    // backgroundRepeat: 'no-repeat'
+    backgroundImage: 'url("https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat'
   },
   formLabel: {
     width: '100%'
