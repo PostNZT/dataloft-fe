@@ -1,10 +1,12 @@
 import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import { createPow } from "@textile/powergate-client"
-const host = "http://x.x.x.x:6002" // or whatever powergate instance you want
+const host = "process.env.REACT_APP_TARGET_POW_HOST" // or whatever powergate instance you want
 const pow = createPow({ host })
-const { status, messagesList } = await pow.health.check()
 
+
+const { status, messagesList } = await pow.health.check()
 const { peersList } = await pow.net.peers()
+
 const { token } = await pow.ffs.create()
 await pow.setToken(token)
 
