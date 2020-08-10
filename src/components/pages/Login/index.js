@@ -126,8 +126,8 @@ const Login = (props) => {
         <CssBaseline />
         <div className={classes.paper}>
           <div className={classes.brandWrapper}>
-              <BrandIcon />
-            </div>   
+            <BrandIcon />
+          </div>   
           <div className={classes.login}> 
             <div style={{ paddingTop: 15, paddingBottom: 15 }} >
               <Typography

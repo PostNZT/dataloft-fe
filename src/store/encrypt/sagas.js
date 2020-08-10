@@ -11,6 +11,9 @@ import {
   encryptDataFileFailure
 } from './actions'
 
+import {
+  createFFS
+} from 'services/powergate'
 
 function* encryptDataFileRequest(payload, meta) {
   try {
@@ -20,6 +23,8 @@ function* encryptDataFileRequest(payload, meta) {
     const data = yield call (fileToData, fileList[0])
     if (data) {
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
+      const token = yield call(createFFS)
+      console.log(token)
       const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
       yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {
