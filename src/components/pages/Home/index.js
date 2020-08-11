@@ -171,8 +171,6 @@ const Home = (props) => {
                 >
                   Quick Access
                 </Typography>
-
-               
               </Grid>
             </Grid>
             {/* <Grid container>

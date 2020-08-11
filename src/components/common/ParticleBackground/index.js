@@ -2,13 +2,16 @@ import React from 'react'
 import Particles from "react-tsparticles"
 
 
-const ParticleBackground = () => {
+const ParticleBackground = (props) => {
+  const { children } = props
+
   return (
-    <Particles
-        id="tsparticles"
+    <React.Fragment>
+      <Particles
+        style={{ position: 'fixed' }}
         options={{
           
-          fpsLimit: 60,
+          fpsLimit: 10,
           interactivity: {
             detectsOn: "canvas",
             events: {
@@ -57,15 +60,8 @@ const ParticleBackground = () => {
               enable: true,
               outMode: "bounce",
               random: false,
-              speed: 6,
+              speed: 2,
               straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-              value: 80,
             },
             opacity: {
               value: 0.5,
@@ -75,12 +71,18 @@ const ParticleBackground = () => {
             },
             size: {
               random: true,
-              value: 5,
+              value: 3,
             },
           },
           detectRetina: true,
         }}
       />
+      <div style={{ zIndex: 500 }}>
+        {children}
+      </div>
+
+      
+    </React.Fragment>
   )
 }
 

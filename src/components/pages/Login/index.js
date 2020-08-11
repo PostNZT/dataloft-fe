@@ -40,6 +40,9 @@ const styles = (theme) => ({
   },
   page: {
     height: '100vh',
+    // background: 'linear-gradient(145deg, black 0%, red 100%)',
+    // backgroundImage: 'url("https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+    width: '100%',
     backgroundImage: `url("./img/background/login-bg.jpg")`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat'
@@ -125,120 +128,119 @@ const Login = (props) => {
 
   return (
     <div className={classes.page}>
-      {/* <ParticleBackground> */}
-        <div>
-          <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <div className={classes.brandWrapper}>
-                <BrandIcon />
-              </div>   
-            <div className={classes.login}> 
-              <div style={{ paddingTop: 15, paddingBottom: 15 }} >
+      <ParticleBackground>
+        <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <div className={classes.brandWrapper}>
+            <BrandIcon />
+          </div>   
+          <div className={classes.login}> 
+            <div style={{ paddingTop: 15, paddingBottom: 15 }} >
+              <Typography
+                align='center'
+                variant='h6'
+                className={classes.white}
+              >
+                Welcome back!
+              </Typography>
+              <Typography
+                align='justify'
+                variant='subtitle2'
+                className={classNames(classes.gray, classes.graySubtitleWrapper)}
+              >
+                We're so excited to see you on the loft again!
+              </Typography>
+            </div>
+            <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
+              <InputBase
+                placeholder="Username"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 
+                  'aria-label': 'login', 
+                  className: classes.white 
+                }}
+                name="username"
+                value={username}
+                onChange={onChange}
+              />
+              <InputBase
+                placeholder="Password"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 
+                  'aria-label': 'login', 
+                  className: classes.white,
+                  type: 'password',
+                  autoComplete: 'new-password', 
+                }}
+                name="password"
+                value={password}
+                onChange={onChange}
+              />
+            </div>
+            {
+              hasInstalledMetamask && (
+                <React.Fragment>
+                  <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
+                    <Button 
+                    variant="contained" 
+                    color="primary"
+                    type="submit"
+                    onClick={handleClickLogin}
+                    fullWidth
+                    >
+                      Login 
+                    </Button>
+                  </div>
+                </React.Fragment>
+              )
+            }
+            {
+              !hasInstalledMetamask && (
+                <React.Fragment>
+                  <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
+                  <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                    <Button 
+                      startIcon={<FaChrome />}  
+                      href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
+                      rel="noopener noreferrer"
+                      target="_blank">
+                        Chrome
+                      </Button>
+                    <Button 
+                      startIcon={<FaFirefoxBrowser />} 
+                      href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
+                      rel="noopener noreferrer"
+                      target="_blank">
+                      Firefox
+                    </Button>
+                  </ButtonGroup>
+                </React.Fragment>
+              ) 
+            }
+              <div style={{ paddingBottom: 35, paddingLeft: 15 }}>
                 <Typography
-                  align='center'
-                  variant='h6'
-                  className={classes.white}
-                >
-                  Welcome back!
-                </Typography>
-                <Typography
-                  align='justify'
+                    align='justify'
                   variant='subtitle2'
-                  className={classNames(classes.gray, classes.graySubtitleWrapper)}
+                  className={classNames(classes.gray)}
                 >
-                  We're so excited to see you on the loft again!
+                  Need an account? &nbsp; 
+                  <MuiLink component={Link} to={`/register`} className={classes.white}>
+                    Register
+                  </MuiLink>
                 </Typography>
               </div>
-              <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
-                <InputBase
-                  placeholder="Username"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 
-                    'aria-label': 'login', 
-                    className: classes.white 
-                  }}
-                  name="username"
-                  value={username}
-                  onChange={onChange}
-                />
-                <InputBase
-                  placeholder="Password"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 
-                    'aria-label': 'login', 
-                    className: classes.white,
-                    type: 'password',
-                    autoComplete: 'new-password', 
-                  }}
-                  name="password"
-                  value={password}
-                  onChange={onChange}
-                />
-              </div>
-              {
-                hasInstalledMetamask && (
-                  <React.Fragment>
-                    <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
-                      <Button 
-                      variant="contained" 
-                      color="primary"
-                      type="submit"
-                      onClick={handleClickLogin}
-                      fullWidth
-                      >
-                        Login 
-                      </Button>
-                    </div>
-                  </React.Fragment>
-                )
-              }
-              {
-                !hasInstalledMetamask && (
-                  <React.Fragment>
-                    <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
-                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
-                      <Button 
-                        startIcon={<FaChrome />}  
-                        href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
-                        rel="noopener noreferrer"
-                        target="_blank">
-                          Chrome
-                        </Button>
-                      <Button 
-                        startIcon={<FaFirefoxBrowser />} 
-                        href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" 
-                        rel="noopener noreferrer"
-                        target="_blank">
-                        Firefox
-                      </Button>
-                    </ButtonGroup>
-                  </React.Fragment>
-                ) 
-              }
-                <div style={{ paddingBottom: 35, paddingLeft: 15 }}>
-                  <Typography
-                      align='justify'
-                    variant='subtitle2'
-                    className={classNames(classes.gray)}
-                  >
-                    Need an account? &nbsp; 
-                    <MuiLink component={Link} to={`/register`} className={classes.white}>
-                      Register
-                    </MuiLink>
-                  </Typography>
-                </div>
-              </div>
-          </div>
-        </Container>
+            </div>
         </div>
-      {/* </ParticleBackground> */}
+      </Container>
+
+      </ParticleBackground>
     </div>
   )
 }
