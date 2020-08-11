@@ -1,10 +1,11 @@
 import { LotusRPC } from "@filecoin-shipyard/lotus-client-rpc";
 import { BrowserProvider } from "@filecoin-shipyard/lotus-client-provider-browser";
 import { testnet } from "@filecoin-shipyard/lotus-client-schema";
+import config from 'config'
 
 export const getClient = (options = { nodeOrMiner: "node", nodeNumber: 0 }) => {
   // API endpoint for local Lotus devnet
-  const API = "ws://51.210.121.212:7777";
+  const API = "wss://" + config.LOTUS_HOST;
 
   // Websocket endpoint for local Lotus devnet
   const wsUrl = API + `/${options.nodeNumber}/${options.nodeOrMiner}/rpc/v0`;

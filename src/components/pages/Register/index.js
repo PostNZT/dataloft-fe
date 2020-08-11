@@ -12,6 +12,7 @@ import classNames from 'classnames'
 import MuiLink from '@material-ui/core/Link'
 import { Link } from 'react-router-dom'
 import sha256 from 'js-sha256'
+import config from 'config'
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
@@ -55,7 +56,7 @@ import {metamaskEncrypt, metamaskPublic} from "services/metamask";
 import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import { createPow } from "@textile/powergate-client"
 
-const host = "http://51.210.121.212:6002" // or whatever powergate instance you want
+const host = config.POW_HOST // or whatever powergate instance you want
 const pow = createPow({ host })
 
 const styles = (theme) => ({

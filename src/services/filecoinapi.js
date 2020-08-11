@@ -3,11 +3,14 @@ import ethUtil from "ethereumjs-util"
 import filecoin_signer from "@zondax/filecoin-signing-tools/js"
 import filecoin_signer_ns from "@nathansenn/filecoin-signing-tools"
 import Filecoin, { LocalNodeProvider, } from '@openworklabs/filecoin-wallet-provider'
+import config from 'config'
+
 const bip32 = require('bip32');
 const { publicKeyConvert } = require('ethereum-cryptography/secp256k1')
 
-const config = {
-  apiAddress: 'http://51.210.121.212:7777/rest/v0/import',
+
+const lotusconfig = {
+  apiAddress: 'http://'+ config.POW_HOST,
   token: "", // required
 }
 
@@ -99,7 +102,7 @@ export async function transactionSignRawTest() {
 
 
 export async function sendSignedMessage(sig) {
-  const filecoin = new Filecoin(new LocalNodeProvider(config), config)
+  const filecoin = new Filecoin(new LocalNodeProvider(lotusconfig), lotusconfig)
   // note, see section below on signedMessages
   const tx = await filecoin.sendMessage(sig)
   return tx
