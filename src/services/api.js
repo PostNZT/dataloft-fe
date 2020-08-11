@@ -63,9 +63,10 @@ export const createWalletJWTToken = (username, password, address, token) => {
   })
 }
 
-export const createDataloftAccount = (username, pubEncrypt, encryptedKeys, filecoinTx) => {
+export const createDataloftAccount = (username, hashPass, pubEncrypt, encryptedKeys, filecoinTx) => {
   const body = {
     username,
+    hashPass,
     pubEncrypt,
     encryptedKeys,
     filecoinTx
@@ -84,10 +85,10 @@ export const createDataloftAccount = (username, pubEncrypt, encryptedKeys, filec
   })
 }
 
-export const authenticateUser = (username, password) => {
+export const authenticateUser = (username, hashPass) => {
   const body = {
     username,
-    password
+    hashPass
   }
 
   return new Promise((resolve, reject) => {
