@@ -7,8 +7,9 @@ import {
 const Box = require("3box");
 
 export async function boxRegister() {
-  const box = await Box.create(window.ethereum)
   const [address] = await window.ethereum.enable()
+  console.log(address)
+  const box = await Box.create(window.ethereum)
   await box.auth([], { address });
   // Note: sometimes, openSpace returns early... caution
   const space = await box.openSpace('io-textile-dropzone');

@@ -11,7 +11,7 @@ import InputBase from '@material-ui/core/InputBase'
 import classNames from 'classnames'
 import MuiLink from '@material-ui/core/Link'
 import { Link } from 'react-router-dom'
-
+import sha256 from 'js-sha256'
 import {
   createDataloftAccountRequest,
   createMetamaskAccountRequest,
@@ -51,6 +51,12 @@ import {
 } from 'components/elements'
 import {boxRegister} from 'services/3box';
 import {metamaskEncrypt, metamaskPublic} from "services/metamask";
+
+import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
+import { createPow } from "@textile/powergate-client"
+
+const host = "http://51.210.121.212:6002" // or whatever powergate instance you want
+const pow = createPow({ host })
 
 const styles = (theme) => ({
   paper: {
@@ -131,8 +137,8 @@ const Register = (props) => {
     const getIdentity = await boxRegister()
     setIdentity(getIdentity.identity)
     getMetamaskAddressRequest(getIdentity.address).then((data) => {
-      setMetamaskAddress(getIdentity.address)
-      setHasMetamaskAddress(true)
+     setMetamaskAddress(getIdentity.address)
+     setHasMetamaskAddress(true)
     })
   }
   
@@ -145,8 +151,9 @@ const Register = (props) => {
   }
 
   const handleSentFilecoin = async () => {
+    const { token } = await pow.ffs.create()
     const pubKey = await metamaskPublic(metamaskAddress)
-    const msg = { data: "password:"+password+", privKey:"+privKey.privateKey}
+    const msg = { data: "password:"+password+", privKey:"+privKey.privateKey+", token:"+token}
     const encryptedMessage = await metamaskEncrypt(msg, pubKey)
     console.log(encryptedMessage);
 
@@ -176,8 +183,15 @@ const Register = (props) => {
     console.log(collection)
     const instance = await instances(db, obj)
     console.log(username)
-    //const query = await createQuery(db, username)
-    await createDataloftAccountRequest(username, pubKey, encryptedMessage, signed_transaction)
+    const query = await createQuery(db, username)
+    console.log(query)
+    await sha256(password)
+    var hash = await sha256.create()
+    await hash.update(password)
+    const hashPass = await hash.hex()
+    console.log({hashPass})
+    console.log(pubKey)
+    await createDataloftAccountRequest(username, hashPass, pubKey, encryptedMessage, signed_transaction)
     history.push('/')
   }
 

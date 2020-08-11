@@ -35,8 +35,8 @@ function* createMetamaskAccountRequest(payload, meta) {
 
 function* createDataloftAccountRequest(payload, meta) {
   try {
-    const { username, pubEncrypt, encryptedKeys, filecoinTx } = payload
-    const data = yield call(createDataloftAccount, username, pubEncrypt, encryptedKeys, filecoinTx)
+    const { username, hashPass, pubEncrypt, encryptedKeys, filecoinTx } = payload
+    const data = yield call(createDataloftAccount, username, hashPass, pubEncrypt, encryptedKeys, filecoinTx)
     
     if (data.response) {
       const data_returned = data.response
@@ -51,8 +51,8 @@ function* createDataloftAccountRequest(payload, meta) {
 
 function* authenticateUserRequest(payload, meta) {
   try {
-    const { username, password } = payload
-    const data = yield call(authenticateUser, username, password)
+    const { username, hashPass } = payload
+    const data = yield call(authenticateUser, username, hashPass)
 
     if (data.response) {
       const data_returned = data.response

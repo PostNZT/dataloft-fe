@@ -2,11 +2,11 @@ export const AUTHENTICATE_DATALOFT_USER_REQUEST = 'AUTHENTICATE_DATALOFT_USER_RE
 export const AUTHENTICATE_DATALOFT_USER_SUCCESS = 'AUTHENTICATE_DATALOFT_USER_SUCCESS'
 export const AUTHENTICATE_DATALOFT_USER_FAILURE = 'AUTHENTICATE_DATALOFT_USER_FAILURE'
 
-export const authenticateUserRequest = (username, password) => ({
+export const authenticateUserRequest = (username, hashPass) => ({
   type: AUTHENTICATE_DATALOFT_USER_REQUEST,
   payload: {
     username,
-    password
+    hashPass
   },
   meta: {
     thunk: true
@@ -30,10 +30,11 @@ export const CREATE_DATALOFT_ACCOUNT_SUCCESS = 'CREATE_DATALOFT_ACCOUNT_SUCCESS'
 export const CREATE_DATALOFT_ACCOUNT_FAILURE = 'CREATE_DATALOFT_ACCOUNT_FAILURE'
 
 
-export const createDataloftAccountRequest = (username, pubEncrypt, encryptedKeys, filecoinTx) => ({
+export const createDataloftAccountRequest = (username, hashPass, pubEncrypt, encryptedKeys, filecoinTx) => ({
   type: CREATE_DATALOFT_ACCOUNT_REQUEST,
   payload: {
     username,
+    hashPass,
     pubEncrypt,
     encryptedKeys,
     filecoinTx
@@ -62,8 +63,6 @@ export const CREATE_METAMASK_ACCOUNT_FAILURE = 'CREATE_METAMASK_ACCOUNT_FAILURE'
 export const createMetamaskAccountRequest = (username, password, address) => ({
   type: CREATE_METAMASK_ACCOUNT_REQUEST,
   payload: {
-    username,
-    password,
     address
   },
   meta: {
