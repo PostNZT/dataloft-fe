@@ -39,7 +39,10 @@ const styles = (theme) => ({
   },
   page: {
     height: '100vh',
-    backgroundImage: 'url("https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+    // background: 'linear-gradient(145deg, black 0%, red 100%)',
+    // backgroundImage: 'url("https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+    width: '100%',
+    backgroundImage: `url("./img/background/login-bg.jpg")`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat'
   },

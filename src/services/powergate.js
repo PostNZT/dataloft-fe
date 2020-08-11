@@ -1,5 +1,5 @@
 import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
-import { createPow } from "@textile/powergate-client"
+import { createPow, ffsTypes } from "@textile/powergate-client"
 import config from 'config'
 const host = config.POW_HOST
 const pow = createPow({ host })
@@ -29,10 +29,10 @@ export const addressList = async() => {
 }
 
 export const CID_CONFIG = async(payload) => { 
-  const { addr } = payload
+  const { addr, deal } = payload
   return [{
     "Hot": {
-      "Enabled": false,
+      "Enabled": true,
       "AllowUnfreeze": false,
       "Ipfs": {
         "AddTimeout": 30
@@ -42,7 +42,7 @@ export const CID_CONFIG = async(payload) => {
       "Enabled": true,
       "Filecoin": {
         "RepFactor": 1,
-        "DealMinDuration": 1000,
+        "DealMinDuration": deal,
         "ExcludedMiners": null,
         "TrustedMiners": null,
         "CountryCodes": null,
@@ -59,13 +59,39 @@ export const CID_CONFIG = async(payload) => {
 }
 
 export const ipfsStoreFile = async(payload) => {
-  const { cid } = await pow.ffs.stage(payload)
-  return cid
+  const { encrypted_data } = payload
+  const { cid } = await pow.ffs.stage(encrypted_data)
+  const { jobId } = await pow.ffs.pushStorageConfig(cid)
+
+  // const jobStatus = pow.ffs.watchJobs((job) => {
+  //   if(job.status === ffsTypes.JobStatus.CANCELED) {
+  //     console.log('Job Cancelled')
+  //   } else if (job.status === ffsTypes.JobStatus.FAILED) {
+  //     console.log('Job Failed') 
+  //   } else if (job.status === ffsTypes.JobStatus.SUCCESS) {
+  //     console.log('Job Success')
+  //   }
+  // }, jobId)
+
+  // const log = pow.ffs.watchLogs((logEvent) => {
+  //   console.log(`recieved event for cid ${logEvent.cid}`)
+  // }, cid)
+
+  return { jobId, cid }
 }
 
+export const createAddress = async(payload) => {
+  const { token } = payload
+  const address = await pow.ffs.newAddr(token)
 
-// // create a new address associated with your ffs instance
-// const {addr} = await pow.ffs.newAddr("my new addr")
+  return address
+}
+
+export const retrieveFile = async(payload) => {
+  const { cid } = payload
+  const file = await pow.ffs.get(cid)
+  return file
+}
 
 
 // await pow.ffs.setDefaultStorageConfig(cidConfig)

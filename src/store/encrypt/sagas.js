@@ -12,7 +12,9 @@ import {
 } from './actions'
 
 import {
-  createFFS
+  createFFS,
+  addressList,
+  ipfsStoreFile
 } from 'services/powergate'
 
 function* encryptDataFileRequest(payload, meta) {
@@ -24,7 +26,13 @@ function* encryptDataFileRequest(payload, meta) {
     if (data) {
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
       const token = yield call(createFFS)
+      const address = yield call(addressList)
+      const { addr } = address[0]
+      const store = yield call(ipfsStoreFile, encrypted_data)
+      console.log(store)
       console.log(token)
+      console.log(addr)
+      // (retrieveFile, cid)
       const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
       yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {
