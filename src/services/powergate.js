@@ -80,6 +80,32 @@ export const ipfsStoreFile = async(payload) => {
   return { jobId, cid }
 }
 
+export const jobStatus = async(payload) => {
+  const { jobId } = payload
+
+  const fileStatus = pow.ffs.watchJobs((job) => {
+    if (job.status === JobStatus.JOB_STATUS_CANCELED) {
+      console.log("job canceled")
+    } else if (job.status === JobStatus.JOB_STATUS_FAILED) {
+      console.log("job failed")
+    } else if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
+      console.log("job success!")
+    }
+  }, jobId)
+
+  return fileStatus
+}
+
+export const cidStatus = async(payload) => {
+  const { cid } = payload
+
+  const logsCancel = pow.ffs.watchLogs((logEvent) => {
+    console.log(`received event for cid ${logEvent.cid}`)
+  }, cid)
+
+  return logsCancel
+}
+
 export const createAddress = async(payload) => {
   const { token } = payload
   const address = await pow.ffs.newAddr(token)
