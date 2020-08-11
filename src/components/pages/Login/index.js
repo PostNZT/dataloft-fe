@@ -28,6 +28,7 @@ import {
 import { 
   ParticleBackground
 } from 'components'
+import sha256 from "js-sha256";
 
 
 const styles = (theme) => ({
@@ -96,10 +97,13 @@ const Login = (props) => {
   const [password, setPassword] = useState('')
   const [hasInstalledMetamask, setHasInstalledMetamask] = useState(true)
 
-  const handleClickLogin = () => {
-    const username = 'dataloft'
-    const password = 'testingpass'
-    authenticateUserRequest(username, password)
+  const handleClickLogin = async () => {
+    await sha256(password)
+    var hash = await sha256.create()
+    await hash.update(password)
+    const hashPass = await hash.hex()
+    console.log({hashPass})
+    authenticateUserRequest(username, hashPass)
 
   }
 

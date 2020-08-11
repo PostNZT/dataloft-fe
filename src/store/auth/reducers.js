@@ -1,6 +1,6 @@
 import {
   CREATE_DATALOFT_ACCOUNT_SUCCESS,
-  AUTHENTICATE_DATALOFT_USER_REQUEST
+  AUTHENTICATE_DATALOFT_USER_SUCCESS
 } from './actions'
 
 import { fromJS } from 'immutable'
@@ -16,7 +16,7 @@ export const auth = (state = defaultState, { type, payload }) => {
   switch (type) {
     case CREATE_DATALOFT_ACCOUNT_SUCCESS:
       return state.set('dataloft_user', payload)
-    case AUTHENTICATE_DATALOFT_USER_REQUEST:
+    case AUTHENTICATE_DATALOFT_USER_SUCCESS:
       return state.set('dataloft_user', payload)
     default:
       return state
