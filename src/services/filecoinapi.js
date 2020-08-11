@@ -1,6 +1,7 @@
 import { encode, newAddress, validateAddressString } from "@openworklabs/filecoin-address"
 import ethUtil from "ethereumjs-util"
 import filecoin_signer from "@zondax/filecoin-signing-tools/js"
+import filecoin_signer_ns from "@nathansenn/filecoin-signing-tools"
 import Filecoin, { LocalNodeProvider, } from '@openworklabs/filecoin-wallet-provider'
 const bip32 = require('bip32');
 const { publicKeyConvert } = require('ethereum-cryptography/secp256k1')
@@ -80,7 +81,7 @@ export function recordAccountOnFilecoin(address, privKey, param) {
     "params": param.toString('base64')
   };
 
-  var signedMessage = filecoin_signer.transactionSign(messageForSigning, privKey.toString("hex"))
+  var signedMessage = filecoin_signer_ns.transactionSign(messageForSigning, privKey.toString("hex"))
   const sig = signedMessage.signature
   const Signature = {
     'Signature': sig,

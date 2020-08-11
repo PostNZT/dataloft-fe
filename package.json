@@ -10,6 +10,7 @@
     "@filecoin-shipyard/lotus-client-schema": "0.0.12",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@nathansenn/filecoin-signing-tools": "^0.2.0",
     "@nodefactory/filecoin-address": "^1.0.1",
     "@openworklabs/filecoin-address": "0.0.10",
     "@openworklabs/filecoin-message": "0.0.14",
