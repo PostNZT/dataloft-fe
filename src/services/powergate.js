@@ -28,9 +28,9 @@ export const addressList = async() => {
   return addrsList
 }
 
-export const CID_CONFIG = async(payload) => { 
-  const { addr, deal } = payload
-  return [{
+export const CID_CONFIG = async(payload) => {
+  const { addr } = payload
+  const cidconf = [{
     "Hot": {
       "Enabled": true,
       "AllowUnfreeze": false,
@@ -42,7 +42,7 @@ export const CID_CONFIG = async(payload) => {
       "Enabled": true,
       "Filecoin": {
         "RepFactor": 1,
-        "DealMinDuration": deal,
+        "DealMinDuration": 1000,
         "ExcludedMiners": null,
         "TrustedMiners": null,
         "CountryCodes": null,
@@ -56,13 +56,16 @@ export const CID_CONFIG = async(payload) => {
     },
     "Repairable": false
   }]
+  console.log(cidconf)
+  return cidconf
 }
 
 export const ipfsStoreFile = async(payload) => {
   const { encrypted_data } = payload
   const { cid } = await pow.ffs.stage(encrypted_data)
+  console.log({cid})
   const { jobId } = await pow.ffs.pushStorageConfig(cid)
-
+  console.log({jobId})
   // const jobStatus = pow.ffs.watchJobs((job) => {
   //   if(job.status === ffsTypes.JobStatus.CANCELED) {
   //     console.log('Job Cancelled')
@@ -120,7 +123,13 @@ export const retrieveFile = async(payload) => {
 }
 
 
-// await pow.ffs.setDefaultStorageConfig(cidConfig)
+export const setDefaultStorageConfig = async(payload) => {
+  const cidConfig = payload
+  console.log(pow)
+  await pow.ffs.setDefaultStorageConfig(cidConfig)
+  return
+}
+
 
 // const {jobId} = await pow.ffs.pushStorageConfig("Qme1Uj2ZP9duKSurtGhJDPfA9KFaovAyAnj8QxQsCW7xMf")
 // // watch the FFS job status to see the storage process progressing
