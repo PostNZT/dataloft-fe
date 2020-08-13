@@ -1,11 +1,8 @@
-import {Client} from "@textile/threads-client";
-import {Database} from "@textile/threads-database";
-import {ThreadID} from "@textile/threads-id";
-import {collect} from "streaming-iterables";
+import {Client} from "@textile/threads-client"
+import {Database} from "@textile/threads-database"
+import {collect} from "streaming-iterables"
 
 const keyinfo = {key: 'bf5bmop3o7kzbwpt6s5w3jrhkau'}
-
-const level = require("level");
 
 export async function authorize (identity) {
   const client = await Client.withKeyInfo(keyinfo)
@@ -25,7 +22,7 @@ export async function createThreadDB () {
 }
 
 export function start (Database, identity) {
-  const threadID = ThreadID.fromRandom()
+  // const threadID = ThreadID.fromRandom()
   const db = Database.start(identity)
   console.log("db " +db)
   return db

@@ -1,22 +1,18 @@
-import {Libp2pCryptoIdentity} from "@textile/threads-core";
+import { Libp2pCryptoIdentity } from "@textile/threads-core"
 
-import {
-  authorize,
-} from 'services/threadsDb'
-
-const Box = require("3box");
+const Box = require("3box")
 
 export async function boxRegister() {
   const [address] = await window.ethereum.enable()
   console.log(address)
   const box = await Box.create(window.ethereum)
-  await box.auth([], { address });
+  await box.auth([], { address })
   // Note: sometimes, openSpace returns early... caution
-  const space = await box.openSpace('io-textile-dropzone');
-  await box.syncDone;
+  const space = await box.openSpace('io-textile-dropzone')
+  await box.syncDone
   try {
     // We'll try to restore the private key if it's available
-    var storedIdent = await space.private.get('identity');
+    var storedIdent = await space.private.get('identity')
     if (storedIdent === null) {
       throw new Error('No identity')
     }
@@ -39,7 +35,6 @@ export async function boxRegister() {
       identity: identity,
       address: address
     }
-    // console.log(identity)
   }
 }
 

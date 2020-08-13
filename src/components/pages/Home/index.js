@@ -123,6 +123,8 @@ const Home = (props) => {
         <Grid container spacing={0} style={{ paddingTop: 10 }} >
           <Grid item xs={3} className={classNames(classes.paper, classes.cardThemeBackground, classes.whiteText)}>
             <div style={{ paddingLeft: 15 }}>
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
               <Button
                 variant="contained"
                 color="secondary"
@@ -133,6 +135,7 @@ const Home = (props) => {
               >
                 Upload
               </Button>
+              </div>
               
             </div>
             
