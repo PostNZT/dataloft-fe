@@ -3,31 +3,43 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import compose from 'recompose/compose'
 import { getSavedUserRequest } from 'store/auth/actions'
-import { getBucketIdentityRequest } from 'store/files/actions'
+import { 
+  getBucketIdentityRequest,
+  getBucketDataFilesRequest
+} from 'store/bucket/actions'
 
 const Init = (props) => {
-  const { children, getSavedUserRequest, getBucketIdentityRequest } = props
+  const { 
+    children, 
+    getSavedUserRequest, 
+    getBucketIdentityRequest, 
+    getBucketDataFilesRequest 
+  } = props
   const [init, setInit] = useState(false)
 
   useEffect(() => {
     getSavedUserRequest()
     .then(() => {
       setInit(true)
-      getBucketIdentityRequest()
+    })
+    getBucketIdentityRequest()
+    .then((identity) => {
+      getBucketDataFilesRequest(identity)
     })
   }, [])
 
   return (
     <React.Fragment>
-        { init && (children) }
+      { init && (children) }
     </React.Fragment>
   )
 }
-
+ 
 const mapDispatchToProps = dispatch => ({ 
   ...bindActionCreators({
     getSavedUserRequest,
     getBucketIdentityRequest,
+    getBucketDataFilesRequest,
   }, dispatch)
 })
 

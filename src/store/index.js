@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { fork, all } from 'redux-saga/effects'
 
-import { files } from './files/reducers'
+import { bucket } from './bucket/reducers'
 import { tests } from './tests/reducers'
 import { auth } from './auth/reducers'
 import { create } from './create/reducers'
@@ -12,7 +12,7 @@ import { decrypt } from './decrypt/reducers'
 import { lotus } from './lotus/reducers'
 import { register } from './register/reducers'
 import { reducer as thunkReducer } from 'redux-saga-thunk'
-import * as fileSagas from './files/sagas'
+import * as bucketSagas from './bucket/sagas'
 import * as testSagas from './tests/sagas'
 import * as authSagas from './auth/sagas'
 import * as createSagas from './create/sagas'
@@ -25,7 +25,7 @@ import * as registerSagas from './register/sagas'
 
 export const rootReducer = combineReducers({
   thunk: thunkReducer,
-  files,
+  bucket,
   tests,
   auth,
   create,
@@ -39,7 +39,7 @@ export const rootReducer = combineReducers({
 
 export function* rootSaga() {
   yield all([
-    ...Object.values(fileSagas),
+    ...Object.values(bucketSagas),
     ...Object.values(testSagas),
     ...Object.values(authSagas),
     ...Object.values(createSagas),
