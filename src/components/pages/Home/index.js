@@ -160,8 +160,10 @@ const Home = (props) => {
 
           
           <Grid item xs={9} className={classNames(classes.paper, classes.cardThemeBackground, classes.whiteText)}>
-          <div {...getRootProps()}>
-              <input {...getInputProps()} />
+          <div {...getRootProps({
+            onClick: event => event.stopPropagation()
+          })}>
+            <input {...getInputProps()} />
             <Grid container style={{ paddingBottom: 15 }}>
               <Grid item xs={12}>
                 <Typography 
