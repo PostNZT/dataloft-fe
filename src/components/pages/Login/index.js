@@ -102,7 +102,6 @@ const Login = (props) => {
     var hash = await sha256.create()
     await hash.update(password)
     const hashPass = await hash.hex()
-    console.log({hashPass})
     authenticateUserRequest(username, hashPass)
 
   }

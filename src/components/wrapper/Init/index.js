@@ -1,13 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import compose from 'recompose/compose'
+import { getSavedUserRequest } from 'store/auth/actions'
 
 const Init = (props) => {
-    const { children } = props
+  const { children, getSavedUserRequest } = props
+  const [init, setInit] = useState(false)
 
-    return (
-        <React.Fragment>
-            { (children) }
-        </React.Fragment>
-    )
+  useEffect(() => {
+    getSavedUserRequest()
+      .then(() => {
+        setInit(true)
+      })
+  }, [])
+
+  return (
+    <React.Fragment>
+        { init && (children) }
+    </React.Fragment>
+  )
 }
 
-export default Init
+const mapDispatchToProps = dispatch => ({ 
+  ...bindActionCreators({
+    getSavedUserRequest,
+  }, dispatch)
+})
+
+export default compose(
+  connect(null, mapDispatchToProps)
+)(Init)
