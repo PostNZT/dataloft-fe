@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-
+import CID from 'cids'
 import {
   encrypt,
   fileToData
@@ -14,12 +14,22 @@ import {
 import {
   createFFS,
   addressList,
-  ipfsStoreFile,
   jobStatus,
   cidStatus,
   CID_CONFIG,
-  setDefaultStorageConfig,
+  setStorageConfig,
+  powergatePush,
 } from 'services/powergate'
+
+import {
+  setup,
+  insertFileBucket,
+} from 'services/buckets'
+
+import {
+  boxRegister,
+} from 'services/3box'
+
 
 function* encryptDataFileRequest(payload, meta) {
   try {
@@ -28,24 +38,52 @@ function* encryptDataFileRequest(payload, meta) {
    
     const data = yield call (fileToData, fileList[0])
     if (data) {
+      // Encrypt Data
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
+
+      // gets identity from 3box
+      const identity = yield call(boxRegister)
+      console.log({identity})
+
+      // Init Bucket
+      const {list, bucketKey, buckets} = yield call(setup, identity.identity)
+
+      // returns list of files in a bucket
+      console.log(list.itemsList)
+
+      // Inserts File to bucket
+      const insertFile = yield call(insertFileBucket, buckets, bucketKey, encrypted_data, filename)
+      console.log(insertFile.path.cid.string)
+
+      // Set Pow token ToDo Needs to set token from account creation
       const token = yield call(createFFS)
-      const address = yield call(addressList)
-      const { addr } = address[0]
-      console.log(addr)
-      const cidconf  = yield call(CID_CONFIG, address[0])
-      console.log(cidconf)
-      const set = yield call(setDefaultStorageConfig, cidconf)
-      console.log(set)
-      const store = yield call(ipfsStoreFile, encrypted_data)
-      const { jobId, cid } = store
-      console.log(jobId, cid)
-      console.log({token})
-      console.log({addr})
+
+      // Get pow addrs
+      const addrsList = yield call(addressList)
+      const addrs = addrsList[0].addr
+
+      // Get storage config obj with addrs
+      const storageConfig = yield call(CID_CONFIG, addrs)
+
+      // Set Default config
+      const set = yield call(setStorageConfig, storageConfig)
+      const cid = insertFile.path.cid.string
+      // const cids = new CID(0, 'dag-pb', cidh)
+      // const cid = cids.toString()
+
+      // Stage and Push data to ffs
+      const stagedPayload = {
+        encrypted_data, storageConfig, cid
+      }
+      const store = yield call(powergatePush, stagedPayload)
+      const { jobId } = store
+
+      // Get Job status
       const cidS = yield call(cidStatus, cid)
       const jobS = yield call(jobStatus, jobId)
       console.log({cidS})
       console.log({jobS})
+
       const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
       yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {

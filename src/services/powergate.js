@@ -7,7 +7,8 @@ const pow = createPow({ host })
 
 export const createFFS = async() => {
   const { token } = await pow.ffs.create()
-  pow.setToken(token)
+  console.log({token})
+  await pow.setToken('07e3c295-24a6-4ef5-bf58-87882221d8ad')
   return token
 }
 
@@ -29,62 +30,77 @@ export const addressList = async() => {
 }
 
 export const CID_CONFIG = async(payload) => {
-  const { addr } = payload
-  const cidconf = [{
-    "Hot": {
-      "Enabled": true,
-      "AllowUnfreeze": false,
-      "Ipfs": {
-        "AddTimeout": 30
+  const  addrs = payload
+  console.log({addrs})
+  const storageConfig = {
+    "hot": {
+      "enabled": true,
+      "allowUnfreeze": true,
+      "ipfs": {
+        "addTimeout": 1
       }
     },
-    "Cold": {
-      "Enabled": true,
-      "Filecoin": {
-        "RepFactor": 1,
-        "DealMinDuration": 1000,
-        "ExcludedMiners": null,
-        "TrustedMiners": null,
-        "CountryCodes": null,
-        "Renew": {
-          "Enabled": false,
-          "Threshold": 0
+    "cold": {
+      "enabled": false,
+      "filecoin": {
+        "repFactor": 1,
+        "dealMinDuration": 1000000,
+        "excludedMiners": [],
+        "trustedMiners": [],
+        "countryCodes": [],
+        "renew": {
+          "enabled": false,
+          "threshold": 10
         },
-        "Addr": addr,
-        "MaxPrice": 0
+        "addr": "t3q2h2vg2rf3ixemcbt5oiojdokvjdo3nuqkyiqc7hi7wehzdlo7lg7up2djrv6itfquc2n5lkfzojm7zus6va",
+        "maxPrice": 0
       }
     },
-    "Repairable": false
-  }]
-  console.log(cidconf)
-  return cidconf
+    "repairable": true
+  }
+  console.log(storageConfig)
+  return storageConfig
 }
 
 export const ipfsStoreFile = async(payload) => {
   const { encrypted_data } = payload
   const { cid } = await pow.ffs.stage(encrypted_data)
   console.log({cid})
-  const { jobId } = await pow.ffs.pushStorageConfig(cid)
+  const { jobId } = await pow.ffs.pushStorageConfig("QmUbkZf9W29sVQTRA835KM9juksTXpiZLETdHXbe5vYmYs")
   console.log({jobId})
-  // const jobStatus = pow.ffs.watchJobs((job) => {
-  //   if(job.status === ffsTypes.JobStatus.CANCELED) {
-  //     console.log('Job Cancelled')
-  //   } else if (job.status === ffsTypes.JobStatus.FAILED) {
-  //     console.log('Job Failed') 
-  //   } else if (job.status === ffsTypes.JobStatus.SUCCESS) {
-  //     console.log('Job Success')
-  //   }
-  // }, jobId)
+  const jobStatus = pow.ffs.watchJobs((job) => {
+    if(job.status === ffsTypes.JobStatus.CANCELED) {
+      console.log('Job Cancelled')
+    } else if (job.status === ffsTypes.JobStatus.FAILED) {
+      console.log('Job Failed')
+    } else if (job.status === ffsTypes.JobStatus.SUCCESS) {
+      console.log('Job Success')
+    }
+  }, jobId)
 
-  // const log = pow.ffs.watchLogs((logEvent) => {
-  //   console.log(`recieved event for cid ${logEvent.cid}`)
-  // }, cid)
+  const log = pow.ffs.watchLogs((logEvent) => {
+    console.log(`recieved event for cid ${logEvent.cid}`)
+  }, cid)
+
+  return { jobId, cid }
+}
+
+export const powergatePush = async(payload) => {
+  const { encrypted_data, storageConfig, cid } = payload
+
+  // cache data in IPFS in preparation to store it using FFS
+  // const buffer = fs.readFileSync(`test`)
+  // const {cid} = await pow.ffs.stage(encrypted_data.file)
+
+  // const opts = [{override:true, storageConfig:storageConfig}]
+  // store the data in FFS using the default storage configuration
+  const {jobId} = await pow.ffs.pushStorageConfig(cid)
 
   return { jobId, cid }
 }
 
 export const jobStatus = async(payload) => {
-  const { jobId } = payload
+  const jobId = payload
 
   const fileStatus = pow.ffs.watchJobs((job) => {
     if (job.status === JobStatus.JOB_STATUS_CANCELED) {
@@ -100,7 +116,7 @@ export const jobStatus = async(payload) => {
 }
 
 export const cidStatus = async(payload) => {
-  const { cid } = payload
+  const cid = payload
 
   const logsCancel = pow.ffs.watchLogs((logEvent) => {
     console.log(`received event for cid ${logEvent.cid}`)
@@ -112,7 +128,6 @@ export const cidStatus = async(payload) => {
 export const createAddress = async(payload) => {
   const { token } = payload
   const address = await pow.ffs.newAddr(token)
-
   return address
 }
 
@@ -122,11 +137,11 @@ export const retrieveFile = async(payload) => {
   return file
 }
 
-
-export const setDefaultStorageConfig = async(payload) => {
-  const cidConfig = payload
-  console.log(pow)
-  await pow.ffs.setDefaultStorageConfig(cidConfig)
+export const setStorageConfig = async(payload) => {
+  const storageConfig = payload
+  console.log(storageConfig)
+  const set = await pow.ffs.setDefaultStorageConfig(storageConfig)
+  console.log({set})
   return
 }
 

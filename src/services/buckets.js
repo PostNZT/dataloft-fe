@@ -1,6 +1,6 @@
 import { Libp2pCryptoIdentity } from "@textile/threads-core"
 import { Buckets } from '@textile/hub'
-const keyinfo = {key: 'API KEY'}
+const keyInfo = {key: 'bf5bmop3o7kzbwpt6s5w3jrhkau'}
 
 // // Generate random identity or use identity provider such as 3Box
 // const identity = await Libp2pCryptoIdentity.fromRandom()
@@ -23,44 +23,32 @@ const keyinfo = {key: 'API KEY'}
 //await bucket.buckets.listIpfsPath("bafybeie5tjiovwh45f2yjnjxo3nogn67ia37b2qxzuatkddeglugmiz2b4")
 
 
-async function setup(key, identity) {
+export async function setup(identity) {
+  console.log(identity)
   // Use the insecure key to setup a new session
   const buckets = await Buckets.withKeyInfo(keyInfo)
-
+  console.log(buckets)
   // Authorize the user and your insecure keys with getToken
   await buckets.getToken(identity)
 
-  const root = await buckets.open('io.textile.dataloft')
-
+  const root = await buckets.open('dataloft')
+  console.log(root)
   if (!root) {
     throw new Error('Failed to open bucket')
   }
+  // returns list of files in a bucket
+  const list = await buckets.listIpfsPath(root.path)
   return {
+    list: list,
     buckets: buckets,
     bucketKey: root.key,
   }
 }
 
-async function insertFile(buckets, bucketKey, file, path) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onabort = () => reject('file reading was aborted')
-    reader.onerror = () => reject('file reading has failed')
-    reader.onload = () => {
-      const binaryStr = reader.result
-      // Finally, push the full file to the bucket
-      buckets.pushPath(bucketKey, path, binaryStr).then((raw) => {
-        resolve(raw)
-      })
-    }
-    reader.readAsArrayBuffer(file)
-  })
-}
-
-
-const addIndexHTML = async (buckets, bucketKey, html) => {
-  // Store the index.html in the root of the bucket
-  const buf = Buffer.from(html)
-  const path = `index.html`
-  await buckets.pushPath(bucketKey, path, buf)
+export async function insertFileBucket(buckets, bucketKey, file, path) {
+  // Finally, push the full file to the bucket
+  console.log({bucketKey})
+  const raw = await buckets.pushPath(bucketKey, path, file.file)
+  console.log(raw)
+  return raw
 }
