@@ -33,7 +33,6 @@ import {
 } from 'store/lotus/actions'
 
 import {
-  authorize,
   createThreadDB,
   start,
   collectionFromObject,
@@ -44,6 +43,10 @@ import {
 import { bindActionCreators } from 'redux'
 import { connect} from 'react-redux'
 import compose from 'recompose/compose'
+
+import { 
+  ParticleBackground
+} from 'components'
 
 import { 
   BrandIcon,
@@ -217,6 +220,7 @@ const Register = (props) => {
 
   return (
     <div className={classes.page}>
+      <ParticleBackground>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
          <div className={classes.paper}>
@@ -397,6 +401,7 @@ const Register = (props) => {
             </div>
          </div>
       </Container>
+      </ParticleBackground>
     </div>
   )
 }

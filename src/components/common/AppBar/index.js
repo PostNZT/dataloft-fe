@@ -17,7 +17,8 @@ import { bindActionCreators } from 'redux'
 import Avatar from '@material-ui/core/Avatar'
 
 import { 
-  BrandIcon
+  BrandIcon, 
+  ProfileIcon
 } from 'components/elements'
 import { 
   signOutUserRequest 
@@ -93,8 +94,8 @@ const styles = (theme) => ({
 
 
 const AppBar = (props) => {
-  const { history, classes, signOutUserRequest } = props
-  
+  const { dataloft_user, classes, signOutUserRequest } = props
+  const { username } = dataloft_user
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -131,13 +132,15 @@ const AppBar = (props) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Avatar className={classes.leftAdjust} src={`https://images.hive.blog/u/postnzt/avatar/small`} />
+            <Avatar className={classes.leftAdjust}>
+              <ProfileIcon />
+            </Avatar>
             <Typography 
               variant="subtitle1" 
               className={classes.leftAdjust}
               style={{ paddingTop: 5 }}
               >
-                postnzt
+                { username }
             </Typography>
             <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
               <AddIcon />

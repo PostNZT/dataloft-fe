@@ -26,8 +26,6 @@ import { is } from 'immutable'
 function* getSavedUserRequest(meta) {
   let dataloft_user  = { username: '', hashPass: '', token: '', is_authenticated: false }
   let saved = yield call([localStorage, localStorage.getItem], 'dataloft_user')
-  console.log(saved)
-
   saved  = JSON.parse(saved)
   
   if(saved !== null) {
