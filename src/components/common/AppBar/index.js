@@ -13,11 +13,16 @@ import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import SearchIcon from '@material-ui/icons/Search'
 import { compose } from 'recompose'
+import { bindActionCreators } from 'redux'
 import Avatar from '@material-ui/core/Avatar'
 
 import { 
   BrandIcon
 } from 'components/elements'
+import { 
+  signOutUserRequest 
+} from 'store/auth/actions'
+import { connect } from 'react-redux'
 
 const styles = (theme) => ({
   grow: {
@@ -88,7 +93,7 @@ const styles = (theme) => ({
 
 
 const AppBar = (props) => {
-  const { classes } = props
+  const { history, classes, signOutUserRequest } = props
   
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -99,6 +104,10 @@ const AppBar = (props) => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleClickLogout = () => {
+    signOutUserRequest()
   }
 
   return (
@@ -170,33 +179,27 @@ const AppBar = (props) => {
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClickLogout}>Logout</MenuItem>
             </Menu>
-
-
-          
           
           </div>
-          {/* ADD AFTER DONE WITH WEB UI
-            <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div> */}
         </Toolbar>
       </MuiAppBar>
-      {/* {renderMobileMenu} */}
-      {/* {renderMenu} */}
     </div>
     </React.Fragment>
   )
 }
 
+const mapStateToProps = state => ({
+  dataloft_user: state.auth.get('dataloft_user')
+})
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({
+    signOutUserRequest
+  }, dispatch)
+})
 export default compose(
   withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
 )(AppBar)

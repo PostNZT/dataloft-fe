@@ -1,3 +1,35 @@
+export const GET_SAVED_USER_REQUEST = 'GET_SAVED_USER_REQUEST'
+export const GET_SAVED_USER_SUCCESS = 'GET_SAVED_USER_SUCCESS'
+
+export const getSavedUserRequest = () => ({
+  type: GET_SAVED_USER_REQUEST,
+  meta: {
+    thunk: true
+  }
+})
+
+export const getSavedUserSuccess = (response, meta) => ({
+  type: GET_SAVED_USER_SUCCESS,
+  payload: response,
+  meta
+})
+
+export const SIGNOUT_USER_REQUEST = 'SIGNOUT_USER_REQUEST'
+export const SIGNOUT_USER_SUCCESS = 'SIGNOUT_USER_SUCCESS'
+
+export const signOutUserRequest = () => ({
+  type: SIGNOUT_USER_REQUEST,
+  meta: {
+    thunk: true
+  }
+})
+
+export const signOutUserSuccess = (response, meta) => ({
+  type: SIGNOUT_USER_SUCCESS,
+  payload: response,
+  meta
+})
+
 export const AUTHENTICATE_DATALOFT_USER_REQUEST = 'AUTHENTICATE_DATALOFT_USER_REQUEST'
 export const AUTHENTICATE_DATALOFT_USER_SUCCESS = 'AUTHENTICATE_DATALOFT_USER_SUCCESS'
 export const AUTHENTICATE_DATALOFT_USER_FAILURE = 'AUTHENTICATE_DATALOFT_USER_FAILURE'
