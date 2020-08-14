@@ -140,7 +140,17 @@ const AppBar = (props) => {
               className={classes.leftAdjust}
               style={{ paddingTop: 5 }}
               >
-                { username }
+                { 
+                  username 
+                }
+
+                {
+                  !username && (
+                    <React.Fragment>
+                      postnzt
+                    </React.Fragment>
+                  )
+                }
             </Typography>
             <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
               <AddIcon />

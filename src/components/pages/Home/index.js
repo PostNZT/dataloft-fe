@@ -121,6 +121,9 @@ const Home = (props) => {
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
   
+  let itemFile = [...bucketFiles]
+  itemFile.splice(0,1)
+
   return (
     <React.Fragment>
       <AppBar />
@@ -214,14 +217,17 @@ const Home = (props) => {
               </Grid>
               
 
-            <Grid container>
-              <Grid item xs={3}>
-                {
-                  bucketFiles.map((item) => (
+            <Grid container >
+              {
+                itemFile.map((item) => (
+                  <Grid 
+                    item xs={3} 
+                    style={{ paddingBottom: 15 }}
+                  >
                     <TabPanel dataFiles={item} />
-                  ))
-                }
-              </Grid>
+                  </Grid>
+                ))
+              }
             </Grid>
         
             </div>

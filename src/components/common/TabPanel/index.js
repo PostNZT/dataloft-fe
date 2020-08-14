@@ -10,6 +10,7 @@ import compose from 'recompose/compose'
 const styles = (theme) => ({
   root: {
     maxWidth: 290,
+    minHeight: 300
   },
   media: {
     height: 0,
@@ -20,10 +21,12 @@ const styles = (theme) => ({
 const TabPanel = (props) => {
   const { classes, dataFiles } = props
 
+
+
   const { name, path } = dataFiles
 
 
-  const coverMedia = "https://images.pexels.com/photos/20787/pexels-photo.jpg"
+  const coverMedia = "https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
 
   return (
     <Card className={classes.root}>
@@ -34,10 +37,10 @@ const TabPanel = (props) => {
         />
         <CardContent>
           <Typography gutterBottom variant="h6">
-            {`@${name}`}
+            {name}
           </Typography>
           <Typography variant="p" color="textSecondary" component="p">
-            {`@${path}`}
+            {path}
           </Typography>
         </CardContent>
       </CardActionArea>
