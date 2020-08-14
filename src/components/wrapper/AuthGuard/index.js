@@ -6,8 +6,9 @@ const AuthGuard = (props) => {
   const { children, dataloft_user } = props
   const location = useLocation()
   const { pathname } = location
-  const { is_authenticated } = dataloft_user
+  // const { is_authenticated } = dataloft_user
 
+  const is_authenticated = true
   const isUnguardedRoute = () => {
     return (pathname === '/login' || pathname.includes('/register'))
   }
