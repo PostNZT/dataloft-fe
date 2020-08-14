@@ -18,7 +18,11 @@ const styles = (theme) => ({
 })
 
 const TabPanel = (props) => {
-  const { classes } = props
+  const { classes, dataFiles } = props
+
+  const { name, path } = dataFiles
+
+
   const coverMedia = "https://images.pexels.com/photos/20787/pexels-photo.jpg"
 
   return (
@@ -30,10 +34,10 @@ const TabPanel = (props) => {
         />
         <CardContent>
           <Typography gutterBottom variant="h6">
-            CAT
+            {`@${name}`}
           </Typography>
           <Typography variant="p" color="textSecondary" component="p">
-            CATS are a widespread group 
+            {`@${path}`}
           </Typography>
         </CardContent>
       </CardActionArea>

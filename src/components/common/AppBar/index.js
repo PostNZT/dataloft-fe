@@ -94,7 +94,7 @@ const styles = (theme) => ({
 
 
 const AppBar = (props) => {
-  const { dataloft_user, classes, signOutUserRequest } = props
+  const { dataloft_user, classes, signOutUserRequest, children } = props
   const { username } = dataloft_user
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)

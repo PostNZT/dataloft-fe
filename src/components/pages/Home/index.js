@@ -77,7 +77,7 @@ const styles = (theme) => ({
 const Home = (props) => {
   const {
     classes,
-    bucketProfile,
+    bucketFiles,
     encryptDataFileRequest,
     decryptDataFileRequest,
     getBucketDataFilesRequest,
@@ -216,16 +216,11 @@ const Home = (props) => {
 
             <Grid container>
               <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-              <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-              <Grid item xs={3}>
-                <TabPanel />
-              </Grid>
-              <Grid item xs={3}>
-                <TabPanel />
+                {
+                  bucketFiles.map((item) => (
+                    <TabPanel dataFiles={item} />
+                  ))
+                }
               </Grid>
             </Grid>
         
@@ -260,7 +255,8 @@ const Home = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  bucketProfile: state.bucket.get('bucketProfile')
+  bucketProfile: state.bucket.get('bucketProfile'),
+  bucketFiles: state.bucket.get('bucketFiles')
 })
 
 const mapDispatchToProps = (dispatch) => ({

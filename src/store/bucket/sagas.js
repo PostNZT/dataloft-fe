@@ -6,7 +6,6 @@ import {
   GET_BUCKET_DATA_FILES_REQUEST,
   getBucketDataFilesSuccess,
   getBucketDataFilesFailure,
-  GET_BUCKET_LATEST_DATA_FILES_REQUEST
 } from './actions'
 
 import {
