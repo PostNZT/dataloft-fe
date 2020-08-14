@@ -43,6 +43,10 @@ import {
   handleFiles
 } from 'services/handleFiles'
 
+import {
+  getBucketDataFilesRequest
+} from 'store/bucket/actions'
+
 import classNames from 'classnames'
 import { Typography } from '@material-ui/core'
 
@@ -73,20 +77,17 @@ const styles = (theme) => ({
 const Home = (props) => {
   const {
     classes,
+    bucketProfile,
     encryptDataFileRequest,
     decryptDataFileRequest,
+    getBucketDataFilesRequest,
     encryptMultipleDataFilesRequest
   } = props
+
 
   // const dropzoneRef = createRef()
   const [hasFile, setHasFile] = useState(false)
   const [openConfigModal, setOpenConfigModal] = useState(false)
-  
-  // const handleUploadButton = () => {
-  //   if (dropzoneRef.current) {
-  //     dropzoneRef.current.open()
-  //   }
-  // }
 
   const onDrop = useCallback( async (fileList) => {    
     const mode = await handleFiles(fileList)
@@ -95,9 +96,13 @@ const Home = (props) => {
     const hint = 'HACKFS2020WEWINASONE'
     
     if (mode === 'encrypt') {
-      encryptDataFileRequest(fileList, key, hint)
+      encryptDataFileRequest(fileList, key, hint).then(() => {
+        getBucketDataFilesRequest()
+      })
     } else if (mode === 'encrypt-multiple') {
-      encryptMultipleDataFilesRequest(fileList, key, hint)
+      encryptMultipleDataFilesRequest(fileList, key, hint).then(() => {
+        getBucketDataFilesRequest()
+      })
     } else if (mode === 'decrypt') {
       decryptDataFileRequest(fileList, key)
     }
@@ -254,10 +259,15 @@ const Home = (props) => {
 
 }
 
+const mapStateToProps = (state) => ({
+  bucketProfile: state.bucket.get('bucketProfile')
+})
+
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     encryptDataFileRequest,
     decryptDataFileRequest,
+    getBucketDataFilesRequest,
     encryptMultipleDataFilesRequest
   }, dispatch)
 })
@@ -265,5 +275,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   withStyles(styles),
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home)

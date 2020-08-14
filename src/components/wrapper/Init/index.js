@@ -20,12 +20,12 @@ const Init = (props) => {
   useEffect(() => {
     getSavedUserRequest()
     .then(() => {
-      setInit(true)
-    })
-    getBucketIdentityRequest()
-    .then((identity) => {
-      getBucketDataFilesRequest(identity)
-    })
+      getBucketIdentityRequest()
+      .then((identity) => {
+        getBucketDataFilesRequest(identity)
+        setInit(true)
+      })
+    })   
   }, [])
 
   return (

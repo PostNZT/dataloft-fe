@@ -1,11 +1,12 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import {
   GET_BUCKET_IDENTITY_REQUEST,
   getBucketIdentitySuccess,
   GET_BUCKET_DATA_FILES_REQUEST,
   getBucketDataFilesSuccess,
-  getBucketDataFilesFailure
+  getBucketDataFilesFailure,
+  GET_BUCKET_LATEST_DATA_FILES_REQUEST
 } from './actions'
 
 import {
@@ -23,15 +24,35 @@ function* getBucketIdentityRequest(meta) {
 }
 
 function* getBucketDataFilesRequest(payload, meta) {
-  const { identity } = payload
-  const { list } = yield call(setup, identity)
-  if(list) {
-    let dataFiles = list.itemsList
-    console.log('test')
-    console.log(dataFiles)
-    yield put(getBucketDataFilesSuccess(dataFiles, meta))
+  let identity 
+  if(payload.bucketIdentity) {
+    identity = payload.bucketIdentity.identity
   } else {
-    yield put(getBucketDataFilesFailure(list.error, meta))
+    const { identity: bucket } = yield select(state=> state.bucket.get('bucketProfile'))
+    identity = bucket
+  }
+
+  console.log({identity})
+  try {
+    let old = yield select(state => state.bucket.get('bucketFiles'))
+    if(!Array.isArray(old)) {
+      old = []
+    }
+    console.log({old})
+    let { list } = yield call(setup, identity)
+    
+    if(list) {
+      let dataFiles = list.itemsList
+      // list = [...old, ...dataFiles]
+      // console.log({dataFiles})
+      yield put(getBucketDataFilesSuccess(dataFiles, meta))
+    } else {
+      yield put(getBucketDataFilesFailure(list.error, meta))
+    }
+
+  } catch (error) {
+    console.log(error)
+    yield put(getBucketDataFilesFailure(error, meta))
   }
 }
 

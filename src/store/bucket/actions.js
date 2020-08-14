@@ -18,9 +18,11 @@ export const GET_BUCKET_DATA_FILES_REQUEST = 'GET_BUCKET_DATA_FILES_REQUEST'
 export const GET_BUCKET_DATA_FILES_SUCCESS = 'GET_BUCKET_DATA_FILES_SUCCESS'
 export const GET_BUCKET_DATA_FILES_FAILURE = 'GET_BUCKET_DATA_FILES_FAILURE'
 
-export const getBucketDataFilesRequest = (bucketIdentity) => ({
+export const getBucketDataFilesRequest = (bucketIdentity = null) => ({
   type: GET_BUCKET_DATA_FILES_REQUEST,
-  payload: bucketIdentity,
+  payload: {
+    bucketIdentity
+  },
   meta: {
     thunk: true
   }

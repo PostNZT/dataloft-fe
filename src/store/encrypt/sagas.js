@@ -32,7 +32,7 @@ import {
 
 function* encryptDataFileRequest(payload, meta) {
   try {
-    const { fileList, key, hint } = payload
+    const { fileList, key, hint, bucketProfile } = payload
     const { name: filename } = fileList[0]
    
     const data = yield call (fileToData, fileList[0])
