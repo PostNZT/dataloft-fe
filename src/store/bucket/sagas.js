@@ -43,8 +43,9 @@ function* getBucketDataFilesRequest(payload, meta) {
     
     if(list) {
       let dataFiles = list.itemsList
-      // list = [...old, ...dataFiles]
-      // console.log({dataFiles})
+      yield call([localStorage, localStorage.clear])
+      yield call([localStorage, localStorage.setItem], 'dataFiles', JSON.stringify(dataFiles))
+
       yield put(getBucketDataFilesSuccess(dataFiles, meta))
     } else {
       yield put(getBucketDataFilesFailure(list.error, meta))
