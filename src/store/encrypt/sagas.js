@@ -1,5 +1,4 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import CID from 'cids'
 import {
   encrypt,
   fileToData
@@ -40,6 +39,8 @@ function* encryptDataFileRequest(payload, meta) {
     if (data) {
       // Encrypt Data
       const encrypted_data = yield call(encrypt, data, filename, key, hint)
+      const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
+      yield put(encryptDataFileSuccess(dataInfo, meta))
 
       // gets identity from 3box
       const identity = yield call(boxRegister)
@@ -49,14 +50,15 @@ function* encryptDataFileRequest(payload, meta) {
       const {list, bucketKey, buckets} = yield call(setup, identity.identity)
 
       // returns list of files in a bucket
-      console.log(list.itemsList)
+      let dataFiles = list.itemsList
+      console.log(dataFiles)
 
       // Inserts File to bucket
       const insertFile = yield call(insertFileBucket, buckets, bucketKey, encrypted_data, filename)
       console.log(insertFile.path.cid.string)
 
       // Set Pow token ToDo Needs to set token from account creation
-      const token = yield call(createFFS)
+      yield call(createFFS)
 
       // Get pow addrs
       const addrsList = yield call(addressList)
@@ -83,9 +85,6 @@ function* encryptDataFileRequest(payload, meta) {
       const jobS = yield call(jobStatus, jobId)
       console.log({cidS})
       console.log({jobS})
-
-      const dataInfo = { filename, key, hint, fileBuffer: encrypted_data.file }
-      yield put(encryptDataFileSuccess(dataInfo, meta))
     } else {
       yield put(encryptDataFileFailure(data.error))
     }

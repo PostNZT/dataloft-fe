@@ -1,4 +1,3 @@
-import { Libp2pCryptoIdentity } from "@textile/threads-core"
 import { Buckets } from '@textile/hub'
 const keyInfo = {key: 'bf5bmop3o7kzbwpt6s5w3jrhkau'}
 

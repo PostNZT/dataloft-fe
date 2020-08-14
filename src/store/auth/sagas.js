@@ -21,7 +21,6 @@ import {
   createMetamaskAccount,
   authenticateUser
 } from 'services/api'
-import { is } from 'immutable'
 
 function* getSavedUserRequest(meta) {
   let dataloft_user  = { username: '', hashPass: '', token: '', is_authenticated: false }
@@ -74,7 +73,6 @@ function* createDataloftAccountRequest(payload, meta) {
 
 function* authenticateUserRequest(payload, meta) {
   const { username, hashPass } = payload
-  let hasError = false
   try {
     const data = yield call(authenticateUser, username, hashPass)
 
@@ -85,7 +83,6 @@ function* authenticateUserRequest(payload, meta) {
       yield call([localStorage, localStorage.setItem], 'dataloft_user', JSON.stringify(dataloft_user))
       yield put(authenticateUserSuccess(dataloft_user, meta))
     } else {
-      hasError = true
       yield put(authenticateUserFailure(data.error))
     }
   } catch (error) {
