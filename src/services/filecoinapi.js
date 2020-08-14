@@ -2,7 +2,7 @@ import { encode, newAddress, validateAddressString } from "@openworklabs/filecoi
 import ethUtil from "ethereumjs-util"
 import filecoin_signer from "@zondax/filecoin-signing-tools/js"
 import filecoin_signer_ns from "@nathansenn/filecoin-signing-tools"
-import Filecoin, { LocalNodeProvider, } from '@openworklabs/filecoin-wallet-provider'
+import Filecoin, { LocalNodeProvider } from '@openworklabs/filecoin-wallet-provider'
 import config from 'config'
 
 const bip32 = require('bip32');
@@ -10,8 +10,8 @@ const { publicKeyConvert } = require('ethereum-cryptography/secp256k1')
 
 
 const lotusconfig = {
-  apiAddress: 'http://'+ config.POW_HOST,
-  token: "", // required
+  apiAddress: 'https://'+ config.LOTUS_HOST,
+  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiXX0.PCP1OmkyTZViwwl8PSfg71ZoAUEPLlZaeJ93pDxLq80", // required
 }
 
 const EXAMPLE_TRANSACTION = {
