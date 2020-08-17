@@ -9,8 +9,7 @@ const ParticleBackground = (props) => {
     <React.Fragment>
       <Particles
         style={{ position: 'fixed' }}
-        options={{
-          
+        options={{ 
           fpsLimit: 10,
           interactivity: {
             detectsOn: "canvas",
@@ -79,9 +78,7 @@ const ParticleBackground = (props) => {
       />
       <div style={{ zIndex: 500 }}>
         {children}
-      </div>
-
-      
+      </div> 
     </React.Fragment>
   )
 }
