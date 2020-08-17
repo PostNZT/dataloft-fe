@@ -28,7 +28,6 @@ const styles = (theme) => ({
 const ConfigModal = (props) => {
   const { open, onClose } = props
 
-
   return(
     <div>
       <Dialog
