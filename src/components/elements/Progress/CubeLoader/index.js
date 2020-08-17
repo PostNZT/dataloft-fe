@@ -14,17 +14,15 @@ const Cubeloader = ({ loading, top = 30, size, style = {} }) => {
 
   return (
     <React.Fragment>
-      {
-        loading && (
-          <div style={{ paddingTop: top, ...style }} className={classes.loader}>
-            <CubeSpinner
-              size={size}
-              color="#FF3939"
-              loading={true}
-            />
-          </div>
-        )
-      }
+      {loading && (
+        <div style={{ paddingTop: top, ...style }} className={classes.loader}>
+          <CubeSpinner
+            size={size}
+            color="#FF3939"
+            loading={true}
+          />
+        </div>
+      )}
     </React.Fragment>
   )
 }
