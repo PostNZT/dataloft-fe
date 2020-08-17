@@ -46,7 +46,7 @@
     "react-redux": "^7.2.0",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "react-spinners-kit": "^1.9.1",
     "react-tsparticles": "^1.17.6",
     "recompose": "^0.30.0",
