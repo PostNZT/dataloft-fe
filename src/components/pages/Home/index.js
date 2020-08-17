@@ -218,42 +218,36 @@ const Home = (props) => {
               
 
             <Grid container >
-              {
-                itemFile.map((item) => (
-                  <Grid 
-                    item xs={3} 
-                    style={{ paddingBottom: 15 }}
-                  >
-                    <TabPanel dataFiles={item} />
-                  </Grid>
-                ))
-              }
+              {itemFile.map((item) => (
+                <Grid 
+                  item xs={3} 
+                  style={{ paddingBottom: 15 }}
+                >
+                  <TabPanel dataFiles={item} />
+                </Grid>
+              ))}
             </Grid>
         
             </div>
           </Grid>
           
         </Grid>
-          {
-            hasFile && (
-              <React.Fragment>
-                <UploadAccordion 
-                  className={classes.accordion}
-                  handleUploadFile={handleUploadFile}
-                />
-              </React.Fragment>
-            )
-          }
-          {
-            openConfigModal && (
-              <React.Fragment>
-                <ConfigModal 
-                  onClose={handleCloseConfigModal}
-                  open={openConfigModal}
-                />
-              </React.Fragment>
-            )
-          } 
+          {hasFile && (
+            <React.Fragment>
+              <UploadAccordion 
+                className={classes.accordion}
+                handleUploadFile={handleUploadFile}
+              />
+            </React.Fragment>
+          )}
+          {openConfigModal && (
+            <React.Fragment>
+              <ConfigModal 
+                onClose={handleCloseConfigModal}
+                open={openConfigModal}
+              />
+            </React.Fragment>
+          )} 
       </Container>
     </React.Fragment>
   )
