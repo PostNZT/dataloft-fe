@@ -176,7 +176,6 @@ const Register = (props) => {
 
     const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
     const signed_transaction = await getSignMessageRequest(signedMessage)
-    // console.log(signedMessage)
     await getFilecoinSignedTransactionRequest(signed_transaction)
     const db = await createThreadDB()
     await start(db ,identity)
