@@ -28,7 +28,7 @@ import {
 import { 
   ParticleBackground
 } from 'components'
-import sha256 from "js-sha256";
+import sha256 from "js-sha256"
 
 
 const styles = (theme) => ({
@@ -183,8 +183,7 @@ const Login = (props) => {
                 onChange={onChange}
               />
             </div>
-            {
-              hasInstalledMetamask && (
+            {hasInstalledMetamask && (
                 <React.Fragment>
                   <div style={{ paddingBottom: 20, paddingRight: 24, paddingLeft: 15 }}>
                     <Button 
@@ -198,10 +197,8 @@ const Login = (props) => {
                     </Button>
                   </div>
                 </React.Fragment>
-              )
-            }
-            {
-              !hasInstalledMetamask && (
+            )}
+            {!hasInstalledMetamask && (
                 <React.Fragment>
                   <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
                   <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
@@ -221,8 +218,7 @@ const Login = (props) => {
                     </Button>
                   </ButtonGroup>
                 </React.Fragment>
-              ) 
-            }
+              )}
               <div style={{ paddingBottom: 35, paddingLeft: 15 }}>
                 <Typography
                     align='justify'

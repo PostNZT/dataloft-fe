@@ -53,10 +53,8 @@ import {
   Metamask, 
   Dataloft
 } from 'components/elements'
-import {boxRegister} from 'services/3box';
-import {metamaskEncrypt, metamaskPublic} from "services/metamask";
-
-import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
+import {boxRegister} from 'services/3box'
+import {metamaskEncrypt, metamaskPublic} from "services/metamask"
 import { createPow } from "@textile/powergate-client"
 
 const host = config.POW_HOST // or whatever powergate instance you want
@@ -159,7 +157,7 @@ const Register = (props) => {
     const pubKey = await metamaskPublic(metamaskAddress)
     const msg = { data: "password:"+password+", privKey:"+privKey.privateKey+", token:"+token}
     const encryptedMessage = await metamaskEncrypt(msg, pubKey)
-    console.log(encryptedMessage);
+    console.log(encryptedMessage)
 
     const obj = {
       account:'Dataloft',
@@ -170,22 +168,22 @@ const Register = (props) => {
     console.log(obj)
     const str = "{account:'Dataloft', user: '"+username+"', pubkey:'"+pubKey.result+"', encryptedKeys:'"+encryptedMessage+"'}"
 
-    var myBuffer = [];
+    var myBuffer = []
     var buffer = await new Buffer(JSON.stringify(str))
     for (var i = 0; i < buffer.length; i++) {
-        myBuffer.push(buffer[i]);
+        myBuffer.push(buffer[i])
     }
 
     const signedMessage = await recordAccountOnFilecoin(filecoinAddress, privKey.privateKey, buffer)
     const signed_transaction = await getSignMessageRequest(signedMessage)
     // console.log(signedMessage)
-    const tx = await getFilecoinSignedTransactionRequest(signed_transaction)
+    await getFilecoinSignedTransactionRequest(signed_transaction)
     const db = await createThreadDB()
-    const startDb = await start(db ,identity)
+    await start(db ,identity)
     console.log(db)
     const collection = await collectionFromObject(db)
     console.log(collection)
-    const instance = await instances(db, obj)
+    await instances(db, obj)
     console.log(username)
     const query = await createQuery(db, username)
     console.log(query)
@@ -237,147 +235,134 @@ const Register = (props) => {
                 Create an account
               </Typography>
             </div>
-            {
-              !hasCreatedWithDataloft && hasMetamaskAddress  && (
-                  <React.Fragment>
-                    <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
-                      <InputBase
-                          placeholder="Username"
-                          classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                          }}
-                          inputProps={{
-                            'aria-label': 'login',
-                            className: classes.white
-                          }}
-                          name="username"
-                          value={username}
-                          onChange={onChange}
-                      />
-                      <InputBase
-                          placeholder="Password"
-                          classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                          }}
-                          inputProps={{
-                            'aria-label': 'login',
-                            className: classes.white,
-                            type: 'password',
-                            autoComplete: 'new-password',
-                          }}
-                          name="password"
-                          value={password}
-                          onChange={onChange}
-                      />
-                    </div>
-                  </React.Fragment>
-              )
-            }
-            {
-              !hasCreatedWithDataloft && hasMetamaskAddress && (
-                  <React.Fragment>
-                    <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
-                      <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            onClick={handleClickRegister}
-                        >
-                          <Dataloft />
-                          <Typography
-                              variant='p'
-                          >
-                            Create w/ Dataloft
-                          </Typography>
-                        </Button>
-                      </ButtonGroup>
-                    </div>
-                  </React.Fragment>
-              )
-            }
-            {
-              hasMetamaskAddress && hasCreatedWithDataloft && (
-                <React.Fragment>
-                  <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
-                    <p>Send 10 file coin to this address to create your account</p>
-                    <p>{filecoinAddress}</p>
-                  </div>
-                </React.Fragment>
-              )
-            }
-            {
-              hasMetamaskAddress && hasCreatedWithDataloft && (
-                <React.Fragment>
-                  <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
-                    <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
-                      <Button
+            {!hasCreatedWithDataloft && hasMetamaskAddress  && (
+              <React.Fragment>
+                <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
+                  <InputBase
+                      placeholder="Username"
+                      classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                      }}
+                      inputProps={{
+                        'aria-label': 'login',
+                        className: classes.white
+                      }}
+                      name="username"
+                      value={username}
+                      onChange={onChange}
+                  />
+                  <InputBase
+                      placeholder="Password"
+                      classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                      }}
+                      inputProps={{
+                        'aria-label': 'login',
+                        className: classes.white,
+                        type: 'password',
+                        autoComplete: 'new-password',
+                      }}
+                      name="password"
+                      value={password}
+                      onChange={onChange}
+                  />
+                </div>
+              </React.Fragment>
+            )}
+            {!hasCreatedWithDataloft && hasMetamaskAddress && (
+              <React.Fragment>
+                <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
+                  <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
+                    <Button
                         variant="contained"
                         color="primary"
                         type="submit"
-                        onClick={handleSentFilecoin}
-                      >
-                        <Dataloft />
-                        <Typography
+                        onClick={handleClickRegister}
+                    >
+                      <Dataloft />
+                      <Typography
                           variant='p'
-                        >
-                          File Coin Sent
-                        </Typography>
-                      </Button>
-                    </ButtonGroup>
-                  </div>
-                </React.Fragment>
-              )
-            }
-            {
-              !hasMetamaskAddress && hasInstalledMetamask && (
-                <React.Fragment>
-                  <div style={{paddingBottom: 10, display: 'flex', alignContent: 'center' }}>
+                      >
+                        Create w/ Dataloft
+                      </Typography>
+                    </Button>
+                  </ButtonGroup>
+                </div>
+              </React.Fragment>
+            )}
+            {hasMetamaskAddress && hasCreatedWithDataloft && (
+              <React.Fragment>
+                <div style={{ paddingRight: 15, paddingLeft:15, paddingBottom: 10 }}>
+                  <p>Send 10 file coin to this address to create your account</p>
+                  <p>{filecoinAddress}</p>
+                </div>
+              </React.Fragment>
+            )}
+            {hasMetamaskAddress && hasCreatedWithDataloft && (
+              <React.Fragment>
+                <div style={{ paddingBottom: 10, display: 'flex', alignContent: 'center'  }}>
                   <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
                     <Button
                       variant="contained"
                       color="primary"
                       type="submit"
-                      onClick={handleClickCreateWithMetamask}
+                      onClick={handleSentFilecoin}
                     >
-                      <Metamask />
+                      <Dataloft />
                       <Typography
                         variant='p'
                       >
-                        Create w/ Metamask
+                        File Coin Sent
                       </Typography>
                     </Button>
                   </ButtonGroup>
-                  </div>
-                </React.Fragment>
-              )
-            }
-            {
-              !hasInstalledMetamask && (
-                <React.Fragment>
-                  <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
-                  <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
-                    <Button
-                      startIcon={<FaChrome />}
-                      href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
-                      rel="noopener noreferrer"
-                      target="_blank">
-                        Chrome
-                      </Button>
-                    <Button
-                      startIcon={<FaFirefoxBrowser />}
-                      href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/"
-                      rel="noopener noreferrer"
-                      target="_blank">
-                      Firefox
+                </div>
+              </React.Fragment>
+            )}
+            {!hasMetamaskAddress && hasInstalledMetamask && (
+              <React.Fragment>
+                <div style={{paddingBottom: 10, display: 'flex', alignContent: 'center' }}>
+                <ButtonGroup className={classes.centerDiv} variant="contained" color="primary" aria-label="contained primary button group">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    onClick={handleClickCreateWithMetamask}
+                  >
+                    <Metamask />
+                    <Typography
+                      variant='p'
+                    >
+                      Create w/ Metamask
+                    </Typography>
+                  </Button>
+                </ButtonGroup>
+                </div>
+              </React.Fragment>
+            )}
+            {!hasInstalledMetamask && (
+              <React.Fragment>
+                <Typography variant="subtitle1" className={classes.white}>Please Install Metamask</Typography><br />
+                <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" fullWidth>
+                  <Button
+                    startIcon={<FaChrome />}
+                    href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+                    rel="noopener noreferrer"
+                    target="_blank">
+                      Chrome
                     </Button>
-                  </ButtonGroup>
-                </React.Fragment>
-              )
-            }
-
+                  <Button
+                    startIcon={<FaFirefoxBrowser />}
+                    href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/"
+                    rel="noopener noreferrer"
+                    target="_blank">
+                    Firefox
+                  </Button>
+                </ButtonGroup>
+              </React.Fragment>
+            )}
               <div style={{ paddingBottom: 35, paddingLeft: 15, paddingRight: 15 }}>
                 <MuiLink component={Link} to={`/login`} className={classes.white}>
                   Already have an account?
