@@ -107,6 +107,7 @@ const Home = (props) => {
       decryptDataFileRequest(fileList, key)
     }
     setHasFile(true)
+    //eslint-disable-next-line
   }, [encryptDataFileRequest, encryptMultipleDataFilesRequest, decryptDataFileRequest])
 
   const handleUploadFile = () => {

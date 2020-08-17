@@ -26,11 +26,12 @@ const Init = (props) => {
         setInit(true)
       })
     })   
+  //eslint-disable-next-line
   }, [])
 
   return (
     <React.Fragment>
-      { init && (children) }
+      {init && (children)}
     </React.Fragment>
   )
 }
