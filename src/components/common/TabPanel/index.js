@@ -20,12 +20,7 @@ const styles = (theme) => ({
 
 const TabPanel = (props) => {
   const { classes, dataFiles } = props
-
-
-
   const { name, path } = dataFiles
-
-
   const coverMedia = "https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
 
   return (
