@@ -94,7 +94,7 @@ const styles = (theme) => ({
 
 
 const AppBar = (props) => {
-  const { dataloft_user, classes, signOutUserRequest, children } = props
+  const { dataloft_user, classes, signOutUserRequest } = props
   const { username } = dataloft_user
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -140,17 +140,12 @@ const AppBar = (props) => {
               className={classes.leftAdjust}
               style={{ paddingTop: 5 }}
               >
-                { 
-                  username 
-                }
-
-                {
-                  !username && (
-                    <React.Fragment>
-                      postnzt
-                    </React.Fragment>
-                  )
-                }
+                {username}
+                {!username && (
+                  <React.Fragment>
+                    postnzt
+                  </React.Fragment>
+                )}
             </Typography>
             <Fab color="secondary" size="small" aria-label="add" className={classes.leftAdjust}>
               <AddIcon />
