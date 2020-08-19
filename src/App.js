@@ -19,7 +19,7 @@ const RouteWithSubRoutes = (route) => {
   )
 }
 
-const App = (props) => {
+const App = () => {
 
   return (
     <React.Fragment>
