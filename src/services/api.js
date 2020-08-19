@@ -134,11 +134,11 @@ export const getChainStats2 = () => {
 }
 
 export const getSignMessage = async (sig) => {
-    const client = getClient()
-    const auth = client.AuthVerify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.QRxVUFGXCg9aUqBtg9HtpCSoXKzMPOT3FqPel12FiDU")
-    const result = await client.mpoolPush(sig)
-    console.log(result)
-    return(result["/"])
+  const client = getClient()
+  client.AuthVerify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.QRxVUFGXCg9aUqBtg9HtpCSoXKzMPOT3FqPel12FiDU")
+  const result = await client.mpoolPush(sig)
+  console.log(result)
+  return(result["/"])
 }
 
 export const uploadToFilecoin = (payload) => async (dispatch) => {
@@ -158,18 +158,18 @@ export const uploadToFilecoin = (payload) => async (dispatch) => {
       Miner: payload.targetMiner,
       EpochPrice: payload.epochPrice,
       MinBlocksDuration: 300,
-    };
-    const deal = await client.clientStartDeal(dataRef);
+    }
+    const deal = await client.clientStartDeal(dataRef)
 
     document.getElementById("uploadToFilecoin").innerText =
-      "Upload to Filecoin Network";
+      "Upload to Filecoin Network"
 
     dispatch({
       payload: {
         id: deal["/"],
         cid: result.path,
       },
-    });
+    })
   }
 }
 
