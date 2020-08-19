@@ -12,8 +12,9 @@ export const powergate = createPow({ POW_HOST })
 
 export const networkHealth = async() => {
   const { status, messageList } = await powergate.health.check()
-  const { peersList } = await pow.net.peers()
+  const { peersList } = await powergate.net.peers()
   
+  return { status, messageList, peersList }
 }
 
 export const createFFS = async(payload) => {
